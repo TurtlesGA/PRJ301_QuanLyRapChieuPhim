@@ -130,12 +130,6 @@ PRJ302_QuanLyRapChieuPhim/
    private static final String PASSWORD = "123";      // Mật khẩu SA của bạn
    ```
 
-### 2. Cài đặt trên MySQL (Tùy chọn)
-Nếu sử dụng MySQL (XAMPP / MySQL Workbench):
-1. Import file [database/cinema_db_mysql.sql](database/cinema_db_mysql.sql).
-2. Đổi chuỗi kết nối trong `DBContext.java` sang `jdbc:mysql://localhost:3306/CinemaDB`.
-
----
 
 ## 🔑 Tài Khoản Trải Nghiệm Mẫu
 
