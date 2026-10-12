@@ -7,8 +7,8 @@ Hệ thống Quản lý và Đặt vé Rạp chiếu phim (Cinema Management Sys
 ## 🚀 Giới Thiệu Dự Án
 
 Dự án cung cấp giải pháp toàn diện cho việc quản lý rạp chiếu phim và hỗ trợ người dùng trải nghiệm đặt vé xem phim trực tuyến hiện đại, trực quan:
-- **Người dùng (Khách hàng)**: Xem danh sách phim đang chiếu, sắp chiếu, tra cứu lịch chiếu, lựa chọn suất chiếu, chọn vị trí ghế ngồi trực quan (Ghế Thường, VIP, Ghế Đôi), đặt vé và xem lại lịch sử vé đã mua.
-- **Quản trị viên (Admin)**: Quản lý danh mục phim, quản lý suất chiếu theo phòng, theo dõi lịch sử và doanh thu bán vé, quản lý phân quyền và khóa/mở khóa tài khoản khách hàng.
+- **Người dùng (Khách hàng)**: Xem danh sách phim đang chiếu, sắp chiếu, tra cứu lịch chiếu, lựa chọn suất chiếu, chọn vị trí ghế ngồi trực quan (Ghế Thường, VIP, Ghế Đôi), đặt vé, xem lại lịch sử vé đã mua và hủy vé trực tuyến.
+- **Quản trị viên (Admin)**: Quản lý danh mục phim, quản lý phòng chiếu (thêm, sửa, đổi trạng thái, xóa phòng), quản lý suất chiếu theo phòng, theo dõi lịch sử và hủy vé, thống kê doanh thu bán vé, quản lý phân quyền và khóa/mở khóa tài khoản khách hàng.
 
 ---
 
@@ -74,6 +74,7 @@ PRJ302_QuanLyRapChieuPhim/
 │               └── admin/
 │                   ├── AdminDashboardController.java
 │                   ├── AdminMovieController.java
+│                   ├── AdminRoomController.java
 │                   ├── AdminShowtimeController.java
 │                   ├── AdminBookingController.java
 │                   └── AdminUserController.java
@@ -102,6 +103,8 @@ PRJ302_QuanLyRapChieuPhim/
 │               ├── dashboard.jsp
 │               ├── movies.jsp
 │               ├── movie-form.jsp
+│               ├── rooms.jsp
+│               ├── room-form.jsp
 │               ├── showtimes.jsp
 │               ├── showtime-form.jsp
 │               ├── bookings.jsp
@@ -137,8 +140,8 @@ Hệ thống đã tạo sẵn các tài khoản demo:
 
 | Tài khoản | Mật khẩu | Quyền hạn (Role) | Chức năng chính |
 |:---|:---|:---|:---|
-| **admin** | `123456` | **ADMIN** | Truy cập Dashboard, Quản lý phim, Quản lý suất chiếu, Xem doanh thu, Quản lý người dùng |
-| **customer** | `123456` | **CUSTOMER** | Đặt vé, chọn ghế, quản lý hồ sơ cá nhân, xem lịch sử vé |
+| **admin** | `123456` | **ADMIN** | Bảng điều khiển, Quản lý phim, Quản lý phòng chiếu, Quản lý suất chiếu, Xem & Hủy đơn vé, Xem doanh thu, Quản lý người dùng |
+| **customer** | `123456` | **CUSTOMER** | Đặt vé, chọn vị trí ghế, quản lý hồ sơ cá nhân, xem lịch sử & hủy vé đã mua |
 | **user2** | `123456` | **CUSTOMER** | Tài khoản khách hàng mẫu |
 
 ---
@@ -163,6 +166,7 @@ Hệ thống đã tạo sẵn các tài khoản demo:
 ## ✨ Điểm Nổi Bật Kỹ Thuật (Phù Hợp Báo Cáo Môn Học)
 
 1. **Transaction Management**: Quá trình tạo đơn hàng (`Bookings`) và lưu chi tiết vé (`Tickets`) được bao bọc trong Transaction (`conn.setAutoCommit(false)`), đảm bảo toàn vẹn dữ liệu nếu xảy ra lỗi.
-2. **Dynamic Seat Allocation**: Sơ đồ ghế kiểm tra trạng thái thời gian thực theo từng suất chiếu, không cho phép đặt đè ghế đã bán.
-3. **Phân quyền và Bộ lọc**: Tách biệt rõ quyền quản trị viên và khách hàng với Servlet Filter.
-4. **Chuẩn mã hóa**: Hỗ trợ tiếng Việt có dấu đầy đủ từ CSDL đến giao diện Web.
+2. **Dynamic Seat Allocation & Phân Hạng Ghế**: Tự động sinh sơ đồ ghế (Ghế Thường, VIP, Ghế Đôi) khi thêm phòng chiếu; kiểm tra trạng thái ghế thời gian thực theo từng suất chiếu, tự động giải phóng vị trí ghế khi vé bị hủy.
+3. **Quản Lý & Hủy Vé Linh Hoạt**: Cung cấp chức năng hủy vé cho cả khách hàng và quản trị viên, cập nhật trạng thái đơn vé (`PAID`, `CANCELLED`).
+4. **Phân quyền và Bộ lọc**: Tách biệt rõ quyền quản trị viên và khách hàng với Servlet Filter.
+5. **Chuẩn mã hóa**: Hỗ trợ tiếng Việt có dấu đầy đủ từ CSDL đến giao diện Web.

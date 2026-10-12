@@ -35,7 +35,7 @@ public class AdminShowtimeController extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/views/admin/showtimes.jsp").forward(request, response);
         } else if ("/admin/showtime-add".equals(servletPath)) {
             List<Movie> movies = movieDAO.getAllMovies();
-            List<Room> rooms = roomDAO.getAllRooms();
+            List<Room> rooms = roomDAO.getActiveRooms();
             request.setAttribute("movies", movies);
             request.setAttribute("rooms", rooms);
             request.getRequestDispatcher("/WEB-INF/views/admin/showtime-form.jsp").forward(request, response);
