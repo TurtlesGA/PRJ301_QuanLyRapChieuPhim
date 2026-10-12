@@ -29,9 +29,9 @@
                     <button class="btn btn-sm btn-outline-danger" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </div>
             </form>
-
+                    
             <!-- User Auth -->
-            <ul class="navbar-nav mb-2 mb-lg-0">
+            <ul class="navbar-nav align-items-center mb-2 mb-lg-0">
                 <c:choose>
                     <c:when test="${not empty sessionScope.currentUser}">
                         <li class="nav-item dropdown">
@@ -43,7 +43,7 @@
                                 <c:if test="${sessionScope.currentUser.admin}">
                                     <li><a class="dropdown-item text-warning" href="${pageContext.request.contextPath}/admin/dashboard"><i class="fa-solid fa-chart-line me-2"></i>Trang Quản Trị</a></li>
                                     <li><hr class="dropdown-divider border-secondary"></li>
-                                </c:if>
+                                    </c:if>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/my-bookings"><i class="fa-solid fa-ticket me-2"></i>Vé Của Tôi</a></li>
                                 <li><a class="dropdown-item" href="${pageContext.request.contextPath}/profile"><i class="fa-solid fa-user-gear me-2"></i>Tài Khoản</a></li>
                                 <li><hr class="dropdown-divider border-secondary"></li>
@@ -60,6 +60,19 @@
                         </li>
                     </c:otherwise>
                 </c:choose>
+
+                <!-- Theme Switch (Sáng / Tối) -->
+                <li class="nav-item ms-lg-2">
+                    <button type="button" class="theme-toggle-btn" id="themeToggle" title="Chuyển chế độ Sáng / Tối" aria-label="Chuyển chế độ Sáng / Tối">
+                        <span class="theme-icon light" title="Sáng">
+                            <i class="fa-solid fa-sun"></i>
+                        </span>
+                        <span class="theme-divider"></span>
+                        <span class="theme-icon dark active" title="Tối">
+                            <i class="fa-solid fa-moon"></i>
+                        </span>
+                    </button>
+                </li>
             </ul>
         </div>
     </div>

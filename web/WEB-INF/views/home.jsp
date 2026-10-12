@@ -124,7 +124,7 @@
                                     <p class="small text-muted mb-3"><i class="fa-regular fa-clock me-1"></i>${movie.duration} phút</p>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <a href="${pageContext.request.contextPath}/movie-detail?id=${movie.movieId}" class="btn btn-sm btn-outline-secondary text-white fw-bold">Chi Tiết</a>
+                                    <a href="${pageContext.request.contextPath}/movie-detail?id=${movie.movieId}" class="btn btn-sm btn-movie-detail fw-bold">Chi Tiết</a>
                                 </div>
                             </div>
                         </div>
@@ -134,26 +134,26 @@
         </section>
 
         <!-- Tiện Ích Rạp -->
-        <section class="p-4 p-md-5 rounded-4 border border-secondary" style="background-color: #1a1a1a;">
+        <section class="cinema-features p-4 p-md-5 rounded-4 border">
             <div class="row g-4 text-center">
                 <div class="col-md-3 col-6">
                     <i class="fa-solid fa-tv text-danger fs-1 mb-3"></i>
-                    <h5 class="fw-bold text-white">Màn Hình Siêu Lớn</h5>
+                    <h5 class="fw-bold feature-title">Màn Hình Siêu Lớn</h5>
                     <p class="small text-muted mb-0">Hệ thống chiếu Laser 4K sắc nét tới từng chi tiết</p>
                 </div>
                 <div class="col-md-3 col-6">
                     <i class="fa-solid fa-volume-high text-danger fs-1 mb-3"></i>
-                    <h5 class="fw-bold text-white">Âm Thanh Dolby Atmos</h5>
+                    <h5 class="fw-bold feature-title">Âm Thanh Dolby Atmos</h5>
                     <p class="small text-muted mb-0">Âm thanh vòm đa chiều bao trùm không gian</p>
                 </div>
                 <div class="col-md-3 col-6">
                     <i class="fa-solid fa-couch text-danger fs-1 mb-3"></i>
-                    <h5 class="fw-bold text-white">Ghế VIP & Couple</h5>
+                    <h5 class="fw-bold feature-title">Ghế VIP & Couple</h5>
                     <p class="small text-muted mb-0">Ghế da bọc êm ái, khoảng cách thoải mái</p>
                 </div>
                 <div class="col-md-3 col-6">
                     <i class="fa-solid fa-mobile-screen-button text-danger fs-1 mb-3"></i>
-                    <h5 class="fw-bold text-white">Đặt Vé Nhanh Chóng</h5>
+                    <h5 class="fw-bold feature-title">Đặt Vé Nhanh Chóng</h5>
                     <p class="small text-muted mb-0">Thanh toán tiện lợi, quét mã QR vào rạp</p>
                 </div>
             </div>

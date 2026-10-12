@@ -55,4 +55,33 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     }
+
+    // Theme Switch Handler (Light / Dark Mode)
+    const themeToggleBtn = document.getElementById('themeToggle');
+    if (themeToggleBtn) {
+        const lightIcon = themeToggleBtn.querySelector('.theme-icon.light');
+        const darkIcon = themeToggleBtn.querySelector('.theme-icon.dark');
+
+        function updateThemeIcons(theme) {
+            if (theme === 'light') {
+                if (lightIcon) lightIcon.classList.add('active');
+                if (darkIcon) darkIcon.classList.remove('active');
+            } else {
+                if (darkIcon) darkIcon.classList.add('active');
+                if (lightIcon) lightIcon.classList.remove('active');
+            }
+        }
+
+        const initialTheme = document.documentElement.getAttribute('data-bs-theme') || localStorage.getItem('cinema_theme') || 'dark';
+        updateThemeIcons(initialTheme);
+
+        themeToggleBtn.addEventListener('click', function () {
+            const currentTheme = document.documentElement.getAttribute('data-bs-theme') || 'dark';
+            const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            document.documentElement.setAttribute('data-bs-theme', nextTheme);
+            localStorage.setItem('cinema_theme', nextTheme);
+            updateThemeIcons(nextTheme);
+        });
+    }
 });

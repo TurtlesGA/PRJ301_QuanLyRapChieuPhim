@@ -20,10 +20,10 @@
                 </c:choose>
             </h2>
 
-            <div class="btn-group" role="group">
-                <a href="${pageContext.request.contextPath}/movies" class="btn btn-sm ${activeFilter == 'all' || empty activeFilter ? 'btn-danger' : 'btn-outline-secondary text-white'}">Tất Cả</a>
-                <a href="${pageContext.request.contextPath}/movies?filter=now" class="btn btn-sm ${activeFilter == 'now' ? 'btn-danger' : 'btn-outline-secondary text-white'}">Đang Chiếu</a>
-                <a href="${pageContext.request.contextPath}/movies?filter=soon" class="btn btn-sm ${activeFilter == 'soon' ? 'btn-danger' : 'btn-outline-secondary text-white'}">Sắp Chiếu</a>
+            <div class="btn-group filter-btn-group" role="group">
+                <a href="${pageContext.request.contextPath}/movies" class="btn btn-sm ${activeFilter == 'all' || empty activeFilter ? 'btn-danger' : 'btn-outline-secondary'}">Tất Cả</a>
+                <a href="${pageContext.request.contextPath}/movies?filter=now" class="btn btn-sm ${activeFilter == 'now' ? 'btn-danger' : 'btn-outline-secondary'}">Đang Chiếu</a>
+                <a href="${pageContext.request.contextPath}/movies?filter=soon" class="btn btn-sm ${activeFilter == 'soon' ? 'btn-danger' : 'btn-outline-secondary'}">Sắp Chiếu</a>
             </div>
         </div>
 

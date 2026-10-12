@@ -15,5 +15,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
+    <!-- Load Theme Mode Before Render -->
+    <script>
+        (function() {
+            var theme = localStorage.getItem('cinema_theme') || 'dark';
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        })();
+    </script>
 </head>
 <body>
