@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <nav class="navbar navbar-expand-lg navbar-cinema sticky-top">
     <div class="container">
@@ -23,7 +23,7 @@
             </ul>
 
             <!-- Search Form -->
-            <form class="d-flex me-lg-3 my-2 my-lg-0" action="${pageContext.request.contextPath}/movies" method="GET">
+            <form class="d-flex me-lg-3 my-2 my-lg-0" action="${pageContext.request.contextPath}/movies" method="GET" accept-charset="UTF-8">
                 <div class="input-group">
                     <input class="form-control form-control-sm bg-dark text-white border-secondary" type="search" name="q" placeholder="Tìm tên phim..." value="${searchKeyword}">
                     <button class="btn btn-sm btn-outline-danger" type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>

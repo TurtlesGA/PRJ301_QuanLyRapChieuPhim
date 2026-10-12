@@ -35,81 +35,81 @@ Dự án cung cấp giải pháp toàn diện cho việc quản lý rạp chiế
 PRJ302_QuanLyRapChieuPhim/
 │
 ├── database/
-│   ├── cinema_db.sql            # Script khởi tạo CSDL cho Microsoft SQL Server (Đầy đủ dữ liệu mẫu)
-│   └── cinema_db_mysql.sql      # Script khởi tạo CSDL cho MySQL
+│   └── cinema_db.sql            # Script khởi tạo CSDL cho Microsoft SQL Server (Đầy đủ dữ liệu mẫu)
 │
 ├── src/
-│   └── main/
-│       ├── java/
-│       │   └── com/cinema/
-│       │       ├── context/
-│       │       │   └── DBContext.java                 # Kết nối CSDL JDBC
-│       │       ├── model/                            # Các thực thể dữ liệu (POJO)
-│       │       │   ├── User.java
-│       │       │   ├── Movie.java
-│       │       │   ├── Room.java
-│       │       │   ├── Seat.java
-│       │       │   ├── Showtime.java
-│       │       │   ├── Booking.java
-│       │       │   └── Ticket.java
-│       │       ├── dao/                              # Data Access Object Layer
-│       │       │   ├── UserDAO.java
-│       │       │   ├── MovieDAO.java
-│       │       │   ├── RoomDAO.java
-│       │       │   ├── ShowtimeDAO.java
-│       │       │   └── BookingDAO.java
-│       │       ├── filter/                           # Bộ lọc UTF-8 & Phân quyền
-│       │       │   ├── EncodingFilter.java
-│       │       │   └── AuthFilter.java
-│       │       └── controller/                       # Controller Layer (Servlets)
-│       │           ├── HomeController.java
-│       │           ├── MoviesListController.java
-│       │           ├── MovieDetailController.java
-│       │           ├── SeatSelectionController.java
-│       │           ├── CheckoutController.java
-│       │           ├── MyBookingsController.java
-│       │           ├── auth/
-│       │           │   ├── LoginController.java
-│       │           │   ├── RegisterController.java
-│       │           │   ├── LogoutController.java
-│       │           │   └── ProfileController.java
-│       │           └── admin/
-│       │               ├── AdminDashboardController.java
-│       │               ├── AdminMovieController.java
-│       │               ├── AdminShowtimeController.java
-│       │               ├── AdminBookingController.java
-│       │               └── AdminUserController.java
-│       │
-│       └── webapp/
-│           ├── assets/
-│           │   ├── css/style.css                     # Cinema UI Style
-│           │   └── js/main.js                        # Sơ đồ chọn ghế & tính giá vé
-│           └── WEB-INF/
-│               ├── web.xml                           # Web Deployment Descriptor
-│               └── views/
-│                   ├── common/
-│                   │   ├── header.jsp
-│                   │   ├── navbar.jsp
-│                   │   └── footer.jsp
-│                   ├── home.jsp
-│                   ├── movies.jsp
-│                   ├── movie-detail.jsp
-│                   ├── seat-selection.jsp
-│                   ├── booking-success.jsp
-│                   ├── my-bookings.jsp
-│                   ├── login.jsp
-│                   ├── register.jsp
-│                   ├── profile.jsp
-│                   └── admin/
-│                       ├── dashboard.jsp
-│                       ├── movies.jsp
-│                       ├── movie-form.jsp
-│                       ├── showtimes.jsp
-│                       ├── showtime-form.jsp
-│                       ├── bookings.jsp
-│                       └── users.jsp
+│   └── java/
+│       └── com/cinema/
+│           ├── context/
+│           │   └── DBContext.java                 # Kết nối CSDL JDBC
+│           ├── model/                            # Các thực thể dữ liệu (POJO)
+│           │   ├── User.java
+│           │   ├── Movie.java
+│           │   ├── Room.java
+│           │   ├── Seat.java
+│           │   ├── Showtime.java
+│           │   ├── Booking.java
+│           │   └── Ticket.java
+│           ├── dao/                              # Data Access Object Layer
+│           │   ├── UserDAO.java
+│           │   ├── MovieDAO.java
+│           │   ├── RoomDAO.java
+│           │   ├── ShowtimeDAO.java
+│           │   └── BookingDAO.java
+│           ├── filter/                           # Bộ lọc UTF-8 & Phân quyền
+│           │   ├── EncodingFilter.java
+│           │   └── AuthFilter.java
+│           └── controller/                       # Controller Layer (Servlets)
+│               ├── HomeController.java
+│               ├── MoviesListController.java
+│               ├── MovieDetailController.java
+│               ├── SeatSelectionController.java
+│               ├── CheckoutController.java
+│               ├── MyBookingsController.java
+│               ├── auth/
+│               │   ├── LoginController.java
+│               │   ├── RegisterController.java
+│               │   ├── LogoutController.java
+│               │   └── ProfileController.java
+│               └── admin/
+│                   ├── AdminDashboardController.java
+│                   ├── AdminMovieController.java
+│                   ├── AdminShowtimeController.java
+│                   ├── AdminBookingController.java
+│                   └── AdminUserController.java
 │
-├── pom.xml                                           # Maven Dependencies & Build Config
+├── web/
+│   ├── assets/
+│   │   ├── css/style.css                     # Cinema UI Style
+│   │   └── js/main.js                        # Sơ đồ chọn ghế & tính giá vé
+│   └── WEB-INF/
+│       ├── web.xml                           # Web Deployment Descriptor
+│       └── views/
+│           ├── common/
+│           │   ├── header.jsp
+│           │   ├── navbar.jsp
+│           │   └── footer.jsp
+│           ├── home.jsp
+│           ├── movies.jsp
+│           ├── movie-detail.jsp
+│           ├── seat-selection.jsp
+│           ├── booking-success.jsp
+│           ├── my-bookings.jsp
+│           ├── login.jsp
+│           ├── register.jsp
+│           ├── profile.jsp
+│           └── admin/
+│               ├── dashboard.jsp
+│               ├── movies.jsp
+│               ├── movie-form.jsp
+│               ├── showtimes.jsp
+│               ├── showtime-form.jsp
+│               ├── bookings.jsp
+│               └── users.jsp
+│
+├── allowedlib/                                       # Thư viện JAR (SQL JDBC, JSTL 2.0)
+├── build.xml                                         # Cấu hình Ant Build (NetBeans)
+├── pom.xml.maven                                     # Cấu hình Maven dự phòng
 └── README.md
 ```
 
@@ -121,7 +121,7 @@ PRJ302_QuanLyRapChieuPhim/
 1. Mở **SQL Server Management Studio (SSMS)**.
 2. Mở file [database/cinema_db.sql](database/cinema_db.sql).
 3. Nhấn **Execute (F5)** để tự động tạo Database `CinemaDB`, cấu trúc bảng và nạp sẵn dữ liệu mẫu.
-4. Mở file `src/main/java/com/cinema/context/DBContext.java` và chỉnh sửa thông tin đăng nhập:
+4. Mở file `src/java/com/cinema/context/DBContext.java` và chỉnh sửa thông tin đăng nhập:
    ```java
    private static final String SERVER_NAME = "localhost";
    private static final String PORT_NUMBER = "1433";

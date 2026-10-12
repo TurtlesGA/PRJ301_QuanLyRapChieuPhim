@@ -1,7 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
+<c:set var="pageTitle" value="Chọn Ghế - CineStar" scope="request" />
 <jsp:include page="common/header.jsp">
     <jsp:param name="title" value="Chọn Ghế - CineStar"/>
 </jsp:include>
@@ -9,6 +10,17 @@
 
 <main class="main-content py-4">
     <div class="container">
+        <c:if test="${not empty error}">
+            <div class="alert alert-danger py-2 small mb-3">
+                <i class="fa-solid fa-circle-exclamation me-1"></i>${error}
+            </div>
+        </c:if>
+        <c:if test="${not empty sessionScope.error}">
+            <div class="alert alert-danger py-2 small mb-3">
+                <i class="fa-solid fa-circle-exclamation me-1"></i>${sessionScope.error}
+            </div>
+            <c:remove var="error" scope="session"/>
+        </c:if>
         <!-- Movie & Showtime Info Bar -->
         <div class="card bg-dark border-secondary p-3 mb-4 rounded-3">
             <div class="row align-items-center">

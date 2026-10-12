@@ -1,6 +1,7 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<c:set var="pageTitle" value="Đăng Ký Tài Khoản - CineStar" scope="request" />
 <jsp:include page="common/header.jsp">
     <jsp:param name="title" value="Đăng Ký Tài Khoản - CineStar"/>
 </jsp:include>
