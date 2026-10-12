@@ -25,10 +25,34 @@ public class BookingDAO extends DBContext {
                                   "VALUES (?, ?, ?, ?, ?, ?, GETDATE())";
         String insertTicketSql = "INSERT INTO Tickets (booking_id, seat_id, price) VALUES (?, ?, ?)";
 
+        if (seatIds == null || seatIds.isEmpty()) {
+            return false;
+        }
+
         Connection conn = null;
         try {
             conn = getConnection();
             conn.setAutoCommit(false); // Bắt đầu Transaction
+
+            String checkSeatSql = "SELECT COUNT(*) FROM Tickets t " +
+                                  "JOIN Bookings b ON t.booking_id = b.booking_id " +
+                                  "WHERE b.showtime_id = ? AND t.seat_id = ? AND b.payment_status != 'CANCELLED'";
+            try (PreparedStatement psCheck = conn.prepareStatement(checkSeatSql)) {
+                for (int i = 0; i < seatIds.size(); i++) {
+                    int seatId = seatIds.get(i);
+                    psCheck.setInt(1, booking.getShowtimeId());
+                    psCheck.setInt(2, seatId);
+                    try (ResultSet rsCheck = psCheck.executeQuery()) {
+                        if (rsCheck.next()) {
+                            int count = rsCheck.getInt(1);
+                            if (count > 0) {
+                                conn.rollback();
+                                return false;
+                            }
+                        }
+                    }
+                }
+            }
 
             int bookingId = -1;
             try (PreparedStatement ps = conn.prepareStatement(insertBookingSql, Statement.RETURN_GENERATED_KEYS)) {

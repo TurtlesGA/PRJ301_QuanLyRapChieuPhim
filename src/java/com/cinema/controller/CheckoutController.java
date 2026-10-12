@@ -97,7 +97,7 @@ public class CheckoutController extends HttpServlet {
                 request.setAttribute("booking", createdBooking);
                 request.getRequestDispatcher("/WEB-INF/views/booking-success.jsp").forward(request, response);
             } else {
-                request.setAttribute("error", "Đặt vé thất bại! Ghế có thể vừa được người khác đặt. Vui lòng chọn lại.");
+                session.setAttribute("error", "Đặt vé thất bại! Ghế bạn chọn vừa có người khác đặt trước. Vui lòng chọn ghế khác.");
                 response.sendRedirect(request.getContextPath() + "/seat-selection?showtimeId=" + showtimeId);
             }
 
