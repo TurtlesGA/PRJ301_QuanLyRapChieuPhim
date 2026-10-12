@@ -51,7 +51,9 @@
                                 <th>GHẾ ĐÃ ĐẶT</th>
                                 <th>PHƯƠNG THỨC</th>
                                 <th>TỔNG TIỀN</th>
+                                <th>TRẠNG THÁI</th>
                                 <th>THỜI GIAN ĐẶT</th>
+                                <th class="text-end">THAO TÁC</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -69,12 +71,24 @@
                                     </td>
                                     <td>
                                         <c:forEach items="${b.tickets}" var="t">
-                                            <span class="badge bg-secondary">${t.seat.seatCode}</span>
+                                             <span class="badge bg-secondary">${t.seat.seatCode}</span>
                                         </c:forEach>
                                     </td>
                                     <td><span class="badge bg-info text-dark">${b.paymentMethod}</span></td>
                                     <td class="text-danger fw-bold"><fmt:formatNumber value="${b.totalAmount}" type="number"/> đ</td>
+                                    <td>
+                                        <span class="badge ${b.paymentStatus == 'PAID' ? 'bg-success' : (b.paymentStatus == 'CANCELLED' ? 'bg-danger' : 'bg-secondary')}">${b.paymentStatus}</span>
+                                    </td>
                                     <td class="small text-muted"><fmt:formatDate value="${b.bookingTime}" pattern="dd/MM/yyyy HH:mm"/></td>
+                                    <td class="text-end">
+                                        <c:if test="${b.paymentStatus == 'PAID'}">
+                                            <a href="${pageContext.request.contextPath}/admin/booking-cancel?id=${b.bookingId}" 
+                                               class="btn btn-sm btn-outline-danger" 
+                                               onclick="return confirm('Bạn có chắc chắn muốn hủy đơn vé này không?');">
+                                                Hủy Đơn
+                                            </a>
+                                        </c:if>
+                                    </td>
                                 </tr>
                             </c:forEach>
                         </tbody>

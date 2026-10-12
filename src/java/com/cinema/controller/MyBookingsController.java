@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "MyBookingsController", urlPatterns = {"/my-bookings"})
+@WebServlet(name = "MyBookingsController", urlPatterns = {"/my-bookings", "/cancel-booking"})
 public class MyBookingsController extends HttpServlet {
 
     private BookingDAO bookingDAO = new BookingDAO();
@@ -26,6 +26,17 @@ public class MyBookingsController extends HttpServlet {
 
         if (currentUser == null) {
             response.sendRedirect(request.getContextPath() + "/login");
+            return;
+        }
+
+        String path = request.getServletPath();
+        if (path.equals("/cancel-booking")) {
+            String idStr = request.getParameter("id");
+            if (idStr != null) {
+                int bookingId = Integer.parseInt(idStr);
+                bookingDAO.cancelBookingByUser(bookingId, currentUser.getUserId());
+            }
+            response.sendRedirect(request.getContextPath() + "/my-bookings");
             return;
         }
 
