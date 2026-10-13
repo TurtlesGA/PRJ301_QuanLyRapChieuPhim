@@ -56,6 +56,18 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </c:if>
+            <c:if test="${param.msg == 'delete_success'}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i>Xóa người dùng thành công!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+            <c:if test="${param.error == 'self_delete'}">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>Bạn không thể tự xóa tài khoản của chính mình!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
 
             <div class="card bg-dark border-secondary rounded-4 p-3 shadow">
                 <div class="table-responsive">
@@ -98,10 +110,18 @@
                                         </a>
                                         <c:if test="${u.role ne 'ADMIN'}">
                                             <a href="${pageContext.request.contextPath}/admin/user-toggle?id=${u.userId}" 
-                                               class="btn btn-sm ${u.status ? 'btn-outline-danger' : 'btn-outline-success'}"
+                                               class="btn btn-sm ${u.status ? 'btn-outline-secondary' : 'btn-outline-success'} me-1"
+                                               title="${u.status ? 'Khóa tài khoản (Ban)' : 'Mở khóa tài khoản'}"
                                                onclick="return confirm('Bạn có chắc chắn muốn thay đổi trạng thái tài khoản này?');">
-                                                <i class="fa-solid ${u.status ? 'fa-lock' : 'fa-lock-open'} me-1"></i>
-                                                ${u.status ? 'Khóa' : 'Mở khóa'}
+                                                <i class="fa-solid ${u.status ? 'fa-lock' : 'fa-lock-open'}"></i>
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${u.userId ne sessionScope.currentUser.userId}">
+                                            <a href="${pageContext.request.contextPath}/admin/user-delete?id=${u.userId}" 
+                                               class="btn btn-sm btn-outline-danger" 
+                                               title="Xóa người dùng"
+                                               onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này? Mọi dữ liệu đặt vé liên quan cũng sẽ bị xóa!');">
+                                                <i class="fa-solid fa-trash"></i>
                                             </a>
                                         </c:if>
                                     </td>

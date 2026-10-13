@@ -217,6 +217,40 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    public boolean deleteUser(int userId) {
+        String deleteTicketsSql = "DELETE FROM Tickets WHERE booking_id IN (SELECT booking_id FROM Bookings WHERE user_id = ?)";
+        String deleteBookingsSql = "DELETE FROM Bookings WHERE user_id = ?";
+        String deleteUserSql = "DELETE FROM Users WHERE user_id = ?";
+        try (Connection conn = getConnection()) {
+            conn.setAutoCommit(false);
+            try {
+                try (PreparedStatement psTickets = conn.prepareStatement(deleteTicketsSql)) {
+                    psTickets.setInt(1, userId);
+                    psTickets.executeUpdate();
+                }
+                try (PreparedStatement psBookings = conn.prepareStatement(deleteBookingsSql)) {
+                    psBookings.setInt(1, userId);
+                    psBookings.executeUpdate();
+                }
+                boolean success;
+                try (PreparedStatement psUser = conn.prepareStatement(deleteUserSql)) {
+                    psUser.setInt(1, userId);
+                    success = psUser.executeUpdate() > 0;
+                }
+                conn.commit();
+                return success;
+            } catch (Exception ex) {
+                conn.rollback();
+                ex.printStackTrace();
+            } finally {
+                conn.setAutoCommit(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public int countUsers() {
         String sql = "SELECT COUNT(*) FROM Users";
         try (Connection conn = getConnection();

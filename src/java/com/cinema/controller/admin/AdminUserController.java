@@ -12,7 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name = "AdminUserController", urlPatterns = {"/admin/users", "/admin/user-toggle", "/admin/user-add", "/admin/user-edit"})
+@WebServlet(name = "AdminUserController", urlPatterns = {"/admin/users", "/admin/user-toggle", "/admin/user-add", "/admin/user-edit", "/admin/user-delete"})
 public class AdminUserController extends HttpServlet {
 
     private UserDAO userDAO = new UserDAO();
@@ -46,6 +46,23 @@ public class AdminUserController extends HttpServlet {
                 User user = userDAO.getUserById(userId);
                 if (user != null && !"ADMIN".equalsIgnoreCase(user.getRole())) {
                     userDAO.toggleUserStatus(userId, user.isStatus());
+                }
+            } catch (Exception ignored) {
+            }
+            response.sendRedirect(request.getContextPath() + "/admin/users");
+        } else if ("/admin/user-delete".equals(servletPath)) {
+            try {
+                int userId = Integer.parseInt(request.getParameter("id"));
+                HttpSession session = request.getSession(false);
+                User currentUser = (session != null) ? (User) session.getAttribute("currentUser") : null;
+                if (currentUser != null && currentUser.getUserId() == userId) {
+                    response.sendRedirect(request.getContextPath() + "/admin/users?error=self_delete");
+                    return;
+                }
+                boolean success = userDAO.deleteUser(userId);
+                if (success) {
+                    response.sendRedirect(request.getContextPath() + "/admin/users?msg=delete_success");
+                    return;
                 }
             } catch (Exception ignored) {
             }
