@@ -3,43 +3,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="pageTitle" value="${movie != null ? 'Chỉnh Sửa Phim' : 'Thêm Phim Mới'} - CineStar Admin" scope="request" />
-<jsp:include page="../common/header.jsp">
+<jsp:include page="common/admin-header.jsp">
     <jsp:param name="title" value="${movie != null ? 'Chỉnh Sửa Phim' : 'Thêm Phim Mới'} - CineStar Admin"/>
+    <jsp:param name="activeMenu" value="movies"/>
 </jsp:include>
-<jsp:include page="../common/navbar.jsp"/>
 
-<div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar -->
-        <nav class="col-md-3 col-lg-2 d-md-block admin-sidebar p-3">
-            <h6 class="text-uppercase text-muted fw-bold px-3 mb-3 small">Hệ Thống Quản Trị</h6>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/dashboard"><i class="fa-solid fa-chart-pie me-2"></i>Tổng Quan</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="${pageContext.request.contextPath}/admin/movies"><i class="fa-solid fa-film me-2"></i>Quản Lý Phim</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/rooms"><i class="fa-solid fa-door-open me-2"></i>Quản Lý Phòng Chiếu</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/showtimes"><i class="fa-solid fa-clock me-2"></i>Quản Lý Suất Chiếu</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/bookings"><i class="fa-solid fa-receipt me-2"></i>Lịch Sử Đặt Vé</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/users"><i class="fa-solid fa-users me-2"></i>Người Dùng</a>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Form Content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
             <div class="d-flex justify-content-between align-items-center pb-2 mb-4 border-bottom border-secondary">
                 <h2 class="h3 fw-bold text-white">${movie != null ? 'CHỈNH SỬA PHIM' : 'THÊM PHIM MỚI'}</h2>
-                <a href="${pageContext.request.contextPath}/admin/movies" class="btn btn-outline-secondary text-white btn-sm">
+                <a href="${pageContext.request.contextPath}/admin/movies" class="btn btn-admin-back btn-sm">
                     <i class="fa-solid fa-arrow-left me-1"></i>Quay Lại
                 </a>
             </div>
@@ -115,7 +86,8 @@
                             <textarea class="form-control" name="description" rows="4">${movie.description}</textarea>
                         </div>
 
-                        <div class="col-12 mt-4">
+                        <div class="col-12 mt-4 pt-3 border-top border-secondary text-end">
+                            <a href="${pageContext.request.contextPath}/admin/movies" class="btn btn-admin-back me-2">Hủy Bỏ</a>
                             <button type="submit" class="btn btn-danger fw-bold px-4 py-2">
                                 <i class="fa-solid fa-save me-1"></i>Lưu Thông Tin Phim
                             </button>
@@ -123,8 +95,4 @@
                     </div>
                 </form>
             </div>
-        </main>
-    </div>
-</div>
-
-<jsp:include page="../common/footer.jsp"/>
+<jsp:include page="common/admin-footer.jsp"/>

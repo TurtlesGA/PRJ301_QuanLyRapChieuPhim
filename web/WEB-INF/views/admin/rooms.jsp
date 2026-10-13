@@ -3,38 +3,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="pageTitle" value="Quản Lý Phòng Chiếu - CineStar Admin" scope="request" />
-<jsp:include page="../common/header.jsp">
+<jsp:include page="common/admin-header.jsp">
     <jsp:param name="title" value="Quản Lý Phòng Chiếu - CineStar Admin"/>
+    <jsp:param name="activeMenu" value="rooms"/>
 </jsp:include>
-<jsp:include page="../common/navbar.jsp"/>
-
-<div class="container-fluid">
-    <div class="row">
-        <nav class="col-md-3 col-lg-2 d-md-block admin-sidebar p-3">
-            <h6 class="text-uppercase text-muted fw-bold px-3 mb-3 small">Hệ Thống Quản Trị</h6>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/dashboard"><i class="fa-solid fa-chart-pie me-2"></i>Tổng Quan</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/movies"><i class="fa-solid fa-film me-2"></i>Quản Lý Phim</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="${pageContext.request.contextPath}/admin/rooms"><i class="fa-solid fa-door-open me-2"></i>Quản Lý Phòng Chiếu</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/showtimes"><i class="fa-solid fa-clock me-2"></i>Quản Lý Suất Chiếu</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/bookings"><i class="fa-solid fa-receipt me-2"></i>Lịch Sử Đặt Vé</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/users"><i class="fa-solid fa-users me-2"></i>Người Dùng</a>
-                </li>
-            </ul>
-        </nav>
-
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
             <div class="d-flex justify-content-between align-items-center pb-2 mb-4 border-bottom border-secondary">
                 <h2 class="h3 fw-bold text-white">DANH SÁCH PHÒNG CHIẾU</h2>
                 <a href="${pageContext.request.contextPath}/admin/room-add" class="btn btn-danger fw-bold">
@@ -72,19 +44,27 @@
                                         </span>
                                     </td>
                                     <td class="text-end">
-                                        <a href="${pageContext.request.contextPath}/admin/room-edit?id=${r.roomId}" class="btn btn-sm btn-outline-warning me-1">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </a>
-                                        <a href="${pageContext.request.contextPath}/admin/room-toggle?id=${r.roomId}" 
-                                           class="btn btn-sm ${r.status ? 'btn-outline-secondary' : 'btn-outline-success'} me-1"
-                                           onclick="return confirm('Bạn có chắc chắn muốn thay đổi trạng thái phòng này?');">
-                                            <i class="fa-solid ${r.status ? 'fa-pause' : 'fa-play'}"></i>
-                                        </a>
-                                        <a href="${pageContext.request.contextPath}/admin/room-delete?id=${r.roomId}" 
-                                           class="btn btn-sm btn-outline-danger" 
-                                           onclick="return confirm('Bạn có chắc chắn muốn xóa phòng chiếu này?');">
-                                            <i class="fa-solid fa-trash"></i>
-                                        </a>
+                                        <div class="action-btns justify-content-end">
+                                            <a href="${pageContext.request.contextPath}/admin/room-edit?id=${r.roomId}" class="btn btn-sm btn-outline-warning" title="Chỉnh sửa phòng">
+                                                <i class="fa-solid fa-pen"></i>
+                                            </a>
+                                            <a href="${pageContext.request.contextPath}/admin/room-toggle?id=${r.roomId}" 
+                                               class="btn btn-sm ${r.status ? 'btn-outline-secondary' : 'btn-outline-success'} btn-swal-confirm"
+                                               data-title="Xác nhận đổi trạng thái"
+                                               data-confirm="Bạn có chắc chắn muốn thay đổi trạng thái hoạt động của phòng chiếu này?"
+                                               data-icon="question"
+                                               data-confirm-color="#4f46e5"
+                                               title="${r.status ? 'Tạm dừng phòng' : 'Mở hoạt động'}">
+                                                <i class="fa-solid ${r.status ? 'fa-pause' : 'fa-play'}"></i>
+                                            </a>
+                                            <a href="${pageContext.request.contextPath}/admin/room-delete?id=${r.roomId}" 
+                                               class="btn btn-sm btn-outline-danger btn-swal-confirm" 
+                                               data-title="Xác nhận xóa phòng chiếu"
+                                               data-confirm="Bạn có chắc chắn muốn xóa phòng chiếu này? Mọi ghế và dữ liệu liên quan sẽ bị xóa!"
+                                               title="Xóa phòng chiếu">
+                                                <i class="fa-solid fa-trash"></i>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -92,8 +72,4 @@
                     </table>
                 </div>
             </div>
-        </main>
-    </div>
-</div>
-
-<jsp:include page="../common/footer.jsp"/>
+<jsp:include page="common/admin-footer.jsp"/>

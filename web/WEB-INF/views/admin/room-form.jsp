@@ -3,41 +3,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="pageTitle" value="${room != null ? 'Chỉnh Sửa Phòng Chiếu' : 'Thêm Phòng Chiếu Mới'} - CineStar Admin" scope="request" />
-<jsp:include page="../common/header.jsp">
+<jsp:include page="common/admin-header.jsp">
     <jsp:param name="title" value="${room != null ? 'Chỉnh Sửa Phòng Chiếu' : 'Thêm Phòng Chiếu Mới'} - CineStar Admin"/>
+    <jsp:param name="activeMenu" value="rooms"/>
 </jsp:include>
-<jsp:include page="../common/navbar.jsp"/>
 
-<div class="container-fluid">
-    <div class="row">
-        <nav class="col-md-3 col-lg-2 d-md-block admin-sidebar p-3">
-            <h6 class="text-uppercase text-muted fw-bold px-3 mb-3 small">Hệ Thống Quản Trị</h6>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/dashboard"><i class="fa-solid fa-chart-pie me-2"></i>Tổng Quan</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/movies"><i class="fa-solid fa-film me-2"></i>Quản Lý Phim</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="${pageContext.request.contextPath}/admin/rooms"><i class="fa-solid fa-door-open me-2"></i>Quản Lý Phòng Chiếu</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/showtimes"><i class="fa-solid fa-clock me-2"></i>Quản Lý Suất Chiếu</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/bookings"><i class="fa-solid fa-receipt me-2"></i>Lịch Sử Đặt Vé</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/users"><i class="fa-solid fa-users me-2"></i>Người Dùng</a>
-                </li>
-            </ul>
-        </nav>
-
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
             <div class="d-flex justify-content-between align-items-center pb-2 mb-4 border-bottom border-secondary">
                 <h2 class="h3 fw-bold text-white">${room != null ? 'CHỈNH SỬA PHÒNG CHIẾU' : 'THÊM PHÒNG CHIẾU MỚI'}</h2>
-                <a href="${pageContext.request.contextPath}/admin/rooms" class="btn btn-outline-secondary text-white btn-sm">
+                <a href="${pageContext.request.contextPath}/admin/rooms" class="btn btn-admin-back btn-sm">
                     <i class="fa-solid fa-arrow-left me-1"></i>Quay Lại
                 </a>
             </div>
@@ -92,15 +65,11 @@
                     <hr class="border-secondary my-4">
 
                     <div class="d-flex justify-content-end gap-2">
-                        <a href="${pageContext.request.contextPath}/admin/rooms" class="btn btn-secondary px-4">Hủy Bỏ</a>
+                        <a href="${pageContext.request.contextPath}/admin/rooms" class="btn btn-admin-back px-4">Hủy Bỏ</a>
                         <button type="submit" class="btn btn-danger fw-bold px-4">
                             <i class="fa-solid fa-save me-1"></i>Lưu Phòng Chiếu
                         </button>
                     </div>
                 </form>
             </div>
-        </main>
-    </div>
-</div>
-
-<jsp:include page="../common/footer.jsp"/>
+<jsp:include page="common/admin-footer.jsp"/>

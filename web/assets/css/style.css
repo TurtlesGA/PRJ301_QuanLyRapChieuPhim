@@ -779,6 +779,7 @@ body {
 }
 
 /* ===================================
+<<<<<<< HEAD
    Login Button (.btn-login)
    Bo tròn giống nút Đăng Ký
    Dark: nền trắng, chữ đen
@@ -1023,6 +1024,145 @@ body {
     footer h5, footer h6 {
         font-size: 1rem;
         margin-bottom: 0.5rem !important;
+    }
+}
+
+/* ===================================
+   Admin Portal Dedicated Styles
+   =================================== */
+.admin-body {
+    background-color: var(--dark-bg);
+}
+
+.navbar-admin {
+    padding: 0.65rem 0;
+    z-index: 1030;
+}
+
+.admin-sidebar {
+    background-color: #18181b;
+    border-right: 1px solid var(--border-color);
+}
+
+.admin-nav-list .nav-link {
+    color: #a1a1aa;
+    padding: 10px 16px;
+    border-radius: 10px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    transition: all 0.2s ease;
+}
+
+.admin-nav-list .nav-link:hover {
+    color: #ffffff;
+    background-color: rgba(229, 9, 20, 0.12);
+}
+
+.admin-nav-list .nav-link.active {
+    color: #ffffff !important;
+    background-color: #e50914 !important;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.35);
+}
+
+/* High Contrast Back Button in Admin */
+.btn-admin-back {
+    color: #f1f5f9 !important;
+    background-color: #27272a !important;
+    border: 1px solid #52525b !important;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 6px 14px;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.btn-admin-back:hover {
+    color: #ffffff !important;
+    background-color: #3f3f46 !important;
+    border-color: #71717a !important;
+    transform: translateX(-2px);
+}
+
+/* Admin Footer */
+.admin-footer {
+    background-color: #121212;
+}
+
+/* Table Actions Button Container */
+.action-btns {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+/* Light mode overrides for Admin Portal */
+[data-bs-theme="light"] .admin-sidebar {
+    background-color: #ffffff !important;
+    border-right: 1px solid #e2e8f0 !important;
+}
+
+[data-bs-theme="light"] .admin-nav-list .nav-link {
+    color: #475569 !important;
+}
+
+[data-bs-theme="light"] .admin-nav-list .nav-link:hover {
+    color: #e50914 !important;
+    background-color: rgba(229, 9, 20, 0.08) !important;
+}
+
+[data-bs-theme="light"] .admin-nav-list .nav-link.active {
+    color: #ffffff !important;
+    background-color: #e50914 !important;
+    box-shadow: 0 4px 12px rgba(229, 9, 20, 0.25) !important;
+}
+
+[data-bs-theme="light"] .btn-admin-back {
+    color: #0f172a !important;
+    background-color: #e2e8f0 !important;
+    border: 1px solid #94a3b8 !important;
+    font-weight: 600 !important;
+}
+
+[data-bs-theme="light"] .btn-admin-back:hover {
+    color: #0f172a !important;
+    background-color: #cbd5e1 !important;
+    border-color: #64748b !important;
+}
+
+[data-bs-theme="light"] .admin-footer {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+}
+
+[data-bs-theme="light"] .offcanvas.bg-dark {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border-color: #e2e8f0 !important;
+}
+
+[data-bs-theme="light"] .offcanvas.bg-dark .btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(20%) !important;
+}
+
+[data-bs-theme="light"] .offcanvas.bg-dark .offcanvas-header {
+    border-color: #e2e8f0 !important;
+}
+
+[data-bs-theme="light"] .offcanvas.bg-dark .text-white {
+    color: #0f172a !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 991.98px) {
+    .admin-main-content {
+        padding-left: 1rem !important;
+        padding-right: 1rem !important;
     }
 }
 

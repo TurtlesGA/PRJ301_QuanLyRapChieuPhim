@@ -3,40 +3,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:set var="pageTitle" value="Quản Lý Người Dùng - CineStar Admin" scope="request" />
-<jsp:include page="../common/header.jsp">
+<jsp:include page="common/admin-header.jsp">
     <jsp:param name="title" value="Quản Lý Người Dùng - CineStar Admin"/>
+    <jsp:param name="activeMenu" value="users"/>
 </jsp:include>
-<jsp:include page="../common/navbar.jsp"/>
-
-<div class="container-fluid">
-    <div class="row">
-        <!-- Sidebar -->
-        <nav class="col-md-3 col-lg-2 d-md-block admin-sidebar p-3">
-            <h6 class="text-uppercase text-muted fw-bold px-3 mb-3 small">Hệ Thống Quản Trị</h6>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/dashboard"><i class="fa-solid fa-chart-pie me-2"></i>Tổng Quan</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/movies"><i class="fa-solid fa-film me-2"></i>Quản Lý Phim</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/rooms"><i class="fa-solid fa-door-open me-2"></i>Quản Lý Phòng Chiếu</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/showtimes"><i class="fa-solid fa-clock me-2"></i>Quản Lý Suất Chiếu</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="${pageContext.request.contextPath}/admin/bookings"><i class="fa-solid fa-receipt me-2"></i>Lịch Sử Đặt Vé</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="${pageContext.request.contextPath}/admin/users"><i class="fa-solid fa-users me-2"></i>Người Dùng</a>
-                </li>
-            </ul>
-        </nav>
-
-        <!-- Main Content -->
-        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
             <div class="d-flex justify-content-between align-items-center pb-2 mb-4 border-bottom border-secondary">
                 <h2 class="h3 fw-bold text-white">DANH SÁCH NGƯỜI DÙNG</h2>
                 <a href="${pageContext.request.contextPath}/admin/user-add" class="btn btn-danger fw-bold">
@@ -103,27 +73,35 @@
                                     </td>
                                     <td class="small text-muted"><fmt:formatDate value="${u.createdAt}" pattern="dd/MM/yyyy"/></td>
                                     <td class="text-end">
-                                        <a href="${pageContext.request.contextPath}/admin/user-edit?id=${u.userId}" 
-                                           class="btn btn-sm btn-outline-warning me-1" 
-                                           title="Chỉnh sửa thông tin">
-                                            <i class="fa-solid fa-pen"></i>
-                                        </a>
-                                        <c:if test="${u.role ne 'ADMIN'}">
-                                            <a href="${pageContext.request.contextPath}/admin/user-toggle?id=${u.userId}" 
-                                               class="btn btn-sm ${u.status ? 'btn-outline-secondary' : 'btn-outline-success'} me-1"
-                                               title="${u.status ? 'Khóa tài khoản (Ban)' : 'Mở khóa tài khoản'}"
-                                               onclick="return confirm('Bạn có chắc chắn muốn thay đổi trạng thái tài khoản này?');">
-                                                <i class="fa-solid ${u.status ? 'fa-lock' : 'fa-lock-open'}"></i>
+                                        <div class="action-btns justify-content-end">
+                                            <a href="${pageContext.request.contextPath}/admin/user-edit?id=${u.userId}" 
+                                               class="btn btn-sm btn-outline-warning" 
+                                               title="Chỉnh sửa thông tin">
+                                                <i class="fa-solid fa-pen"></i>
                                             </a>
-                                        </c:if>
-                                        <c:if test="${u.userId ne sessionScope.currentUser.userId}">
-                                            <a href="${pageContext.request.contextPath}/admin/user-delete?id=${u.userId}" 
-                                               class="btn btn-sm btn-outline-danger" 
-                                               title="Xóa người dùng"
-                                               onclick="return confirm('Bạn có chắc chắn muốn xóa người dùng này? Mọi dữ liệu đặt vé liên quan cũng sẽ bị xóa!');">
-                                                <i class="fa-solid fa-trash"></i>
-                                            </a>
-                                        </c:if>
+                                            <c:if test="${u.role ne 'ADMIN'}">
+                                                <a href="${pageContext.request.contextPath}/admin/user-toggle?id=${u.userId}" 
+                                                   class="btn btn-sm ${u.status ? 'btn-outline-secondary' : 'btn-outline-success'} btn-swal-confirm"
+                                                   data-title="${u.status ? 'Khóa tài khoản?' : 'Mở khóa tài khoản?'}"
+                                                   data-confirm="${u.status ? 'Bạn có chắc chắn muốn khóa tài khoản này? Người dùng sẽ không thể đăng nhập.' : 'Bạn có muốn mở khóa tài khoản này không?'}"
+                                                   data-icon="${u.status ? 'warning' : 'question'}"
+                                                   data-confirm-color="${u.status ? '#dc3545' : '#198754'}"
+                                                   title="${u.status ? 'Khóa tài khoản (Ban)' : 'Mở khóa tài khoản'}">
+                                                    <i class="fa-solid ${u.status ? 'fa-lock' : 'fa-lock-open'}"></i>
+                                                </a>
+                                            </c:if>
+                                            <c:if test="${u.userId ne sessionScope.currentUser.userId}">
+                                                <a href="${pageContext.request.contextPath}/admin/user-delete?id=${u.userId}" 
+                                                   class="btn btn-sm btn-outline-danger btn-swal-confirm" 
+                                                   data-title="Xóa người dùng?"
+                                                   data-confirm="Bạn có chắc chắn muốn xóa người dùng '${u.username}'? Mọi dữ liệu đặt vé liên quan cũng sẽ bị xóa vĩnh viễn!"
+                                                   data-icon="warning"
+                                                   data-confirm-color="#dc3545"
+                                                   title="Xóa người dùng">
+                                                    <i class="fa-solid fa-trash"></i>
+                                                </a>
+                                            </c:if>
+                                        </div>
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -131,8 +109,4 @@
                     </table>
                 </div>
             </div>
-        </main>
-    </div>
-</div>
-
-<jsp:include page="../common/footer.jsp"/>
+<jsp:include page="common/admin-footer.jsp"/>
