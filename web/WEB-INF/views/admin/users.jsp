@@ -39,7 +39,17 @@
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 py-4">
             <div class="d-flex justify-content-between align-items-center pb-2 mb-4 border-bottom border-secondary">
                 <h2 class="h3 fw-bold text-white">DANH SÁCH NGƯỜI DÙNG</h2>
+                <a href="${pageContext.request.contextPath}/admin/user-add" class="btn btn-danger fw-bold">
+                    <i class="fa-solid fa-plus me-1"></i>Thêm Người Dùng Mới
+                </a>
             </div>
+
+            <c:if test="${param.msg == 'add_success'}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i>Thêm người dùng mới thành công!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
 
             <div class="card bg-dark border-secondary rounded-4 p-3 shadow">
                 <div class="table-responsive">

@@ -44,6 +44,24 @@ public class UserDAO extends DBContext {
         return false;
     }
 
+    public boolean insertUser(User user) {
+        String sql = "INSERT INTO Users (username, password, full_name, email, phone, role, status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, user.getUsername());
+            ps.setString(2, user.getPassword());
+            ps.setString(3, user.getFullName());
+            ps.setString(4, user.getEmail());
+            ps.setString(5, user.getPhone());
+            ps.setString(6, user.getRole());
+            ps.setBoolean(7, user.isStatus());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean checkUsernameExists(String username) {
         String sql = "SELECT user_id FROM Users WHERE username = ?";
         try (Connection conn = getConnection();
