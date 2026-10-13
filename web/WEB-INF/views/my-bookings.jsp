@@ -34,11 +34,22 @@
                                 <div class="card-header bg-black border-secondary d-flex justify-content-between align-items-center py-3">
                                     <span class="text-warning fw-bold">#${b.bookingCode}</span>
                                     <div>
-                                        <span class="badge ${b.paymentStatus == 'PAID' ? 'bg-success' : (b.paymentStatus == 'CANCELLED' ? 'bg-danger' : 'bg-secondary')}">${b.paymentStatus}</span>
+                                        <span class="badge ${b.paymentStatus == 'PAID' ? 'bg-success' : (b.paymentStatus == 'CANCELLED' ? 'bg-danger' : 'bg-warning text-dark')}">${b.paymentStatus}</span>
                                         <c:if test="${b.paymentStatus == 'PAID'}">
                                             <a href="${pageContext.request.contextPath}/cancel-booking?id=${b.bookingId}" 
                                                class="btn btn-sm btn-outline-danger ms-2"
                                                onclick="return confirm('Bạn có chắc chắn muốn hủy đơn vé này không? Ghế sẽ được mở lại cho người khác.');">
+                                                Hủy Vé
+                                            </a>
+                                        </c:if>
+                                        <c:if test="${b.paymentStatus == 'PENDING'}">
+                                            <a href="${pageContext.request.contextPath}/payment?bookingId=${b.bookingId}" 
+                                               class="btn btn-sm btn-warning ms-2">
+                                                Thanh Toán
+                                            </a>
+                                            <a href="${pageContext.request.contextPath}/cancel-booking?id=${b.bookingId}" 
+                                               class="btn btn-sm btn-outline-danger ms-2"
+                                               onclick="return confirm('Bạn có chắc chắn muốn hủy đơn đặt vé này không? Ghế sẽ được mở lại.');">
                                                 Hủy Vé
                                             </a>
                                         </c:if>

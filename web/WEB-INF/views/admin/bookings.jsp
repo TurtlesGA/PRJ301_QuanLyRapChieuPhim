@@ -51,11 +51,11 @@
                                     <td><span class="badge bg-info text-dark">${b.paymentMethod}</span></td>
                                     <td class="text-danger fw-bold"><fmt:formatNumber value="${b.totalAmount}" type="number"/> đ</td>
                                     <td>
-                                        <span class="badge ${b.paymentStatus == 'PAID' ? 'bg-success' : (b.paymentStatus == 'CANCELLED' ? 'bg-danger' : 'bg-secondary')}">${b.paymentStatus}</span>
+                                        <span class="badge ${b.paymentStatus == 'PAID' ? 'bg-success' : (b.paymentStatus == 'CANCELLED' ? 'bg-danger' : 'bg-warning text-dark')}">${b.paymentStatus}</span>
                                     </td>
                                     <td class="small text-muted"><fmt:formatDate value="${b.bookingTime}" pattern="dd/MM/yyyy HH:mm"/></td>
                                     <td class="text-end">
-                                        <c:if test="${b.paymentStatus == 'PAID'}">
+                                        <c:if test="${b.paymentStatus == 'PAID' || b.paymentStatus == 'PENDING'}">
                                             <a href="${pageContext.request.contextPath}/admin/booking-cancel?id=${b.bookingId}" 
                                                class="btn btn-sm btn-outline-danger btn-swal-confirm" 
                                                data-title="Hủy đơn vé?"

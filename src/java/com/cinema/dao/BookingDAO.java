@@ -269,6 +269,27 @@ public class BookingDAO extends DBContext {
         }
     }
 
+    public boolean updatePaymentStatus(int bookingId, String status) {
+        String sql = "UPDATE Bookings SET payment_status = ? WHERE booking_id = ?";
+        try {
+            Connection conn = getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, status);
+            ps.setInt(2, bookingId);
+            int rows = ps.executeUpdate();
+            ps.close();
+            conn.close();
+            if (rows > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private Booking mapBooking(ResultSet rs) throws Exception {
         return new Booking(
                 rs.getInt("booking_id"),

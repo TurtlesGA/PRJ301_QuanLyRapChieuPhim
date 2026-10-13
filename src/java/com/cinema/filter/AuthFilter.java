@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
-@WebFilter(filterName = "AuthFilter", urlPatterns = {"/admin/*", "/my-bookings", "/checkout", "/profile"})
+@WebFilter(filterName = "AuthFilter", urlPatterns = {"/admin/*", "/my-bookings", "/checkout", "/payment", "/payment-confirm", "/profile"})
 public class AuthFilter implements Filter {
 
     @Override
