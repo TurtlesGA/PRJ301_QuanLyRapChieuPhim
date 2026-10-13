@@ -93,7 +93,7 @@ GO
 -- 6. Table: Bookings (Đơn đặt vé)
 CREATE TABLE Bookings (
     booking_id INT IDENTITY(1,1) PRIMARY KEY,
-    user_id INT FOREIGN KEY REFERENCES Users(user_id),
+    user_id INT FOREIGN KEY REFERENCES Users(user_id) ON DELETE CASCADE,
     showtime_id INT FOREIGN KEY REFERENCES Showtimes(showtime_id),
     booking_code VARCHAR(20) UNIQUE NOT NULL,
     total_amount DECIMAL(12,2) NOT NULL,
