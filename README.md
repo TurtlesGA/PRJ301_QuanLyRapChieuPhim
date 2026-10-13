@@ -16,8 +16,8 @@ Hệ thống Quản lý và Đặt vé Rạp chiếu phim (Cinema Management Sys
 ## 🚀 Giới Thiệu Dự Án
 
 Dự án cung cấp giải pháp toàn diện cho việc quản lý rạp chiếu phim và hỗ trợ người dùng trải nghiệm đặt vé xem phim trực tuyến hiện đại, trực quan:
-- **Người dùng (Khách hàng)**: Xem danh sách phim đang chiếu, sắp chiếu, tra cứu lịch chiếu, lựa chọn suất chiếu, chọn vị trí ghế ngồi trực quan (Ghế Thường, VIP, Ghế Đôi), đặt vé, xem lại lịch sử vé đã mua và hủy vé trực tuyến.
-- **Quản trị viên (Admin)**: Quản lý danh mục phim, quản lý phòng chiếu (thêm, sửa, đổi trạng thái, xóa phòng), quản lý suất chiếu theo phòng, theo dõi lịch sử và hủy vé, thống kê doanh thu bán vé, quản lý phân quyền và khóa/mở khóa tài khoản khách hàng.
+- **Người dùng (Khách hàng)**: Xem danh sách phim đang chiếu, sắp chiếu, tra cứu lịch chiếu, lựa chọn suất chiếu, chọn vị trí ghế ngồi trực quan (Ghế Thường, VIP, Ghế Đôi), đặt vé, giả lập thanh toán trực tuyến qua mã QR động (VNPAY / MoMo), xem lại lịch sử vé đã mua, hủy vé trực tuyến và khôi phục tài khoản qua mã OTP khi quên mật khẩu.
+- **Quản trị viên (Admin)**: Quản lý danh mục phim, quản lý phòng chiếu (thêm, sửa, đổi trạng thái, xóa phòng, tự sinh sơ đồ ghế), quản lý suất chiếu theo phòng, theo dõi lịch sử và hủy vé, thống kê doanh thu bán vé, quản lý phân quyền và khóa/mở khóa tài khoản khách hàng.
 
 ---
 
@@ -80,6 +80,7 @@ PRJ302_QuanLyRapChieuPhim/
 │               ├── auth/
 │               │   ├── LoginController.java
 │               │   ├── RegisterController.java
+│               │   ├── ForgotPasswordController.java
 │               │   ├── LogoutController.java
 │               │   └── ProfileController.java
 │               └── admin/
@@ -100,15 +101,19 @@ PRJ302_QuanLyRapChieuPhim/
 │           ├── common/
 │           │   ├── header.jsp
 │           │   ├── navbar.jsp
-│           │   └── footer.jsp
+│           │   ├── footer.jsp
+│           │   ├── admin-header.jsp
+│           │   └── admin-footer.jsp
 │           ├── home.jsp
 │           ├── movies.jsp
 │           ├── movie-detail.jsp
 │           ├── seat-selection.jsp
+│           ├── payment.jsp
 │           ├── booking-success.jsp
 │           ├── my-bookings.jsp
 │           ├── login.jsp
 │           ├── register.jsp
+│           ├── forgot-password.jsp
 │           ├── profile.jsp
 │           └── admin/
 │               ├── dashboard.jsp
@@ -187,6 +192,8 @@ Hệ thống đã tạo sẵn các tài khoản demo:
 6. **Chế Độ Giao Diện Kép (Dark / Light Mode) & Độ Tương Phản Tối Ưu**:
    - Cho phép người dùng chuyển đổi mượt mà giữa chế độ Sáng và Tối trực tiếp trên Navbar, lưu trạng thái thông qua `localStorage`.
    - Hệ thống CSS biến thể (`data-bs-theme`) được thiết kế tỉ mỉ, triệt để loại bỏ các mảng đen cứng khi chuyển sang chế độ sáng, tối ưu độ tương phản văn bản và bảng dữ liệu quản trị giúp giao diện rõ ràng, dễ nhìn.
+7. **Giả Lập Thanh Toán Trực Tuyến & Khóa Ghế Tạm Thời (QR Pay)**: Tích hợp cổng thanh toán trực tuyến mô phỏng VNPAY và MoMo với mã QR động, giữ chỗ ghế ở trạng thái `PENDING` kèm đồng hồ đếm ngược 10 phút, tự động nhả ghế nếu hủy giao dịch hoặc cho phép thanh toán bù trong trang cá nhân.
+8. **Khôi Phục Tài Khoản Qua Mã OTP (Account Recovery)**: Cung cấp tính năng quên mật khẩu và đặt lại mật khẩu với cơ chế cấp mã xác thực OTP 6 số ngẫu nhiên theo luồng xác thực 2 bước an toàn.
 
 ---
 
