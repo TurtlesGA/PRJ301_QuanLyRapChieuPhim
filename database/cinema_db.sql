@@ -1,4 +1,4 @@
-﻿-- ================================================================
+-- ================================================================
 -- DATABASE: Cinema Management System (Hệ thống Quản lý Rạp chiếu phim)
 -- Course: PRJ302 / PRJ301 - Java Web Application
 -- Database Engine: Microsoft SQL Server
@@ -229,3 +229,11 @@ INSERT INTO Tickets (booking_id, seat_id, price) VALUES
 (1, (SELECT seat_id FROM Seats WHERE room_id = 1 AND seat_row = 'C' AND seat_number = 3), 95000),
 (1, (SELECT seat_id FROM Seats WHERE room_id = 1 AND seat_row = 'C' AND seat_number = 4), 95000);
 GO
+
+-- Cập nhật đồng bộ Tiếng Việt có dấu chính xác (fix lỗi font nếu chạy trên môi trường cũ)
+UPDATE Users SET full_name = N'Quản Trị Viên' WHERE username = 'admin';
+UPDATE Users SET full_name = N'Nhân Viên Rạp' WHERE username = 'staff';
+UPDATE Users SET full_name = N'Nguyễn Văn A' WHERE username = 'customer';
+UPDATE Users SET full_name = N'Trần Thị B' WHERE username = 'user2';
+GO
+
