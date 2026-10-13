@@ -51,7 +51,8 @@
                     </div>
 
                     <!-- Seats Grid -->
-                    <div class="seat-grid">
+                    <div class="seat-map-wrapper">
+                        <div class="seat-grid">
                         <c:set var="currentRow" value="" />
                         <c:forEach items="${seats}" var="seat" varStatus="loop">
                             <c:if test="${seat.seatRow ne currentRow}">
@@ -73,6 +74,7 @@
                             </button>
                         </c:forEach>
                         </div> <!-- close last row -->
+                    </div>
                     </div>
 
                     <!-- Legend -->

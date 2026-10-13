@@ -17,38 +17,40 @@
     </div>
     <div class="carousel-inner" style="max-height: 480px;">
         <div class="carousel-item active">
-            <div class="position-relative" style="height: 480px; background: linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1600') center/cover no-repeat;">
+            <div class="position-relative hero-slide" style="height: 480px; background: linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1600') center/cover no-repeat;">
                 <div class="container h-100 d-flex align-items-center">
-                    <div class="col-lg-6 text-white">
+                    <div class="col-lg-6 col-md-8 col-12 text-white">
                         <span class="badge bg-danger mb-2 px-3 py-2 fs-6">BOM TẤN HOT</span>
-                        <h1 class="display-4 fw-bold">Phim Chiếu Rạp Đỉnh Cao</h1>
-                        <p class="lead text-light mb-4">Trải nghiệm hệ thống âm thanh Dolby Atmos và màn hình IMAX đỉnh cao ngay hôm nay.</p>
-                        <a href="${pageContext.request.contextPath}/movies?filter=now" class="btn btn-danger btn-lg px-4 rounded-pill fw-bold me-2">Đặt Vé Ngay</a>
-                        <a href="#now-showing" class="btn btn-outline-light btn-lg px-4 rounded-pill fw-bold">Xem Lịch Chiếu</a>
+                        <h1 class="display-4 fw-bold hero-title">Phim Chiếu Rạp Đỉnh Cao</h1>
+                        <p class="lead text-light mb-4 hero-lead">Trải nghiệm hệ thống âm thanh Dolby Atmos và màn hình IMAX đỉnh cao ngay hôm nay.</p>
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="${pageContext.request.contextPath}/movies?filter=now" class="btn btn-danger btn-lg px-4 rounded-pill fw-bold hero-btn">Đặt Vé Ngay</a>
+                            <a href="#now-showing" class="btn btn-outline-light btn-lg px-4 rounded-pill fw-bold hero-btn">Xem Lịch Chiếu</a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
         <div class="carousel-item">
-            <div class="position-relative" style="height: 480px; background: linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1600') center/cover no-repeat;">
+            <div class="position-relative hero-slide" style="height: 480px; background: linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=1600') center/cover no-repeat;">
                 <div class="container h-100 d-flex align-items-center">
-                    <div class="col-lg-6 text-white">
+                    <div class="col-lg-6 col-md-8 col-12 text-white">
                         <span class="badge bg-warning text-dark mb-2 px-3 py-2 fs-6">KHOA HỌC VIỄN TƯỞNG</span>
-                        <h1 class="display-4 fw-bold">Dune: Hành Tinh Cát 2</h1>
-                        <p class="lead text-light mb-4">Siêu phẩm điện ảnh đoạt nhiều giải thưởng danh giá. Khởi chiếu toàn quốc.</p>
-                        <a href="${pageContext.request.contextPath}/movie-detail?id=2" class="btn btn-danger btn-lg px-4 rounded-pill fw-bold">Chi Tiết & Mua Vé</a>
+                        <h1 class="display-4 fw-bold hero-title">Dune: Hành Tinh Cát 2</h1>
+                        <p class="lead text-light mb-4 hero-lead">Siêu phẩm điện ảnh đoạt nhiều giải thưởng danh giá. Khởi chiếu toàn quốc.</p>
+                        <a href="${pageContext.request.contextPath}/movie-detail?id=2" class="btn btn-danger btn-lg px-4 rounded-pill fw-bold hero-btn">Chi Tiết & Mua Vé</a>
                     </div>
                 </div>
             </div>
         </div>
         <div class="carousel-item">
-            <div class="position-relative" style="height: 480px; background: linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1600') center/cover no-repeat;">
+            <div class="position-relative hero-slide" style="height: 480px; background: linear-gradient(to right, rgba(0,0,0,0.85) 40%, rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1600') center/cover no-repeat;">
                 <div class="container h-100 d-flex align-items-center">
-                    <div class="col-lg-6 text-white">
+                    <div class="col-lg-6 col-md-8 col-12 text-white">
                         <span class="badge bg-info text-dark mb-2 px-3 py-2 fs-6">SẮP KHỞI CHIẾU</span>
-                        <h1 class="display-4 fw-bold">Lật Mặt 7: Một Điều Ước</h1>
-                        <p class="lead text-light mb-4">Câu chuyện gia đình xúc động lấy đi nước mắt hàng triệu khán giả Việt.</p>
-                        <a href="${pageContext.request.contextPath}/movies?filter=soon" class="btn btn-danger btn-lg px-4 rounded-pill fw-bold">Khám Phá Thêm</a>
+                        <h1 class="display-4 fw-bold hero-title">Lật Mặt 7: Một Điều Ước</h1>
+                        <p class="lead text-light mb-4 hero-lead">Câu chuyện gia đình xúc động lấy đi nước mắt hàng triệu khán giả Việt.</p>
+                        <a href="${pageContext.request.contextPath}/movies?filter=soon" class="btn btn-danger btn-lg px-4 rounded-pill fw-bold hero-btn">Khám Phá Thêm</a>
                     </div>
                 </div>
             </div>
@@ -76,7 +78,7 @@
                 <a href="${pageContext.request.contextPath}/movies?filter=now" class="text-danger text-decoration-none fw-bold">Xem tất cả <i class="fa-solid fa-angle-right"></i></a>
             </div>
 
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 g-sm-3 g-md-4">
                 <c:forEach items="${nowShowing}" var="movie">
                     <div class="col">
                         <div class="movie-card">
@@ -110,7 +112,7 @@
                 <a href="${pageContext.request.contextPath}/movies?filter=soon" class="text-warning text-decoration-none fw-bold">Xem tất cả <i class="fa-solid fa-angle-right"></i></a>
             </div>
 
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 g-sm-3 g-md-4">
                 <c:forEach items="${comingSoon}" var="movie">
                     <div class="col">
                         <div class="movie-card">

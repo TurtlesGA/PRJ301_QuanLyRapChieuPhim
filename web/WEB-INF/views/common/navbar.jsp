@@ -6,9 +6,21 @@
             <i class="fa-solid fa-film text-danger fs-3"></i>
             <span>CINE<span class="text-white">STAR</span></span>
         </a>
-        <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="collapse" data-bs-target="#cinemaNav">
-            <i class="fa-solid fa-bars fs-4"></i>
-        </button>
+        <div class="d-flex align-items-center gap-2 d-lg-none">
+            <!-- Theme Toggle on Mobile Header -->
+            <button type="button" class="theme-toggle-btn" title="Chuyển chế độ Sáng / Tối" aria-label="Chuyển chế độ Sáng / Tối">
+                <span class="theme-icon light" title="Sáng">
+                    <i class="fa-solid fa-sun"></i>
+                </span>
+                <span class="theme-divider"></span>
+                <span class="theme-icon dark active" title="Tối">
+                    <i class="fa-solid fa-moon"></i>
+                </span>
+            </button>
+            <button class="navbar-toggler text-white border-0 px-2 py-1" type="button" data-bs-toggle="collapse" data-bs-target="#cinemaNav">
+                <i class="fa-solid fa-bars fs-4"></i>
+            </button>
+        </div>
         <div class="collapse navbar-collapse" id="cinemaNav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                 <li class="nav-item">
@@ -31,7 +43,7 @@
             </form>
                     
             <!-- User Auth -->
-            <ul class="navbar-nav align-items-center mb-2 mb-lg-0">
+            <ul class="navbar-nav navbar-auth d-flex flex-row align-items-center gap-2 mb-2 mb-lg-0 mt-3 mt-lg-0">
                 <c:choose>
                     <c:when test="${not empty sessionScope.currentUser}">
                         <li class="nav-item dropdown">
@@ -53,7 +65,7 @@
                     </c:when>
                     <c:otherwise>
                         <li class="nav-item">
-                            <a class="nav-link btn btn-outline-secondary btn-sm px-3 me-2 text-white border-0" href="${pageContext.request.contextPath}/login">Đăng Nhập</a>
+                            <a class="btn btn-login btn-sm px-3 rounded-pill fw-bold" href="${pageContext.request.contextPath}/login">Đăng Nhập</a>
                         </li>
                         <li class="nav-item">
                             <a class="btn btn-danger btn-sm px-3 rounded-pill fw-bold" href="${pageContext.request.contextPath}/register">Đăng Ký</a>
@@ -61,8 +73,8 @@
                     </c:otherwise>
                 </c:choose>
 
-                <!-- Theme Switch (Sáng / Tối) -->
-                <li class="nav-item ms-lg-2">
+                <!-- Theme Switch (Desktop) -->
+                <li class="nav-item ms-lg-1 d-none d-lg-block">
                     <button type="button" class="theme-toggle-btn" id="themeToggle" title="Chuyển chế độ Sáng / Tối" aria-label="Chuyển chế độ Sáng / Tối">
                         <span class="theme-icon light" title="Sáng">
                             <i class="fa-solid fa-sun"></i>

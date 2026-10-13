@@ -12,8 +12,8 @@
     <div class="container">
         <!-- Movie Header & Details -->
         <div class="row g-4 mb-5">
-            <div class="col-md-4 col-lg-3">
-                <div class="rounded-4 overflow-hidden border border-secondary shadow">
+            <div class="col-md-4 col-lg-3 text-center text-md-start">
+                <div class="rounded-4 overflow-hidden border border-secondary shadow movie-detail-poster d-inline-block">
                     <img src="${movie.posterUrl}" alt="${movie.title}" class="img-fluid w-100" onerror="this.src='https://placehold.co/400x600/222/fff?text=Poster'">
                 </div>
             </div>
@@ -22,7 +22,7 @@
                     <span class="badge bg-danger fs-6">${movie.ageRating}</span>
                     <span class="badge bg-secondary fs-6">${movie.status == 'NOW_SHOWING' ? 'Đang Chiếu' : 'Sắp Chiếu'}</span>
                 </div>
-                <h1 class="display-6 fw-bold text-white mb-3">${movie.title}</h1>
+                <h1 class="display-6 fw-bold text-white mb-3 movie-detail-title">${movie.title}</h1>
 
                 <ul class="list-unstyled text-light mb-4">
                     <li class="mb-2"><strong class="text-secondary">Thể loại:</strong> ${movie.genre}</li>

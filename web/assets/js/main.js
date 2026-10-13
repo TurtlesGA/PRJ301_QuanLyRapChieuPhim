@@ -54,31 +54,34 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    const themeToggleBtn = document.getElementById('themeToggle');
-    if (themeToggleBtn) {
-        const lightIcon = themeToggleBtn.querySelector('.theme-icon.light');
-        const darkIcon = themeToggleBtn.querySelector('.theme-icon.dark');
-
-        function updateThemeIcons(theme) {
-            if (theme === 'light') {
-                if (lightIcon) lightIcon.classList.add('active');
-                if (darkIcon) darkIcon.classList.remove('active');
-            } else {
-                if (darkIcon) darkIcon.classList.add('active');
-                if (lightIcon) lightIcon.classList.remove('active');
-            }
+    const themeToggleBtns = document.querySelectorAll('.theme-toggle-btn');
+    if (themeToggleBtns.length > 0) {
+        function updateAllThemeIcons(theme) {
+            themeToggleBtns.forEach(btn => {
+                const lightIcon = btn.querySelector('.theme-icon.light');
+                const darkIcon = btn.querySelector('.theme-icon.dark');
+                if (theme === 'light') {
+                    if (lightIcon) lightIcon.classList.add('active');
+                    if (darkIcon) darkIcon.classList.remove('active');
+                } else {
+                    if (darkIcon) darkIcon.classList.add('active');
+                    if (lightIcon) lightIcon.classList.remove('active');
+                }
+            });
         }
 
         const initialTheme = document.documentElement.getAttribute('data-bs-theme') || localStorage.getItem('cinema_theme') || 'dark';
-        updateThemeIcons(initialTheme);
+        updateAllThemeIcons(initialTheme);
 
-        themeToggleBtn.addEventListener('click', function () {
-            const currentTheme = document.documentElement.getAttribute('data-bs-theme') || 'dark';
-            const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        themeToggleBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const currentTheme = document.documentElement.getAttribute('data-bs-theme') || 'dark';
+                const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
 
-            document.documentElement.setAttribute('data-bs-theme', nextTheme);
-            localStorage.setItem('cinema_theme', nextTheme);
-            updateThemeIcons(nextTheme);
+                document.documentElement.setAttribute('data-bs-theme', nextTheme);
+                localStorage.setItem('cinema_theme', nextTheme);
+                updateAllThemeIcons(nextTheme);
+            });
         });
     }
 });
