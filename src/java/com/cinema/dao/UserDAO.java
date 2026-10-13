@@ -106,6 +106,61 @@ public class UserDAO extends DBContext {
         return null;
     }
 
+    public boolean checkUsernameExistsForOther(String username, int userId) {
+        String sql = "SELECT user_id FROM Users WHERE username = ? AND user_id != ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setInt(2, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean checkEmailExistsForOther(String email, int userId) {
+        String sql = "SELECT user_id FROM Users WHERE email = ? AND user_id != ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setInt(2, userId);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public boolean updateUser(User user) {
+        boolean updatePassword = (user.getPassword() != null && !user.getPassword().trim().isEmpty());
+        String sql = updatePassword
+                ? "UPDATE Users SET username = ?, password = ?, full_name = ?, email = ?, phone = ?, role = ?, status = ? WHERE user_id = ?"
+                : "UPDATE Users SET username = ?, full_name = ?, email = ?, phone = ?, role = ?, status = ? WHERE user_id = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            int idx = 1;
+            ps.setString(idx++, user.getUsername());
+            if (updatePassword) {
+                ps.setString(idx++, user.getPassword());
+            }
+            ps.setString(idx++, user.getFullName());
+            ps.setString(idx++, user.getEmail());
+            ps.setString(idx++, user.getPhone());
+            ps.setString(idx++, user.getRole());
+            ps.setBoolean(idx++, user.isStatus());
+            ps.setInt(idx++, user.getUserId());
+            return ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public boolean updateProfile(User user) {
         String sql = "UPDATE Users SET full_name = ?, email = ?, phone = ? WHERE user_id = ?";
         try (Connection conn = getConnection();

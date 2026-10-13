@@ -50,6 +50,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </c:if>
+            <c:if test="${param.msg == 'update_success'}">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-circle-check me-2"></i>Cập nhật thông tin người dùng thành công!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
 
             <div class="card bg-dark border-secondary rounded-4 p-3 shadow">
                 <div class="table-responsive">
@@ -85,6 +91,11 @@
                                     </td>
                                     <td class="small text-muted"><fmt:formatDate value="${u.createdAt}" pattern="dd/MM/yyyy"/></td>
                                     <td class="text-end">
+                                        <a href="${pageContext.request.contextPath}/admin/user-edit?id=${u.userId}" 
+                                           class="btn btn-sm btn-outline-warning me-1" 
+                                           title="Chỉnh sửa thông tin">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </a>
                                         <c:if test="${u.role ne 'ADMIN'}">
                                             <a href="${pageContext.request.contextPath}/admin/user-toggle?id=${u.userId}" 
                                                class="btn btn-sm ${u.status ? 'btn-outline-danger' : 'btn-outline-success'}"
