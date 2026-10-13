@@ -61,7 +61,7 @@
                     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
                         <c:forEach items="${showtimes}" var="st">
                             <div class="col">
-                                <div class="p-3 rounded-3 border border-secondary" style="background-color: #242424;">
+                                <div class="p-3 rounded-3 border border-secondary showtime-box" style="background-color: #242424;">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <span class="badge bg-secondary">${st.room.roomName}</span>
                                         <span class="badge bg-danger">${st.room.roomType}</span>

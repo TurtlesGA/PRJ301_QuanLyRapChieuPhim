@@ -20,7 +20,7 @@
                     <p class="text-muted small mb-4">Cảm ơn bạn đã lựa chọn CineStar. Mã vé của bạn đã sẵn sàng.</p>
 
                     <!-- Ticket Slip -->
-                    <div class="p-3 rounded-3 text-start mb-4 border border-secondary" style="background-color: #222;">
+                    <div class="p-3 rounded-3 text-start mb-4 border border-secondary ticket-slip" style="background-color: #222;">
                         <div class="d-flex justify-content-between mb-2">
                             <span class="text-muted">Mã đơn vé:</span>
                             <strong class="text-warning fs-5">${booking.bookingCode}</strong>
