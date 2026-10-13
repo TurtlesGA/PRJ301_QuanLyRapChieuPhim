@@ -1,4 +1,4 @@
--- ================================================================
+﻿-- ================================================================
 -- DATABASE: Cinema Management System (Hệ thống Quản lý Rạp chiếu phim)
 -- Course: PRJ302 / PRJ301 - Java Web Application
 -- Database Engine: Microsoft SQL Server
