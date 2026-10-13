@@ -20,7 +20,7 @@ public class User {
         this.userId = userId;
         this.username = username;
         this.password = password;
-        this.fullName = fullName;
+        this.fullName = fixEncoding(fullName);
         this.email = email;
         this.phone = phone;
         this.role = role;
@@ -52,12 +52,23 @@ public class User {
         this.password = password;
     }
 
+    private static String fixEncoding(String str) {
+        if (str == null) return null;
+        if (str.contains("áº") || str.contains("á»") || str.contains("Ã") || str.contains("Quáº£n")) {
+            try {
+                return new String(str.getBytes(java.nio.charset.Charset.forName("windows-1252")), java.nio.charset.StandardCharsets.UTF_8);
+            } catch (Exception ignored) {
+            }
+        }
+        return str;
+    }
+
     public String getFullName() {
-        return fullName;
+        return fixEncoding(fullName);
     }
 
     public void setFullName(String fullName) {
-        this.fullName = fullName;
+        this.fullName = fixEncoding(fullName);
     }
 
     public String getEmail() {

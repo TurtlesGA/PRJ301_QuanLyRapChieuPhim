@@ -27,13 +27,14 @@ public class DBContext {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String url = "jdbc:sqlserver://" + SERVER_NAME + ":" + PORT_NUMBER 
                     + ";databaseName=" + DATABASE_NAME 
-                    + ";encrypt=true;trustServerCertificate=true;";
+                    + ";encrypt=true;trustServerCertificate=true;sendStringParametersAsUnicode=true;characterEncoding=UTF-8;useUnicode=true;";
             return DriverManager.getConnection(url, USER_ID, PASSWORD);
         } catch (ClassNotFoundException | SQLException e) {
             // Thử kết nối URL dạng cổ điển nếu SQL Server cũ
             try {
                 String fallbackUrl = "jdbc:sqlserver://" + SERVER_NAME + ":" + PORT_NUMBER 
-                        + ";databaseName=" + DATABASE_NAME;
+                        + ";databaseName=" + DATABASE_NAME
+                        + ";sendStringParametersAsUnicode=true;characterEncoding=UTF-8;useUnicode=true;";
                 return DriverManager.getConnection(fallbackUrl, USER_ID, PASSWORD);
             } catch (Exception ex) {
                 System.err.println("Lỗi kết nối cơ sở dữ liệu: " + e.getMessage());
