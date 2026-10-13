@@ -25,6 +25,6 @@
 <!-- SweetAlert2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Admin SweetAlert2 and UI Script -->
-<script src="${pageContext.request.contextPath}/assets/js/admin.js?v=2.0" charset="UTF-8"></script>
+<script src="${pageContext.request.contextPath}/assets/js/admin.js?v=2.2" charset="UTF-8"></script>
 </body>
 </html>

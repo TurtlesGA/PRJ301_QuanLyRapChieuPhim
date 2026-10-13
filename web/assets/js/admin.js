@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const url = targetBtn.getAttribute('href') || targetBtn.getAttribute('data-url');
         const formId = targetBtn.getAttribute('data-form');
-        const title = targetBtn.getAttribute('data-title') || 'Xác nhận thao tác';
-        const message = targetBtn.getAttribute('data-confirm') || 'Bạn có chắc chắn muốn thực hiện hành động này?';
+        const title = targetBtn.getAttribute('data-title') || 'X\u00e1c nh\u1eadn thao t\u00e1c';
+        const message = targetBtn.getAttribute('data-confirm') || 'B\u1ea1n c\u00f3 ch\u1eafc ch\u1eafn mu\u1ed1n th\u1ef1c hi\u1ec7n h\u00e0nh \u0111\u1ed9ng n\u00e0y?';
         const icon = targetBtn.getAttribute('data-icon') || 'warning';
-        const confirmText = targetBtn.getAttribute('data-confirm-text') || '<i class="fa-solid fa-check me-1"></i> Xác nhận';
+        const confirmText = targetBtn.getAttribute('data-confirm-text') || '<i class="fa-solid fa-check me-1"></i> X\u00e1c nh\u1eadn';
         const confirmColor = targetBtn.getAttribute('data-confirm-color') || '#dc2626';
 
         const dark = isDarkMode();
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmButtonColor: confirmColor,
             cancelButtonColor: '#6b7280',
             confirmButtonText: confirmText,
-            cancelButtonText: '<i class="fa-solid fa-xmark me-1"></i> Hủy bỏ',
+            cancelButtonText: targetBtn.getAttribute('data-cancel-text') || '<i class="fa-solid fa-xmark me-1"></i> H\u1ee7y b\u1ecf',
             background: dark ? '#1e1e1e' : '#ffffff',
             color: dark ? '#f5f5f5' : '#0f172a',
             reverseButtons: true,
@@ -72,13 +72,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         if (msg === 'add_success') {
-            Toast.fire({ icon: 'success', title: 'Thêm mới thành công!' });
+            Toast.fire({ icon: 'success', title: 'Th\u00eam m\u1edbi th\u00e0nh c\u00f4ng!' });
         } else if (msg === 'update_success') {
-            Toast.fire({ icon: 'success', title: 'Cập nhật thông tin thành công!' });
+            Toast.fire({ icon: 'success', title: 'C\u1eadp nh\u1eadt th\u00f4ng tin th\u00e0nh c\u00f4ng!' });
         } else if (msg === 'delete_success') {
-            Toast.fire({ icon: 'success', title: 'Đã xóa dữ liệu thành công!' });
+            Toast.fire({ icon: 'success', title: '\u0110\u00e3 x\u00f3a d\u1eef li\u1ec7u th\u00e0nh c\u00f4ng!' });
         } else if (err === 'self_delete') {
-            Toast.fire({ icon: 'error', title: 'Không thể xóa tài khoản đang đăng nhập!' });
+            Toast.fire({ icon: 'error', title: 'Kh\u00f4ng th\u1ec3 x\u00f3a t\u00e0i kho\u1ea3n \u0111ang \u0111\u0103ng nh\u1eadp!' });
         } else if (err) {
             Toast.fire({ icon: 'error', title: err });
         }
