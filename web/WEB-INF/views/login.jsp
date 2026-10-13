@@ -44,12 +44,16 @@
                             </div>
                         </div>
 
-                        <div class="mb-4">
+                        <div class="mb-3">
                             <label class="form-label auth-label text-light small">Mật khẩu</label>
                             <div class="input-group">
                                 <span class="input-group-text auth-input-icon bg-secondary border-secondary text-white"><i class="fa-solid fa-lock"></i></span>
                                 <input type="password" class="form-control" name="password" placeholder="Nhập password" required>
                             </div>
+                        </div>
+
+                        <div class="d-flex justify-content-end mb-3">
+                            <a href="${pageContext.request.contextPath}/forgot-password" class="text-warning small text-decoration-none">Quên mật khẩu?</a>
                         </div>
 
                         <button type="submit" class="btn btn-danger w-100 py-2 fw-bold mb-3">Đăng Nhập</button>

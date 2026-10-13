@@ -263,6 +263,50 @@ public class UserDAO extends DBContext {
         return 0;
     }
 
+    public User getUserByEmail(String email) {
+        String sql = "SELECT * FROM Users WHERE email = ?";
+        try {
+            Connection conn = getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                User u = mapUser(rs);
+                rs.close();
+                ps.close();
+                conn.close();
+                return u;
+            }
+            rs.close();
+            ps.close();
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public boolean resetPasswordByEmail(String email, String newPassword) {
+        String sql = "UPDATE Users SET password = ? WHERE email = ?";
+        try {
+            Connection conn = getConnection();
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setString(1, newPassword);
+            ps.setString(2, email);
+            int rows = ps.executeUpdate();
+            ps.close();
+            conn.close();
+            if (rows > 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private User mapUser(ResultSet rs) throws Exception {
         return new User(
                 rs.getInt("user_id"),
