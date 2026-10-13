@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const checkoutBtn = document.getElementById('checkoutBtn');
 
     if (seatButtons.length > 0 && selectedSeatsInput) {
-        let selectedSeats = []; // [{id: 1, code: 'A1', price: 80000}]
+        let selectedSeats = [];
 
         seatButtons.forEach(btn => {
             btn.addEventListener('click', function () {
@@ -20,11 +20,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const index = selectedSeats.findIndex(s => s.id === seatId);
                 if (index > -1) {
-                    // Deselect
                     selectedSeats.splice(index, 1);
                     this.classList.remove('selected');
                 } else {
-                    // Select (Max 8 seats per booking)
                     if (selectedSeats.length >= 8) {
                         alert('Bạn chỉ có thể đặt tối đa 8 ghế trong một lần đặt!');
                         return;
@@ -56,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Theme Switch Handler (Light / Dark Mode)
     const themeToggleBtn = document.getElementById('themeToggle');
     if (themeToggleBtn) {
         const lightIcon = themeToggleBtn.querySelector('.theme-icon.light');
