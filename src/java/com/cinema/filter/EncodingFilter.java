@@ -28,7 +28,11 @@ public class EncodingFilter implements Filter {
         httpRequest.setCharacterEncoding(encoding);
         httpResponse.setCharacterEncoding(encoding);
         String path = httpRequest.getRequestURI();
-        if (path.endsWith(".css") == false && path.endsWith(".js") == false && path.endsWith(".png") == false && path.endsWith(".jpg") == false) {
+        if (path.endsWith(".js")) {
+            httpResponse.setContentType("application/javascript; charset=UTF-8");
+        } else if (path.endsWith(".css")) {
+            httpResponse.setContentType("text/css; charset=UTF-8");
+        } else if (!path.endsWith(".png") && !path.endsWith(".jpg") && !path.endsWith(".jpeg") && !path.endsWith(".gif") && !path.endsWith(".ico") && !path.endsWith(".svg")) {
             httpResponse.setContentType("text/html; charset=UTF-8");
         }
         chain.doFilter(request, response);
