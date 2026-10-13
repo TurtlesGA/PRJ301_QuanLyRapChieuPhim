@@ -1,5 +1,14 @@
 # PRJ302_QuanLyRapChieuPhim
 
+<p align="left">
+  <a href="https://github.com/TurtlesGA/PRJ302_QuanLyRapChieuPhim/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/TurtlesGA/PRJ302_QuanLyRapChieuPhim?style=flat-square&logo=github&color=e50914" alt="Contributors" />
+  </a>
+  <img src="https://img.shields.io/badge/Java-Servlet%20%2F%20JSP-orange?style=flat-square&logo=openjdk" alt="Java" />
+  <img src="https://img.shields.io/badge/Database-SQL%20Server-blue?style=flat-square&logo=microsoftsqlserver" alt="SQL Server" />
+  <img src="https://img.shields.io/badge/Theme-Dark%20%2F%20Light-success?style=flat-square" alt="Theme" />
+</p>
+
 Hệ thống Quản lý và Đặt vé Rạp chiếu phim (Cinema Management System) phát triển bằng nền tảng **Java Web (Servlet - JSP - JDBC)** theo mô hình kiến trúc chuẩn **MVC (Model - View - Controller)** kết hợp **DAO Pattern**.
 
 ---
@@ -178,3 +187,22 @@ Hệ thống đã tạo sẵn các tài khoản demo:
 6. **Chế Độ Giao Diện Kép (Dark / Light Mode) & Độ Tương Phản Tối Ưu**:
    - Cho phép người dùng chuyển đổi mượt mà giữa chế độ Sáng và Tối trực tiếp trên Navbar, lưu trạng thái thông qua `localStorage`.
    - Hệ thống CSS biến thể (`data-bs-theme`) được thiết kế tỉ mỉ, triệt để loại bỏ các mảng đen cứng khi chuyển sang chế độ sáng, tối ưu độ tương phản văn bản và bảng dữ liệu quản trị giúp giao diện rõ ràng, dễ nhìn.
+
+---
+
+## 👥 Người Đóng Góp (Contributors)
+
+Cảm ơn tất cả các thành viên đã tham gia xây dựng và đóng góp cho dự án!
+
+<p align="center">
+  <a href="https://github.com/TurtlesGA/PRJ302_QuanLyRapChieuPhim/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/TurtlesGA/PRJ302_QuanLyRapChieuPhim?style=for-the-badge&logo=github&color=e50914" alt="Contributors Count" />
+  </a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/TurtlesGA/PRJ302_QuanLyRapChieuPhim/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=TurtlesGA/PRJ302_QuanLyRapChieuPhim" alt="Contributors Avatar Grid" />
+  </a>
+</p>
+
