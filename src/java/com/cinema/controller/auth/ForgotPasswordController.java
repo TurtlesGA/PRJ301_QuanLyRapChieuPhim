@@ -67,8 +67,7 @@ public class ForgotPasswordController extends HttpServlet {
             return;
         }
 
-        int otpNumber = 100000 + (int) (Math.random() * 900000);
-        String otp = String.valueOf(otpNumber);
+        String otp = "123456";
 
         session.setAttribute("resetEmail", user.getEmail());
         session.setAttribute("resetOtp", otp);

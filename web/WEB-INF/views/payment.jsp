@@ -34,7 +34,7 @@
                     <div class="row g-4 align-items-center">
                         <div class="col-md-5 text-center">
                             <div class="p-3 bg-white rounded-3 shadow-sm d-inline-block border border-3 border-secondary">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=CINESTAR_${booking.bookingCode}_${booking.totalAmount}" 
+                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=CINESTAR_PAYMENT_ACCOUNT" 
                                      alt="QR Code Thanh Toán" 
                                      class="img-fluid" 
                                      style="width: 220px; height: 220px; display: block;" />
