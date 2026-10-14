@@ -81,7 +81,7 @@
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 g-sm-3 g-md-4">
                 <c:forEach items="${nowShowing}" var="movie">
                     <div class="col">
-                        <div class="movie-card">
+                        <div class="movie-card position-relative">
                             <div class="movie-poster-wrapper">
                                 <img src="${movie.posterUrl}" alt="${movie.title}" class="movie-poster" onerror="this.src='https://placehold.co/400x600/222/fff?text=Poster'">
                                 <span class="movie-badge bg-danger">${movie.ageRating}</span>
@@ -93,7 +93,7 @@
                                     <p class="small text-muted mb-3"><i class="fa-regular fa-clock me-1"></i>${movie.duration} phút</p>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <a href="${pageContext.request.contextPath}/movie-detail?id=${movie.movieId}" class="btn btn-sm btn-outline-danger fw-bold">Mua Vé</a>
+                                    <a href="${pageContext.request.contextPath}/movie-detail?id=${movie.movieId}" class="btn btn-sm btn-outline-danger fw-bold stretched-link">Mua Vé</a>
                                 </div>
                             </div>
                         </div>
@@ -115,7 +115,7 @@
             <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-2 g-sm-3 g-md-4">
                 <c:forEach items="${comingSoon}" var="movie">
                     <div class="col">
-                        <div class="movie-card">
+                        <div class="movie-card position-relative">
                             <div class="movie-poster-wrapper">
                                 <img src="${movie.posterUrl}" alt="${movie.title}" class="movie-poster" onerror="this.src='https://placehold.co/400x600/222/fff?text=Poster'">
                                 <span class="movie-badge bg-warning text-dark">Khởi chiếu: <fmt:formatDate value="${movie.releaseDate}" pattern="dd/MM"/></span>
@@ -127,7 +127,7 @@
                                     <p class="small text-muted mb-3"><i class="fa-regular fa-clock me-1"></i>${movie.duration} phút</p>
                                 </div>
                                 <div class="d-grid gap-2">
-                                    <a href="${pageContext.request.contextPath}/movie-detail?id=${movie.movieId}" class="btn btn-sm btn-movie-detail fw-bold">Chi Tiết</a>
+                                    <a href="${pageContext.request.contextPath}/movie-detail?id=${movie.movieId}" class="btn btn-sm btn-movie-detail fw-bold stretched-link">Chi Tiết</a>
                                 </div>
                             </div>
                         </div>
