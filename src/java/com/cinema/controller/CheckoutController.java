@@ -17,7 +17,6 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @WebServlet(name = "CheckoutController", urlPatterns = {"/checkout", "/payment", "/payment-confirm"})
 public class CheckoutController extends HttpServlet {
