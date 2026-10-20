@@ -470,7 +470,8 @@
       "cancel": "Cancel",
       "save": "Save User",
       "update": "Update"
-    }
+    },
+    "manageSettings": "System Settings"
   },
   "movieData": {
     "titles": {

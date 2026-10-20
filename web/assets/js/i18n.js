@@ -10,6 +10,51 @@
     let currentLang = localStorage.getItem(STORAGE_KEY) || 'vi';
     let translations = { vi: null, en: null };
 
+    // Dynamic list of active languages from languages.json / server
+    let availableLanguages = [
+        { code: 'vi', name: 'Ti\u1ebfng Vi\u1ec7t', country: 'Vi\u1ec7t Nam', flag: '/assets/images/flags/vn.svg' },
+        { code: 'en', name: 'English', country: 'United States', flag: '/assets/images/flags/us.svg' }
+    ];
+
+    // Load available active languages
+    async function loadAvailableLanguages() {
+        const contextPath = getContextPath();
+        const jsonUrl = (contextPath ? contextPath : '') + '/assets/i18n/languages.json?v=' + Date.now();
+        try {
+            const res = await fetch(jsonUrl);
+            if (res.ok) {
+                const data = await res.json();
+                if (Array.isArray(data) && data.length > 0) {
+                    availableLanguages = data;
+                    renderLanguageDropdowns();
+                    updateSwitcherUI(currentLang);
+                }
+            }
+        } catch (e) {
+            // fallback
+        }
+    }
+
+    // Render dropdown options dynamically for all language switchers on page
+    function renderLanguageDropdowns() {
+        const contextPath = getContextPath();
+        document.querySelectorAll('.lang-dropdown').forEach(dropdown => {
+            let html = '';
+            availableLanguages.forEach(l => {
+                const flagUrl = l.flag.startsWith('/') ? ((contextPath ? contextPath : '') + l.flag) : ((contextPath ? contextPath : '') + '/' + l.flag);
+                const displayCode = l.code.toUpperCase();
+                const isActive = l.code.toLowerCase() === currentLang.toLowerCase();
+                html += '<li>'
+                     + '<button type="button" data-lang="' + l.code.toLowerCase() + '" class="lang-option' + (isActive ? ' active' : '') + '">'
+                     + '<img src="' + flagUrl + '" class="lang-flag-img" alt="' + displayCode + '">'
+                     + '<span> - ' + displayCode + '</span>'
+                     + '</button>'
+                     + '</li>';
+            });
+            dropdown.innerHTML = html;
+        });
+    }
+
     // Determine Base / Context Path dynamically
     function getContextPath() {
         if (typeof window.CONTEXT_PATH === 'string') return window.CONTEXT_PATH;
@@ -97,51 +142,67 @@
         const movieDescs = (data.movieData && data.movieData.descriptions) || {};
         const roomNames = (data.movieData && data.movieData.rooms) || {};
 
-        // 1. Movie Titles
+        // 1. Movie Titles (Database Attribute First, JSON Fallback)
         document.querySelectorAll('.movie-title').forEach(el => {
             let orig = el.getAttribute('data-original-title');
             if (!orig) {
                 orig = el.textContent.trim();
                 el.setAttribute('data-original-title', orig);
             }
+            const dbTitle = el.getAttribute('data-title-' + currentLang);
+            if (dbTitle) {
+                el.textContent = dbTitle;
+                if (el.hasAttribute('title')) el.setAttribute('title', dbTitle);
+                return;
+            }
             if (isEn) {
                 const translated = movieTitles[orig];
                 if (translated) {
                     el.textContent = translated;
                     if (el.hasAttribute('title')) el.setAttribute('title', translated);
+                    return;
                 }
-            } else {
-                el.textContent = orig;
-                if (el.hasAttribute('title')) el.setAttribute('title', orig);
             }
+            el.textContent = orig;
+            if (el.hasAttribute('title')) el.setAttribute('title', orig);
         });
 
-        // 2. Movie Genres
+        // 2. Movie Genres (Database Attribute First, JSON Fallback)
         document.querySelectorAll('.movie-genre').forEach(el => {
             let orig = el.getAttribute('data-original-genre');
             if (!orig) {
                 orig = el.textContent.trim();
                 el.setAttribute('data-original-genre', orig);
             }
+            const dbGenre = el.getAttribute('data-genre-' + currentLang);
+            if (dbGenre) {
+                el.textContent = dbGenre;
+                return;
+            }
             if (isEn) {
                 if (movieGenres[orig]) {
                     el.textContent = movieGenres[orig];
-                } else {
-                    const parts = orig.split(',').map(s => s.trim());
-                    const translatedParts = parts.map(p => movieGenres[p] || p);
-                    el.textContent = translatedParts.join(', ');
+                    return;
                 }
-            } else {
-                el.textContent = orig;
+                const parts = orig.split(',').map(s => s.trim());
+                const translatedParts = parts.map(p => movieGenres[p] || p);
+                el.textContent = translatedParts.join(', ');
+                return;
             }
+            el.textContent = orig;
         });
 
-        // 3. Movie Descriptions
+        // 3. Movie Descriptions (Database Attribute First, JSON Fallback)
         document.querySelectorAll('.movie-description').forEach(el => {
             let orig = el.getAttribute('data-original-desc');
             if (!orig) {
                 orig = el.textContent.trim();
                 el.setAttribute('data-original-desc', orig);
+            }
+            const dbDesc = el.getAttribute('data-desc-' + currentLang);
+            if (dbDesc) {
+                el.textContent = dbDesc;
+                return;
             }
             const movieKey = el.getAttribute('data-movie-title');
             if (isEn) {
@@ -158,10 +219,31 @@
                 }
                 if (translated) {
                     el.textContent = translated;
+                    return;
                 }
-            } else {
-                el.textContent = orig;
             }
+            el.textContent = orig;
+        });
+
+        // 3b. Movie Director & Cast (Database Attributes)
+        document.querySelectorAll('.movie-director').forEach(el => {
+            let orig = el.getAttribute('data-original-director');
+            if (!orig) {
+                orig = el.textContent.trim();
+                el.setAttribute('data-original-director', orig);
+            }
+            const dbDir = el.getAttribute('data-director-' + currentLang);
+            el.textContent = dbDir ? dbDir : orig;
+        });
+
+        document.querySelectorAll('.movie-cast').forEach(el => {
+            let orig = el.getAttribute('data-original-cast');
+            if (!orig) {
+                orig = el.textContent.trim();
+                el.setAttribute('data-original-cast', orig);
+            }
+            const dbCast = el.getAttribute('data-cast-' + currentLang);
+            el.textContent = dbCast ? dbCast : orig;
         });
 
         // 4. Room Names
@@ -436,17 +518,19 @@
 
     // Update Language Switcher UI (Button label, flag image, active state)
     function updateSwitcherUI(lang) {
-        const isVN = lang === 'vi';
-        const labelText = isVN ? ' - VN' : ' - US';
+        const cur = availableLanguages.find(l => l.code.toLowerCase() === lang.toLowerCase()) || {
+            code: lang,
+            flag: lang === 'en' ? '/assets/images/flags/us.svg' : '/assets/images/flags/vn.svg'
+        };
         const contextPath = getContextPath();
-        const flagFile = isVN ? 'vn.svg' : 'us.svg';
-        const flagSrc = (contextPath ? contextPath : '') + '/assets/images/flags/' + flagFile;
+        const flagSrc = cur.flag.startsWith('/') ? ((contextPath ? contextPath : '') + cur.flag) : ((contextPath ? contextPath : '') + '/' + cur.flag);
+        const labelText = ' - ' + cur.code.toUpperCase();
 
         document.querySelectorAll('.lang-switcher').forEach(switcher => {
             const flagEl = switcher.querySelector('.lang-flag');
             const labelEl = switcher.querySelector('.lang-label');
             if (flagEl) {
-                flagEl.innerHTML = '<img src="' + flagSrc + '" class="lang-flag-img" alt="' + (isVN ? 'VN' : 'US') + '">';
+                flagEl.innerHTML = '<img src="' + flagSrc + '" class="lang-flag-img" alt="' + cur.code.toUpperCase() + '">';
             }
             if (labelEl) {
                 labelEl.textContent = labelText;
@@ -518,9 +602,12 @@
     // Preload & Apply on DOM Ready
     document.addEventListener('DOMContentLoaded', async function () {
         setupSwitcherEvents();
+        await loadAvailableLanguages();
         await loadTranslations(currentLang);
-        // Also prefetch the other language in the background for instant switching
-        loadTranslations(currentLang === 'vi' ? 'en' : 'vi');
+        // Prefetch other languages
+        availableLanguages.forEach(l => {
+            if (l.code !== currentLang) loadTranslations(l.code);
+        });
         applyLanguage(currentLang);
     });
 

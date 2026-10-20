@@ -6,7 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${requestScope.pageTitle != null ? requestScope.pageTitle : (param.title != null ? param.title : "CineStar - Đặt Vé Xem Phim Trực Tuyến")}</title>
+    <title>${requestScope.pageTitle != null ? requestScope.pageTitle : (param.title != null ? param.title : (not empty siteSettings.site_title ? siteSettings.site_title : "CineStar - Đặt Vé Xem Phim Trực Tuyến"))}</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="${not empty siteSettings.site_favicon ? siteSettings.site_favicon : pageContext.request.contextPath.concat('/assets/images/favicon.ico')}">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome 6 -->
@@ -24,5 +26,13 @@
             document.documentElement.setAttribute('lang', lang);
         })();
     </script>
+    <!-- Custom Head Script (From System Settings) -->
+    <c:if test="${not empty siteSettings.script_head}">
+        ${siteSettings.script_head}
+    </c:if>
 </head>
 <body>
+<!-- Custom Body Script (From System Settings) -->
+<c:if test="${not empty siteSettings.script_body}">
+    ${siteSettings.script_body}
+</c:if>

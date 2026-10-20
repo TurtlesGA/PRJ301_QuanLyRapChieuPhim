@@ -237,3 +237,48 @@ UPDATE Users SET full_name = N'Nguyễn Văn A' WHERE username = 'customer';
 UPDATE Users SET full_name = N'Trần Thị B' WHERE username = 'user2';
 GO
 
+
+
+-- ================================================================
+-- 8. Table: SystemSettings (Cấu hình website & Scripts)
+-- ================================================================
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='SystemSettings' AND xtype='U')
+CREATE TABLE SystemSettings (
+    setting_key VARCHAR(50) PRIMARY KEY,
+    setting_value NVARCHAR(MAX),
+    updated_at DATETIME DEFAULT GETDATE()
+);
+GO
+
+-- ================================================================
+-- 9. Table: Languages (Quản lý đa ngôn ngữ website)
+-- ================================================================
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Languages' AND xtype='U')
+CREATE TABLE Languages (
+    lang_code VARCHAR(10) PRIMARY KEY,
+    country_name NVARCHAR(100) NOT NULL,
+    flag_url NVARCHAR(255) NOT NULL,
+    is_active BIT DEFAULT 1,
+    is_default BIT DEFAULT 0,
+    created_at DATETIME DEFAULT GETDATE()
+);
+GO
+
+-- ================================================================
+-- 10. Table: MovieTranslations (Đa ngôn ngữ động cho chi tiết phim)
+-- ================================================================
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='MovieTranslations' AND xtype='U')
+CREATE TABLE MovieTranslations (
+    translation_id INT IDENTITY(1,1) PRIMARY KEY,
+    movie_id INT NOT NULL,
+    lang_code VARCHAR(10) NOT NULL,
+    title NVARCHAR(255) NOT NULL,
+    genre NVARCHAR(255),
+    description NVARCHAR(MAX),
+    director NVARCHAR(100),
+    cast NVARCHAR(255),
+    updated_at DATETIME DEFAULT GETDATE(),
+    CONSTRAINT FK_MovieTranslations_Movies FOREIGN KEY (movie_id) REFERENCES Movies(movie_id) ON DELETE CASCADE,
+    CONSTRAINT UQ_Movie_Lang UNIQUE(movie_id, lang_code)
+);
+GO

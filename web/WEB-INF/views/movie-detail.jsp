@@ -24,18 +24,18 @@
                         ${movie.status == 'NOW_SHOWING' ? 'Đang Chiếu' : 'Sắp Chiếu'}
                     </span>
                 </div>
-                <h1 class="display-6 fw-bold text-white mb-3 movie-detail-title movie-title" data-original-title="${movie.title}">${movie.title}</h1>
+                <h1 class="display-6 fw-bold text-white mb-3 movie-detail-title movie-title" data-original-title="${movie.title}"<c:forEach items="${movie.translations}" var="t"> data-title-${t.key}="<c:out value="${t.value.title}"/>"</c:forEach>>${movie.title}</h1>
 
                 <ul class="list-unstyled text-light mb-4">
-                    <li class="mb-2"><strong class="text-secondary" data-i18n="movieDetail.genre">Thể loại:</strong> <span class="movie-genre" data-original-genre="${movie.genre}">${movie.genre}</span></li>
+                    <li class="mb-2"><strong class="text-secondary" data-i18n="movieDetail.genre">Thể loại:</strong> <span class="movie-genre" data-original-genre="${movie.genre}"<c:forEach items="${movie.translations}" var="t"> data-genre-${t.key}="<c:out value="${t.value.genre}"/>"</c:forEach>>${movie.genre}</span></li>
                     <li class="mb-2"><strong class="text-secondary" data-i18n="movieDetail.duration">Thời lượng:</strong> ${movie.duration} <span data-i18n="movieDetail.minutes">phút</span></li>
-                    <li class="mb-2"><strong class="text-secondary" data-i18n="movieDetail.director">Đạo diễn:</strong> ${movie.director}</li>
-                    <li class="mb-2"><strong class="text-secondary" data-i18n="movieDetail.cast">Diễn viên:</strong> ${movie.cast}</li>
+                    <li class="mb-2"><strong class="text-secondary" data-i18n="movieDetail.director">Đạo diễn:</strong> <span class="movie-director" data-original-director="${movie.director}"<c:forEach items="${movie.translations}" var="t"> data-director-${t.key}="<c:out value="${t.value.director}"/>"</c:forEach>>${movie.director}</span></li>
+                    <li class="mb-2"><strong class="text-secondary" data-i18n="movieDetail.cast">Diễn viên:</strong> <span class="movie-cast" data-original-cast="${movie.cast}"<c:forEach items="${movie.translations}" var="t"> data-cast-${t.key}="<c:out value="${t.value.cast}"/>"</c:forEach>>${movie.cast}</span></li>
                     <li class="mb-2"><strong class="text-secondary" data-i18n="movieDetail.releaseDate">Khởi chiếu:</strong> <fmt:formatDate value="${movie.releaseDate}" pattern="dd/MM/yyyy"/></li>
                 </ul>
 
                 <h5 class="fw-bold text-white mb-2" data-i18n="movieDetail.description">Nội dung phim:</h5>
-                <p class="text-light lead fs-6 mb-4 movie-description" data-original-desc="${movie.description}" data-movie-title="${movie.title}" style="line-height: 1.8;">${movie.description}</p>
+                <p class="text-light lead fs-6 mb-4 movie-description" data-original-desc="${movie.description}" data-movie-title="${movie.title}"<c:forEach items="${movie.translations}" var="t"> data-desc-${t.key}="<c:out value="${t.value.description}"/>"</c:forEach> style="line-height: 1.8;">${movie.description}</p>
 
                 <c:if test="${not empty movie.trailerUrl}">
                     <a href="${movie.trailerUrl}" target="_blank" class="btn btn-outline-danger fw-bold rounded-pill px-4">

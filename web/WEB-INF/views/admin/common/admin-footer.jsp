@@ -1,4 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
         </main>
     </div>
 </div>
@@ -8,7 +9,7 @@
     <div class="container-fluid px-3 px-lg-4">
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-2 text-muted small">
             <div>
-                <span class="text-white fw-semibold">CineStar Cinema</span> &copy; 2026 Admin Control Panel. <span data-i18n="admin.footerText">Phiên bản 2.0</span>
+                <span class="text-white fw-semibold">${not empty siteSettings.header_brand_name ? siteSettings.header_brand_name : 'CineStar Cinema'}</span> &copy; 2026 Admin Control Panel. <span data-i18n="admin.footerText">Phiên bản 2.0</span>
             </div>
             <div class="d-flex align-items-center gap-3">
                 <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50">
@@ -27,8 +28,13 @@
 <!-- SweetAlert2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- i18n Translation Engine -->
-<script src="${pageContext.request.contextPath}/assets/js/i18n.js?v=2.4" charset="UTF-8"></script>
+<script src="${pageContext.request.contextPath}/assets/js/i18n.js?v=2.5" charset="UTF-8"></script>
 <!-- Admin SweetAlert2 and UI Script -->
 <script src="${pageContext.request.contextPath}/assets/js/admin.js?v=2.3" charset="UTF-8"></script>
+
+<!-- Custom Foot Script (From System Settings) -->
+<c:if test="${not empty siteSettings.script_foot}">
+    ${siteSettings.script_foot}
+</c:if>
 </body>
 </html>

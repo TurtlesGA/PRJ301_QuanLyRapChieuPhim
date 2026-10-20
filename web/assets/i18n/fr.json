@@ -1,0 +1,8 @@
+{
+  "metadata": {"templateVersion": "1.0"},
+  "common": {"currency": "\u20ac", "minutes": "mins", "back": "Retour", "cancel": "Annuler", "save": "Enregistrer"},
+  "status": {"NOW_SHOWING": "A l'affiche", "COMING_SOON": "Prochainement", "STOPPED": "Arrete"},
+  "nav": {"home": "Accueil", "nowShowing": "A l'affiche", "comingSoon": "Prochainement", "login": "Connexion"},
+  "footer": {"brandTitle": "CINESTAR CINEMA", "description": "Cinema moderne", "hotline": "1900 6017"},
+  "home": {"nowShowing": "A L'AFFICHE", "comingSoon": "PROCHAINEMENT", "buyTicket": "Acheter", "minutes": "mins"}
+}

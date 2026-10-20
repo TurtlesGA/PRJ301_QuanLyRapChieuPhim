@@ -6,7 +6,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${param.title != null ? param.title : (requestScope.pageTitle != null ? requestScope.pageTitle : "CineStar Admin Portal")}</title>
+    <title>${param.title != null ? param.title : (requestScope.pageTitle != null ? requestScope.pageTitle : (not empty siteSettings.site_title ? siteSettings.site_title : "CineStar Admin Portal"))}</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="${not empty siteSettings.site_favicon ? siteSettings.site_favicon : pageContext.request.contextPath.concat('/assets/images/favicon.ico')}">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome 6 -->
@@ -26,8 +28,16 @@
             document.documentElement.setAttribute('lang', lang);
         })();
     </script>
+    <!-- Custom Head Script (From System Settings) -->
+    <c:if test="${not empty siteSettings.script_head}">
+        ${siteSettings.script_head}
+    </c:if>
 </head>
 <body class="admin-body d-flex flex-column min-vh-100">
+<!-- Custom Body Script (From System Settings) -->
+<c:if test="${not empty siteSettings.script_body}">
+    ${siteSettings.script_body}
+</c:if>
 
 <!-- ================= DEDICATED ADMIN NAVBAR ================= -->
 <nav class="navbar navbar-expand-lg navbar-cinema navbar-admin sticky-top">
@@ -46,7 +56,6 @@
             </a>
         </div>
 
-        <!-- Right Admin Actions -->
         <div class="d-flex align-items-center gap-2 gap-sm-3 ms-auto">
             <!-- Back to Client Website Link -->
             <a href="${pageContext.request.contextPath}/home" class="btn btn-sm btn-outline-secondary d-none d-md-inline-flex align-items-center gap-2" title="Quay về giao diện khách hàng">
@@ -100,31 +109,33 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow border-secondary mt-2">
                     <li class="px-3 py-2 border-bottom border-secondary">
-                        <div class="small text-muted" data-i18n="nav.loggedInAs">Đang đăng nhập với vai trò:</div>
-                        <div class="fw-bold text-danger"><i class="fa-solid fa-shield-halved me-1"></i>ADMINISTRATOR</div>
+                        <div class="fw-bold text-white">${sessionScope.currentUser.fullName}</div>
+                        <div class="small text-muted">${sessionScope.currentUser.email}</div>
+                        <span class="badge bg-danger mt-1">Administrator</span>
                     </li>
-                    <li><a class="dropdown-item py-2" href="${pageContext.request.contextPath}/profile"><i class="fa-solid fa-user-gear me-2"></i><span data-i18n="nav.personalAccount">Tài Khoản Cá Nhân</span></a></li>
-                    <li><a class="dropdown-item py-2" href="${pageContext.request.contextPath}/home"><i class="fa-solid fa-house me-2"></i><span data-i18n="nav.customerPage">Trang Khách Hàng</span></a></li>
+                    <li><a class="dropdown-item py-2" href="${pageContext.request.contextPath}/home"><i class="fa-solid fa-house me-2"></i><span data-i18n="admin.viewWebsite">Trang Khách Hàng</span></a></li>
+                    <li><a class="dropdown-item py-2" href="${pageContext.request.contextPath}/profile"><i class="fa-solid fa-user-gear me-2"></i><span data-i18n="nav.myAccount">Tài Khoản</span></a></li>
+                    <li><a class="dropdown-item py-2" href="${pageContext.request.contextPath}/admin/settings"><i class="fa-solid fa-gears me-2"></i><span data-i18n="admin.manageSettings">Cài Đặt Hệ Thống</span></a></li>
                     <li><hr class="dropdown-divider border-secondary my-1"></li>
-                    <li><a class="dropdown-item py-2 text-danger" href="${pageContext.request.contextPath}/logout"><i class="fa-solid fa-right-from-bracket me-2"></i><span data-i18n="nav.logout">Đăng Xuất</span></a></li>
+                    <li><a class="dropdown-item py-2 text-danger" href="${pageContext.request.contextPath}/logout"><i class="fa-solid fa-right-from-bracket me-2"></i><span data-i18n="admin.logout">Đăng Xuất</span></a></li>
                 </ul>
             </div>
         </div>
     </div>
 </nav>
 
-<!-- ================= MOBILE OFFCANVAS SIDEBAR (RESPONSIVE) ================= -->
-<div class="offcanvas offcanvas-start bg-dark text-white border-secondary d-lg-none" tabindex="-1" id="adminSidebarOffcanvas" aria-labelledby="adminSidebarOffcanvasLabel" style="width: 280px;">
+<!-- ================= MOBILE OFFCANVAS SIDEBAR ================= -->
+<div class="offcanvas offcanvas-start bg-dark text-white border-secondary" tabindex="-1" id="adminSidebarOffcanvas" aria-labelledby="adminSidebarOffcanvasLabel">
     <div class="offcanvas-header border-bottom border-secondary">
-        <div class="d-flex align-items-center gap-2">
-            <i class="fa-solid fa-film text-danger fs-4"></i>
-            <h5 class="offcanvas-title fw-bold m-0" id="adminSidebarOffcanvasLabel" data-i18n="admin.adminBrand">CineStar Admin</h5>
-        </div>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <h5 class="offcanvas-title d-flex align-items-center gap-2" id="adminSidebarOffcanvasLabel">
+            <i class="fa-solid fa-film text-danger"></i>
+            <span>CINE<span class="text-white">STAR</span> ADMIN</span>
+        </h5>
+        <button type="button" class="btn-close btn-close-white text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
-    <div class="offcanvas-body p-3">
-        <h6 class="text-uppercase text-muted fw-bold px-2 mb-3 small" data-i18n="admin.sidebarTitle">Hệ Thống Quản Trị</h6>
-        <ul class="nav flex-column admin-nav-list mb-4">
+    <div class="offcanvas-body d-flex flex-column p-3">
+        <h6 class="text-uppercase text-muted fw-bold px-2 mb-2 small" data-i18n="admin.sidebarTitle">Hệ Thống Quản Trị</h6>
+        <ul class="nav flex-column admin-nav-list flex-grow-1">
             <li class="nav-item">
                 <a class="nav-link ${param.activeMenu == 'dashboard' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/dashboard">
                     <i class="fa-solid fa-chart-pie me-2"></i><span data-i18n="admin.overview">Tổng Quan</span>
@@ -153,6 +164,11 @@
             <li class="nav-item">
                 <a class="nav-link ${param.activeMenu == 'users' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/users">
                     <i class="fa-solid fa-users me-2"></i><span data-i18n="admin.manageUsers">Người Dùng</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link ${param.activeMenu == 'settings' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/settings">
+                    <i class="fa-solid fa-gears me-2"></i><span data-i18n="admin.manageSettings">Cài Đặt Hệ Thống</span>
                 </a>
             </li>
         </ul>
@@ -204,6 +220,11 @@
                 <li class="nav-item">
                     <a class="nav-link ${param.activeMenu == 'users' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/users">
                         <i class="fa-solid fa-users me-2"></i><span data-i18n="admin.manageUsers">Người Dùng</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ${param.activeMenu == 'settings' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/settings">
+                        <i class="fa-solid fa-gears me-2"></i><span data-i18n="admin.manageSettings">Cài Đặt Hệ Thống</span>
                     </a>
                 </li>
             </ul>

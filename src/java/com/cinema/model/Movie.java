@@ -141,4 +141,26 @@ public class Movie {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    private java.util.Map<String, MovieTranslation> translations = new java.util.HashMap<>();
+
+    public java.util.Map<String, MovieTranslation> getTranslations() {
+        return translations;
+    }
+
+    public void setTranslations(java.util.Map<String, MovieTranslation> translations) {
+        this.translations = translations != null ? translations : new java.util.HashMap<>();
+    }
+
+    public MovieTranslation getTranslation(String langCode) {
+        if (translations == null || langCode == null) return null;
+        return translations.get(langCode.toLowerCase());
+    }
+
+    public void addTranslation(MovieTranslation t) {
+        if (t != null && t.getLangCode() != null) {
+            if (this.translations == null) this.translations = new java.util.HashMap<>();
+            this.translations.put(t.getLangCode().toLowerCase(), t);
+        }
+    }
 }

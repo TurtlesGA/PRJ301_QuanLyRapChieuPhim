@@ -1,10 +1,11 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <footer class="bg-black text-secondary py-5 mt-auto border-top border-secondary">
     <div class="container">
         <div class="row g-4">
             <div class="col-md-4">
-                <h5 class="text-white fw-bold mb-3"><i class="fa-solid fa-film text-danger me-2"></i><span data-i18n="footer.brandTitle">CINESTAR CINEMA</span></h5>
-                <p class="small text-muted" data-i18n="footer.description">Hệ thống rạp chiếu phim hiện đại chuẩn quốc tế. Mang đến trải nghiệm điện ảnh chân thực và sống động nhất cho khán giả.</p>
+                <h5 class="text-white fw-bold mb-3"><i class="fa-solid fa-film text-danger me-2"></i><span data-i18n="footer.brandTitle">${not empty siteSettings.header_brand_name ? siteSettings.header_brand_name : 'CINESTAR CINEMA'}</span></h5>
+                <p class="small text-muted" data-i18n="footer.description">${not empty siteSettings.footer_description ? siteSettings.footer_description : 'Hệ thống rạp chiếu phim hiện đại chuẩn quốc tế. Mang đến trải nghiệm điện ảnh chân thực và sống động nhất cho khán giả.'}</p>
                 <div class="d-flex gap-3 fs-5 text-secondary">
                     <a href="#" class="text-secondary"><i class="fa-brands fa-facebook"></i></a>
                     <a href="#" class="text-secondary"><i class="fa-brands fa-youtube"></i></a>
@@ -24,9 +25,9 @@
             <div class="col-md-3 col-6">
                 <h6 class="text-white fw-bold mb-3" data-i18n="footer.support">Hỗ Trợ Khách Hàng</h6>
                 <ul class="list-unstyled small">
-                    <li class="mb-2"><i class="fa-solid fa-phone me-2 text-danger"></i><span data-i18n="footer.hotline">Hotline: 1900 6017</span></li>
-                    <li class="mb-2"><i class="fa-solid fa-envelope me-2 text-danger"></i><span data-i18n="footer.email">support@cinestar.vn</span></li>
-                    <li class="mb-2"><i class="fa-solid fa-clock me-2 text-danger"></i><span data-i18n="footer.hours">8:00 - 22:00 Hàng ngày</span></li>
+                    <li class="mb-2"><i class="fa-solid fa-phone me-2 text-danger"></i><span data-i18n="footer.hotline">Hotline: ${not empty siteSettings.footer_hotline ? siteSettings.footer_hotline : '1900 6017'}</span></li>
+                    <li class="mb-2"><i class="fa-solid fa-envelope me-2 text-danger"></i><span data-i18n="footer.email">${not empty siteSettings.footer_email ? siteSettings.footer_email : 'support@cinestar.vn'}</span></li>
+                    <li class="mb-2"><i class="fa-solid fa-clock me-2 text-danger"></i><span data-i18n="footer.hours">${not empty siteSettings.footer_hours ? siteSettings.footer_hours : '8:00 - 22:00 Hàng ngày'}</span></li>
                 </ul>
             </div>
             <div class="col-md-3">
@@ -40,7 +41,7 @@
         </div>
         <hr class="border-secondary my-4">
         <div class="text-center small text-muted" data-i18n="footer.copyright">
-            &copy; 2026 CineStar Cinema - PRJ302 Quản Lý Rạp Chiếu Phim. Thiết kế & phát triển bởi Nhóm Dự Án.
+            ${not empty siteSettings.footer_copyright ? siteSettings.footer_copyright : '&copy; 2026 CineStar Cinema - PRJ302 Quản Lý Rạp Chiếu Phim. Thiết kế & phát triển bởi Nhóm Dự Án.'}
         </div>
     </div>
 </footer>
@@ -50,8 +51,13 @@
 <!-- Bootstrap 5 Bundle JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- i18n Translation Engine -->
-<script src="${pageContext.request.contextPath}/assets/js/i18n.js?v=2.4" charset="UTF-8"></script>
+<script src="${pageContext.request.contextPath}/assets/js/i18n.js?v=2.5" charset="UTF-8"></script>
 <!-- Main App JS -->
 <script src="${pageContext.request.contextPath}/assets/js/main.js?v=2.1" charset="UTF-8"></script>
+
+<!-- Custom Foot Script (From System Settings) -->
+<c:if test="${not empty siteSettings.script_foot}">
+    ${siteSettings.script_foot}
+</c:if>
 </body>
 </html>

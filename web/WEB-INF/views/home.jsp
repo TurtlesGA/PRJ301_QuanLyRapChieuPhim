@@ -90,8 +90,8 @@
                             </div>
                             <div class="movie-info">
                                 <div>
-                                    <h5 class="movie-title" data-original-title="${movie.title}" title="${movie.title}">${movie.title}</h5>
-                                    <p class="small text-muted mb-1"><i class="fa-solid fa-tags me-1"></i><span class="movie-genre" data-original-genre="${movie.genre}">${movie.genre}</span></p>
+                                    <h5 class="movie-title" data-original-title="${movie.title}" title="${movie.title}"<c:forEach items="${movie.translations}" var="t"> data-title-${t.key}="<c:out value="${t.value.title}"/>"</c:forEach>>${movie.title}</h5>
+                                    <p class="small text-muted mb-1"><i class="fa-solid fa-tags me-1"></i><span class="movie-genre" data-original-genre="${movie.genre}"<c:forEach items="${movie.translations}" var="t"> data-genre-${t.key}="<c:out value="${t.value.genre}"/>"</c:forEach>>${movie.genre}</span></p>
                                     <p class="small text-muted mb-3"><i class="fa-regular fa-clock me-1"></i>${movie.duration} <span data-i18n="home.minutes">phút</span></p>
                                 </div>
                                 <div class="d-grid gap-2">
@@ -126,8 +126,8 @@
                             </div>
                             <div class="movie-info">
                                 <div>
-                                    <h5 class="movie-title" data-original-title="${movie.title}" title="${movie.title}">${movie.title}</h5>
-                                    <p class="small text-muted mb-1"><i class="fa-solid fa-tags me-1"></i><span class="movie-genre" data-original-genre="${movie.genre}">${movie.genre}</span></p>
+                                    <h5 class="movie-title" data-original-title="${movie.title}" title="${movie.title}"<c:forEach items="${movie.translations}" var="t"> data-title-${t.key}="<c:out value="${t.value.title}"/>"</c:forEach>>${movie.title}</h5>
+                                    <p class="small text-muted mb-1"><i class="fa-solid fa-tags me-1"></i><span class="movie-genre" data-original-genre="${movie.genre}"<c:forEach items="${movie.translations}" var="t"> data-genre-${t.key}="<c:out value="${t.value.genre}"/>"</c:forEach>>${movie.genre}</span></p>
                                     <p class="small text-muted mb-3"><i class="fa-regular fa-clock me-1"></i>${movie.duration} <span data-i18n="home.minutes">phút</span></p>
                                 </div>
                                 <div class="d-grid gap-2">
