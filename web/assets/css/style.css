@@ -793,7 +793,6 @@ body {
 }
 
 /* ===================================
-<<<<<<< HEAD
    Login Button (.btn-login)
    Bo tròn giống nút Đăng Ký
    Dark: nền trắng, chữ đen
@@ -1181,3 +1180,163 @@ body {
 }
 
 
+
+
+/* ===================================
+   Forgot Password OTP Email Display Bar
+   =================================== */
+.otp-email-bar {
+    background-color: #121212 !important;
+    border: 1px solid #3f3f46 !important;
+    color: #f4f4f5 !important;
+}
+.otp-email-bar .email-val {
+    color: #eab308;
+    font-weight: 700;
+}
+.otp-email-bar .change-email-link {
+    color: #38bdf8;
+    font-weight: 600;
+}
+[data-bs-theme="light"] .otp-email-bar {
+    background-color: #e2e8f0 !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #0f172a !important;
+}
+[data-bs-theme="light"] .otp-email-bar .email-val {
+    color: #d97706 !important;
+    font-weight: 700;
+}
+[data-bs-theme="light"] .otp-email-bar .change-email-link {
+    color: #0284c7 !important;
+    font-weight: 600;
+}
+
+
+/* ===================================
+   Language Switcher (.lang-switcher)
+   =================================== */
+.lang-switcher {
+    position: relative;
+    display: inline-block;
+}
+.lang-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid #3f3f46;
+    border-radius: 9999px;
+    color: #e4e4e7;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    height: 31px;
+    line-height: 1;
+    white-space: nowrap;
+}
+.lang-btn:hover {
+    border-color: #71717a;
+    background: rgba(255, 255, 255, 0.14);
+    color: #ffffff;
+}
+.lang-arrow {
+    font-size: 0.65rem;
+    transition: transform 0.2s ease;
+    margin-left: 2px;
+}
+.lang-switcher.open .lang-arrow {
+    transform: rotate(180deg);
+}
+.lang-dropdown {
+    position: absolute;
+    top: calc(100% + 6px);
+    right: 0;
+    min-width: 110px;
+    background: #18181b;
+    border: 1px solid #3f3f46;
+    border-radius: 12px;
+    padding: 4px;
+    margin: 0;
+    list-style: none;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.45);
+    z-index: 1050;
+    display: none;
+}
+.lang-switcher.open .lang-dropdown {
+    display: block;
+}
+.lang-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 10px;
+    border: none;
+    background: transparent;
+    color: #d4d4d8;
+    font-size: 0.8rem;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+}
+.lang-option:hover {
+    background: rgba(255, 255, 255, 0.12);
+    color: #ffffff;
+}
+.lang-option.active {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+/* Light mode for Language Switcher */
+[data-bs-theme="light"] .lang-btn {
+    background: #e2e8f0;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+[data-bs-theme="light"] .lang-btn:hover {
+    background: #cbd5e1;
+    border-color: #94a3b8;
+    color: #0f172a;
+}
+[data-bs-theme="light"] .lang-dropdown {
+    background: #ffffff;
+    border-color: #cbd5e1;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+}
+[data-bs-theme="light"] .lang-option {
+    color: #334155;
+}
+[data-bs-theme="light"] .lang-option:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+[data-bs-theme="light"] .lang-option.active {
+    background: #dc2626;
+    color: #ffffff;
+}
+
+
+/* Flag Image in Language Switcher */
+.lang-flag-img {
+    width: 21px;
+    height: 14px;
+    object-fit: cover;
+    border-radius: 2px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    display: inline-block;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+[data-bs-theme="light"] .lang-flag-img {
+    border: 1px solid rgba(0, 0, 0, 0.15);
+}
+.lang-option .lang-flag-img {
+    margin-right: 4px;
+}

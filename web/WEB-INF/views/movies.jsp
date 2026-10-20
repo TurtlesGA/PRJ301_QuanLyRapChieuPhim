@@ -14,17 +14,17 @@
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary gap-3">
             <h2 class="h3 fw-bold text-white mb-0">
                 <c:choose>
-                    <c:when test="${not empty searchKeyword}">Kết quả tìm kiếm cho: "${searchKeyword}"</c:when>
-                    <c:when test="${activeFilter == 'now'}">Phim Đang Chiếu</c:when>
-                    <c:when test="${activeFilter == 'soon'}">Phim Sắp Chiếu</c:when>
-                    <c:otherwise>Tất Cả Phim</c:otherwise>
+                    <c:when test="${not empty searchKeyword}"><span data-i18n="movies.searchResult">Kết quả tìm kiếm cho:</span> "${searchKeyword}"</c:when>
+                    <c:when test="${activeFilter == 'now'}"><span data-i18n="movies.nowShowing">Phim Đang Chiếu</span></c:when>
+                    <c:when test="${activeFilter == 'soon'}"><span data-i18n="movies.comingSoon">Phim Sắp Chiếu</span></c:when>
+                    <c:otherwise><span data-i18n="movies.allMovies">Tất Cả Phim</span></c:otherwise>
                 </c:choose>
             </h2>
 
             <div class="btn-group filter-btn-group" role="group">
-                <a href="${pageContext.request.contextPath}/movies" class="btn btn-sm ${activeFilter == 'all' || empty activeFilter ? 'btn-danger' : 'btn-outline-secondary'}">Tất Cả</a>
-                <a href="${pageContext.request.contextPath}/movies?filter=now" class="btn btn-sm ${activeFilter == 'now' ? 'btn-danger' : 'btn-outline-secondary'}">Đang Chiếu</a>
-                <a href="${pageContext.request.contextPath}/movies?filter=soon" class="btn btn-sm ${activeFilter == 'soon' ? 'btn-danger' : 'btn-outline-secondary'}">Sắp Chiếu</a>
+                <a href="${pageContext.request.contextPath}/movies" class="btn btn-sm ${activeFilter == 'all' || empty activeFilter ? 'btn-danger' : 'btn-outline-secondary'}" data-i18n="movies.filterAll">Tất Cả</a>
+                <a href="${pageContext.request.contextPath}/movies?filter=now" class="btn btn-sm ${activeFilter == 'now' ? 'btn-danger' : 'btn-outline-secondary'}" data-i18n="movies.filterNow">Đang Chiếu</a>
+                <a href="${pageContext.request.contextPath}/movies?filter=soon" class="btn btn-sm ${activeFilter == 'soon' ? 'btn-danger' : 'btn-outline-secondary'}" data-i18n="movies.filterSoon">Sắp Chiếu</a>
             </div>
         </div>
 
@@ -33,9 +33,9 @@
             <c:when test="${empty movies}">
                 <div class="text-center py-5">
                     <i class="fa-solid fa-film fs-1 text-secondary mb-3"></i>
-                    <h5 class="text-white">Không tìm thấy bộ phim nào phù hợp!</h5>
-                    <p class="text-muted">Vui lòng thử lại với từ khóa hoặc bộ lọc khác.</p>
-                    <a href="${pageContext.request.contextPath}/movies" class="btn btn-danger mt-2">Xem Tất Cả Phim</a>
+                    <h5 class="text-white" data-i18n="movies.noMovies">Không tìm thấy bộ phim nào phù hợp!</h5>
+                    <p class="text-muted" data-i18n="movies.noMoviesHint">Vui lòng thử lại với từ khóa hoặc bộ lọc khác.</p>
+                    <a href="${pageContext.request.contextPath}/movies" class="btn btn-danger mt-2" data-i18n="movies.viewAll">Xem Tất Cả Phim</a>
                 </div>
             </c:when>
             <c:otherwise>
@@ -46,18 +46,24 @@
                                 <div class="movie-poster-wrapper">
                                     <img src="${movie.posterUrl}" alt="${movie.title}" class="movie-poster" onerror="this.src='https://placehold.co/400x600/222/fff?text=Poster'">
                                     <span class="movie-badge ${movie.status == 'NOW_SHOWING' ? 'bg-danger' : 'bg-warning text-dark'}">
-                                        ${movie.status == 'NOW_SHOWING' ? movie.ageRating : 'Sắp chiếu'}
+                                        <c:choose>
+                                            <c:when test="${movie.status == 'NOW_SHOWING'}">${movie.ageRating}</c:when>
+                                            <c:otherwise><span data-i18n="movies.comingSoonBadge">Sắp chiếu</span></c:otherwise>
+                                        </c:choose>
                                     </span>
                                 </div>
                                 <div class="movie-info">
                                     <div>
-                                        <h5 class="movie-title" title="${movie.title}">${movie.title}</h5>
-                                        <p class="small text-muted mb-1"><i class="fa-solid fa-tags me-1"></i>${movie.genre}</p>
-                                        <p class="small text-muted mb-3"><i class="fa-regular fa-clock me-1"></i>${movie.duration} phút</p>
+                                        <h5 class="movie-title" data-original-title="${movie.title}" title="${movie.title}">${movie.title}</h5>
+                                        <p class="small text-muted mb-1"><i class="fa-solid fa-tags me-1"></i><span class="movie-genre" data-original-genre="${movie.genre}">${movie.genre}</span></p>
+                                        <p class="small text-muted mb-3"><i class="fa-regular fa-clock me-1"></i>${movie.duration} <span data-i18n="movies.minutes">phút</span></p>
                                     </div>
                                     <div class="d-grid gap-2">
                                         <a href="${pageContext.request.contextPath}/movie-detail?id=${movie.movieId}" class="btn btn-sm btn-outline-danger fw-bold stretched-link">
-                                            ${movie.status == 'NOW_SHOWING' ? 'Mua Vé' : 'Xem Chi Tiết'}
+                                            <c:choose>
+                                                <c:when test="${movie.status == 'NOW_SHOWING'}"><span data-i18n="movies.buyTicket">Mua Vé</span></c:when>
+                                                <c:otherwise><span data-i18n="movies.viewDetails">Xem Chi Tiết</span></c:otherwise>
+                                            </c:choose>
                                         </a>
                                     </div>
                                 </div>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 600" width="900" height="600">
+  <rect width="900" height="600" fill="#b22234"/>
+  <path d="M0,46.15h900M0,138.46h900M0,230.77h900M0,323.08h900M0,415.38h900M0,507.69h900" stroke="#fff" stroke-width="46.15"/>
+  <rect width="360" height="323.08" fill="#3c3b6e"/>
+  <g fill="#fff">
+    <!-- Row 1 -->
+    <circle cx="30" cy="27" r="9"/><circle cx="90" cy="27" r="9"/><circle cx="150" cy="27" r="9"/><circle cx="210" cy="27" r="9"/><circle cx="270" cy="27" r="9"/><circle cx="330" cy="27" r="9"/>
+    <!-- Row 2 -->
+    <circle cx="60" cy="59" r="9"/><circle cx="120" cy="59" r="9"/><circle cx="180" cy="59" r="9"/><circle cx="240" cy="59" r="9"/><circle cx="300" cy="59" r="9"/>
+    <!-- Row 3 -->
+    <circle cx="30" cy="91" r="9"/><circle cx="90" cy="91" r="9"/><circle cx="150" cy="91" r="9"/><circle cx="210" cy="91" r="9"/><circle cx="270" cy="91" r="9"/><circle cx="330" cy="91" r="9"/>
+    <!-- Row 4 -->
+    <circle cx="60" cy="123" r="9"/><circle cx="120" cy="123" r="9"/><circle cx="180" cy="123" r="9"/><circle cx="240" cy="123" r="9"/><circle cx="300" cy="123" r="9"/>
+    <!-- Row 5 -->
+    <circle cx="30" cy="155" r="9"/><circle cx="90" cy="155" r="9"/><circle cx="150" cy="155" r="9"/><circle cx="210" cy="155" r="9"/><circle cx="270" cy="155" r="9"/><circle cx="330" cy="155" r="9"/>
+    <!-- Row 6 -->
+    <circle cx="60" cy="187" r="9"/><circle cx="120" cy="187" r="9"/><circle cx="180" cy="187" r="9"/><circle cx="240" cy="187" r="9"/><circle cx="300" cy="187" r="9"/>
+    <!-- Row 7 -->
+    <circle cx="30" cy="219" r="9"/><circle cx="90" cy="219" r="9"/><circle cx="150" cy="219" r="9"/><circle cx="210" cy="219" r="9"/><circle cx="270" cy="219" r="9"/><circle cx="330" cy="219" r="9"/>
+    <!-- Row 8 -->
+    <circle cx="60" cy="251" r="9"/><circle cx="120" cy="251" r="9"/><circle cx="180" cy="251" r="9"/><circle cx="240" cy="251" r="9"/><circle cx="300" cy="251" r="9"/>
+    <!-- Row 9 -->
+    <circle cx="30" cy="283" r="9"/><circle cx="90" cy="283" r="9"/><circle cx="150" cy="283" r="9"/><circle cx="210" cy="283" r="9"/><circle cx="270" cy="283" r="9"/><circle cx="330" cy="283" r="9"/>
+  </g>
+</svg>

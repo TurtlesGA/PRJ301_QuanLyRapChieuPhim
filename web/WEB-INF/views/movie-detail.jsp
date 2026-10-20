@@ -20,24 +20,26 @@
             <div class="col-md-8 col-lg-9">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <span class="badge bg-danger fs-6">${movie.ageRating}</span>
-                    <span class="badge bg-secondary fs-6">${movie.status == 'NOW_SHOWING' ? 'Đang Chiếu' : 'Sắp Chiếu'}</span>
+                    <span class="badge bg-secondary fs-6" data-i18n="${movie.status == 'NOW_SHOWING' ? 'movieDetail.nowShowingBadge' : 'movieDetail.comingSoonBadge'}">
+                        ${movie.status == 'NOW_SHOWING' ? 'Đang Chiếu' : 'Sắp Chiếu'}
+                    </span>
                 </div>
-                <h1 class="display-6 fw-bold text-white mb-3 movie-detail-title">${movie.title}</h1>
+                <h1 class="display-6 fw-bold text-white mb-3 movie-detail-title movie-title" data-original-title="${movie.title}">${movie.title}</h1>
 
                 <ul class="list-unstyled text-light mb-4">
-                    <li class="mb-2"><strong class="text-secondary">Thể loại:</strong> ${movie.genre}</li>
-                    <li class="mb-2"><strong class="text-secondary">Thời lượng:</strong> ${movie.duration} phút</li>
-                    <li class="mb-2"><strong class="text-secondary">Đạo diễn:</strong> ${movie.director}</li>
-                    <li class="mb-2"><strong class="text-secondary">Diễn viên:</strong> ${movie.cast}</li>
-                    <li class="mb-2"><strong class="text-secondary">Khởi chiếu:</strong> <fmt:formatDate value="${movie.releaseDate}" pattern="dd/MM/yyyy"/></li>
+                    <li class="mb-2"><strong class="text-secondary" data-i18n="movieDetail.genre">Thể loại:</strong> <span class="movie-genre" data-original-genre="${movie.genre}">${movie.genre}</span></li>
+                    <li class="mb-2"><strong class="text-secondary" data-i18n="movieDetail.duration">Thời lượng:</strong> ${movie.duration} <span data-i18n="movieDetail.minutes">phút</span></li>
+                    <li class="mb-2"><strong class="text-secondary" data-i18n="movieDetail.director">Đạo diễn:</strong> ${movie.director}</li>
+                    <li class="mb-2"><strong class="text-secondary" data-i18n="movieDetail.cast">Diễn viên:</strong> ${movie.cast}</li>
+                    <li class="mb-2"><strong class="text-secondary" data-i18n="movieDetail.releaseDate">Khởi chiếu:</strong> <fmt:formatDate value="${movie.releaseDate}" pattern="dd/MM/yyyy"/></li>
                 </ul>
 
-                <h5 class="fw-bold text-white mb-2">Nội dung phim:</h5>
-                <p class="text-light lead fs-6 mb-4" style="line-height: 1.8;">${movie.description}</p>
+                <h5 class="fw-bold text-white mb-2" data-i18n="movieDetail.description">Nội dung phim:</h5>
+                <p class="text-light lead fs-6 mb-4 movie-description" data-original-desc="${movie.description}" data-movie-title="${movie.title}" style="line-height: 1.8;">${movie.description}</p>
 
                 <c:if test="${not empty movie.trailerUrl}">
                     <a href="${movie.trailerUrl}" target="_blank" class="btn btn-outline-danger fw-bold rounded-pill px-4">
-                        <i class="fa-brands fa-youtube me-2"></i>Xem Trailer
+                        <i class="fa-brands fa-youtube me-2"></i><span data-i18n="movieDetail.watchTrailer">Xem Trailer</span>
                     </a>
                 </c:if>
             </div>
@@ -47,14 +49,14 @@
         <section class="card bg-dark border-secondary p-4 rounded-4 shadow">
             <div class="d-flex align-items-center gap-2 mb-4">
                 <span class="bg-danger d-inline-block rounded" style="width: 6px; height: 26px;"></span>
-                <h3 class="h4 fw-bold text-white mb-0">LỊCH CHIẾU VÀ ĐẶT VÉ</h3>
+                <h3 class="h4 fw-bold text-white mb-0" data-i18n="movieDetail.schedule">LỊCH CHIẾU VÀ ĐẶT VÉ</h3>
             </div>
 
             <c:choose>
                 <c:when test="${empty showtimes}">
                     <div class="text-center py-4 text-muted">
                         <i class="fa-solid fa-calendar-xmark fs-2 mb-2"></i>
-                        <p class="mb-0">Hiện tại chưa có suất chiếu nào mở bán cho bộ phim này.</p>
+                        <p class="mb-0" data-i18n="movieDetail.noShowtime">Hiện tại chưa có suất chiếu nào mở bán cho bộ phim này.</p>
                     </div>
                 </c:when>
                 <c:otherwise>
@@ -63,7 +65,7 @@
                             <div class="col">
                                 <div class="p-3 rounded-3 border border-secondary showtime-box" style="background-color: #242424;">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
-                                        <span class="badge bg-secondary">${st.room.roomName}</span>
+                                        <span class="badge bg-secondary room-name" data-original-room="${st.room.roomName}">${st.room.roomName}</span>
                                         <span class="badge bg-danger">${st.room.roomType}</span>
                                     </div>
                                     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -71,16 +73,16 @@
                                             <div class="fs-4 fw-bold text-warning">
                                                 <fmt:formatDate value="${st.startTime}" pattern="HH:mm"/>
                                             </div>
-                                            <small class="text-muted">Ngày: <fmt:formatDate value="${st.showDate}" pattern="dd/MM/yyyy"/></small>
+                                            <small class="text-muted"><span data-i18n="movieDetail.dateLabel">Ngày:</span> <fmt:formatDate value="${st.showDate}" pattern="dd/MM/yyyy"/></small>
                                         </div>
                                         <div class="text-end">
                                             <div class="fw-bold text-white">
-                                                <fmt:formatNumber value="${st.basePrice}" type="number" groupingUsed="true"/> đ
+                                                <fmt:formatNumber value="${st.basePrice}" type="number" groupingUsed="true"/> <span data-i18n="common.currency">đ</span>
                                             </div>
-                                            <small class="text-muted">Giá từ</small>
+                                            <small class="text-muted" data-i18n="movieDetail.priceFrom">Giá từ</small>
                                         </div>
                                     </div>
-                                    <a href="${pageContext.request.contextPath}/seat-selection?showtimeId=${st.showtimeId}" class="btn btn-danger btn-sm w-100 fw-bold">
+                                    <a href="${pageContext.request.contextPath}/seat-selection?showtimeId=${st.showtimeId}" class="btn btn-danger btn-sm w-100 fw-bold" data-i18n="movieDetail.selectSeat">
                                         Chọn Ghế
                                     </a>
                                 </div>

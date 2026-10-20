@@ -5,6 +5,7 @@
 
 document.addEventListener('DOMContentLoaded', function () {
     const isDarkMode = () => document.documentElement.getAttribute('data-bs-theme') !== 'light';
+    const isEn = () => (localStorage.getItem('cinema_lang') || 'vi') === 'en';
 
     // 1. SweetAlert2 Confirmation for Action Buttons
     document.addEventListener('click', function (e) {
@@ -15,10 +16,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const url = targetBtn.getAttribute('href') || targetBtn.getAttribute('data-url');
         const formId = targetBtn.getAttribute('data-form');
-        const title = targetBtn.getAttribute('data-title') || 'X\u00e1c nh\u1eadn thao t\u00e1c';
-        const message = targetBtn.getAttribute('data-confirm') || 'B\u1ea1n c\u00f3 ch\u1eafc ch\u1eafn mu\u1ed1n th\u1ef1c hi\u1ec7n h\u00e0nh \u0111\u1ed9ng n\u00e0y?';
+        const title = targetBtn.getAttribute('data-title') || (isEn() ? 'Confirm Action' : 'Xác nhận thao tác');
+        const message = targetBtn.getAttribute('data-confirm') || (isEn() ? 'Are you sure you want to perform this action?' : 'Bạn có chắc chắn muốn thực hiện hành động này?');
         const icon = targetBtn.getAttribute('data-icon') || 'warning';
-        const confirmText = targetBtn.getAttribute('data-confirm-text') || '<i class="fa-solid fa-check me-1"></i> X\u00e1c nh\u1eadn';
+        const confirmText = targetBtn.getAttribute('data-confirm-text') || (isEn() ? '<i class="fa-solid fa-check me-1"></i> Confirm' : '<i class="fa-solid fa-check me-1"></i> Xác nhận');
+        const cancelButtonText = targetBtn.getAttribute('data-cancel-text') || (isEn() ? '<i class="fa-solid fa-xmark me-1"></i> Cancel' : '<i class="fa-solid fa-xmark me-1"></i> Hủy bỏ');
         const confirmColor = targetBtn.getAttribute('data-confirm-color') || '#dc2626';
 
         const dark = isDarkMode();
@@ -30,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
             confirmButtonColor: confirmColor,
             cancelButtonColor: '#6b7280',
             confirmButtonText: confirmText,
-            cancelButtonText: targetBtn.getAttribute('data-cancel-text') || '<i class="fa-solid fa-xmark me-1"></i> H\u1ee7y b\u1ecf',
+            cancelButtonText: cancelButtonText,
             background: dark ? '#1e1e1e' : '#ffffff',
             color: dark ? '#f5f5f5' : '#0f172a',
             reverseButtons: true,
@@ -57,6 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (msg || err) {
         const dark = isDarkMode();
+        const en = isEn();
         const Toast = Swal.mixin({
             toast: true,
             position: 'top-end',
@@ -72,13 +75,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         if (msg === 'add_success') {
-            Toast.fire({ icon: 'success', title: 'Th\u00eam m\u1edbi th\u00e0nh c\u00f4ng!' });
+            Toast.fire({ icon: 'success', title: en ? 'Added successfully!' : 'Thêm mới thành công!' });
         } else if (msg === 'update_success') {
-            Toast.fire({ icon: 'success', title: 'C\u1eadp nh\u1eadt th\u00f4ng tin th\u00e0nh c\u00f4ng!' });
+            Toast.fire({ icon: 'success', title: en ? 'Updated successfully!' : 'Cập nhật thông tin thành công!' });
         } else if (msg === 'delete_success') {
-            Toast.fire({ icon: 'success', title: '\u0110\u00e3 x\u00f3a d\u1eef li\u1ec7u th\u00e0nh c\u00f4ng!' });
+            Toast.fire({ icon: 'success', title: en ? 'Deleted successfully!' : 'Đã xóa dữ liệu thành công!' });
         } else if (err === 'self_delete') {
-            Toast.fire({ icon: 'error', title: 'Kh\u00f4ng th\u1ec3 x\u00f3a t\u00e0i kho\u1ea3n \u0111ang \u0111\u0103ng nh\u1eadp!' });
+            Toast.fire({ icon: 'error', title: en ? 'Cannot delete your currently logged-in account!' : 'Không thể xóa tài khoản đang đăng nhập!' });
         } else if (err) {
             Toast.fire({ icon: 'error', title: err });
         }

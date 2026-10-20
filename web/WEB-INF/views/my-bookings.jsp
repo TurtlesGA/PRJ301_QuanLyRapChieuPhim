@@ -12,17 +12,17 @@
     <div class="container">
         <div class="d-flex align-items-center gap-2 mb-4">
             <span class="bg-danger d-inline-block rounded" style="width: 6px; height: 26px;"></span>
-            <h2 class="h4 fw-bold text-white mb-0">LỊCH SỬ ĐẶT VÉ CỦA BẠN</h2>
+            <h2 class="h4 fw-bold text-white mb-0" data-i18n="myBookings.title">LỊCH SỬ ĐẶT VÉ CỦA BẠN</h2>
         </div>
 
         <c:choose>
             <c:when test="${empty myBookings}">
                 <div class="card bg-dark border-secondary p-5 text-center rounded-4">
                     <i class="fa-solid fa-ticket-simple fs-1 text-secondary mb-3"></i>
-                    <h5 class="text-white">Bạn chưa có đơn đặt vé nào!</h5>
-                    <p class="text-muted">Hãy chọn ngay một bộ phim yêu thích và trải nghiệm rạp chiếu ngay hôm nay.</p>
+                    <h5 class="text-white" data-i18n="myBookings.empty">Bạn chưa có đơn đặt vé nào!</h5>
+                    <p class="text-muted" data-i18n="myBookings.emptyHint">Hãy chọn ngay một bộ phim yêu thích và trải nghiệm rạp chiếu ngay hôm nay.</p>
                     <div class="mt-2">
-                        <a href="${pageContext.request.contextPath}/movies" class="btn btn-danger">Xem Phim Đang Chiếu</a>
+                        <a href="${pageContext.request.contextPath}/movies" class="btn btn-danger" data-i18n="myBookings.browseMovies">Xem Phim Đang Chiếu</a>
                     </div>
                 </div>
             </c:when>
@@ -34,52 +34,54 @@
                                 <div class="card-header bg-black border-secondary d-flex justify-content-between align-items-center py-3">
                                     <span class="text-warning fw-bold">#${b.bookingCode}</span>
                                     <div>
-                                        <span class="badge ${b.paymentStatus == 'PAID' ? 'bg-success' : (b.paymentStatus == 'CANCELLED' ? 'bg-danger' : 'bg-warning text-dark')}">${b.paymentStatus}</span>
+                                        <span class="badge badge-status ${b.paymentStatus == 'PAID' ? 'bg-success' : (b.paymentStatus == 'CANCELLED' ? 'bg-danger' : 'bg-warning text-dark')}" data-status-code="${b.paymentStatus}">${b.paymentStatus}</span>
                                         <c:if test="${b.paymentStatus == 'PAID'}">
                                             <a href="${pageContext.request.contextPath}/cancel-booking?id=${b.bookingId}" 
                                                class="btn btn-sm btn-outline-danger ms-2"
-                                               onclick="return confirm('Bạn có chắc chắn muốn hủy đơn vé này không? Ghế sẽ được mở lại cho người khác.');">
+                                               data-i18n="myBookings.cancel"
+                                               onclick="return confirm(window.CinemaI18n ? window.CinemaI18n.t('myBookings.cancelConfirm', 'Bạn có chắc chắn muốn hủy đơn vé này không? Ghế sẽ được mở lại cho người khác.') : 'Bạn có chắc chắn muốn hủy đơn vé này không?');">
                                                 Hủy Vé
                                             </a>
                                         </c:if>
                                         <c:if test="${b.paymentStatus == 'PENDING'}">
                                             <a href="${pageContext.request.contextPath}/payment?bookingId=${b.bookingId}" 
-                                               class="btn btn-sm btn-warning ms-2">
+                                               class="btn btn-sm btn-warning ms-2" data-i18n="myBookings.pay">
                                                 Thanh Toán
                                             </a>
                                             <a href="${pageContext.request.contextPath}/cancel-booking?id=${b.bookingId}" 
                                                class="btn btn-sm btn-outline-danger ms-2"
-                                               onclick="return confirm('Bạn có chắc chắn muốn hủy đơn đặt vé này không? Ghế sẽ được mở lại.');">
+                                               data-i18n="myBookings.cancel"
+                                               onclick="return confirm(window.CinemaI18n ? window.CinemaI18n.t('myBookings.cancelConfirm2', 'Bạn có chắc chắn muốn hủy đơn đặt vé này không? Ghế sẽ được mở lại.') : 'Bạn có chắc chắn muốn hủy đơn đặt vé này không?');">
                                                 Hủy Vé
                                             </a>
                                         </c:if>
                                     </div>
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title text-white fw-bold mb-2">${b.showtime.movie.title}</h5>
+                                    <h5 class="card-title text-white fw-bold mb-2 movie-title" data-original-title="${b.showtime.movie.title}">${b.showtime.movie.title}</h5>
                                     <p class="card-text small text-muted mb-3">
-                                        <i class="fa-solid fa-door-open me-1"></i>${b.showtime.room.roomName} (${b.showtime.room.roomType})
+                                        <i class="fa-solid fa-door-open me-1"></i><span class="room-name" data-original-room="${b.showtime.room.roomName}">${b.showtime.room.roomName}</span> (${b.showtime.room.roomType})
                                     </p>
                                     <div class="small text-light mb-2">
                                         <i class="fa-regular fa-calendar-check me-1 text-danger"></i>
-                                        Suất chiếu: <strong><fmt:formatDate value="${b.showtime.startTime}" pattern="HH:mm"/></strong> - <fmt:formatDate value="${b.showtime.showDate}" pattern="dd/MM/yyyy"/>
+                                        <span data-i18n="myBookings.showtime">Suất chiếu:</span> <strong><fmt:formatDate value="${b.showtime.startTime}" pattern="HH:mm"/></strong> - <fmt:formatDate value="${b.showtime.showDate}" pattern="dd/MM/yyyy"/>
                                     </div>
                                     <div class="small text-light mb-3">
                                         <i class="fa-solid fa-couch me-1 text-info"></i>
-                                        Ghế: 
+                                        <span data-i18n="myBookings.seat">Ghế:</span> 
                                         <c:forEach items="${b.tickets}" var="t" varStatus="loop">
                                             <span class="badge bg-secondary">${t.seat.seatCode}</span>
                                         </c:forEach>
                                     </div>
                                     <div class="border-top border-secondary pt-2 d-flex justify-content-between align-items-center">
-                                        <span class="small text-muted">Tổng tiền:</span>
+                                        <span class="small text-muted" data-i18n="myBookings.total">Tổng tiền:</span>
                                         <span class="text-danger fw-bold fs-5">
                                             <fmt:formatNumber value="${b.totalAmount}" type="number" groupingUsed="true"/> đ
                                         </span>
                                     </div>
                                 </div>
                                 <div class="card-footer bg-dark border-secondary text-muted small">
-                                    Đặt lúc: <fmt:formatDate value="${b.bookingTime}" pattern="dd/MM/yyyy HH:mm"/>
+                                    <span data-i18n="myBookings.bookedAt">Đặt lúc:</span> <fmt:formatDate value="${b.bookingTime}" pattern="dd/MM/yyyy HH:mm"/>
                                 </div>
                             </div>
                         </div>

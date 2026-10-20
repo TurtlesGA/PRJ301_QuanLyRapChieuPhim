@@ -16,12 +16,14 @@
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=3.0">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=3.2">
     <!-- Load Theme Mode Before Render -->
     <script>
         (function() {
             var theme = localStorage.getItem('cinema_theme') || 'dark';
             document.documentElement.setAttribute('data-bs-theme', theme);
+            var lang = localStorage.getItem('cinema_lang') || 'vi';
+            document.documentElement.setAttribute('lang', lang);
         })();
     </script>
 </head>
@@ -49,11 +51,11 @@
             <!-- Back to Client Website Link -->
             <a href="${pageContext.request.contextPath}/home" class="btn btn-sm btn-outline-secondary d-none d-md-inline-flex align-items-center gap-2" title="Quay về giao diện khách hàng">
                 <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                <span>Xem Website</span>
+                <span data-i18n="admin.viewSite">Xem Website</span>
             </a>
 
             <!-- Theme Switch (Sáng / Tối) -->
-            <button type="button" class="theme-toggle-btn" id="themeToggle" title="Chuyển chế độ Sáng / Tối" aria-label="Chuyển chế độ Sáng / Tối">
+            <button type="button" class="theme-toggle-btn" id="themeToggle" data-i18n-title="nav.themeToggle" title="Chuyển chế độ Sáng / Tối" aria-label="Chuyển chế độ Sáng / Tối">
                 <span class="theme-icon light" title="Sáng">
                     <i class="fa-solid fa-sun"></i>
                 </span>
@@ -62,6 +64,29 @@
                     <i class="fa-solid fa-moon"></i>
                 </span>
             </button>
+
+            <!-- Language Switcher (Admin) -->
+            <div class="lang-switcher">
+                <button type="button" class="lang-btn" id="adminLangToggle" title="Đổi ngôn ngữ / Change Language">
+                    <span class="lang-flag"><img src="${pageContext.request.contextPath}/assets/images/flags/vn.svg" class="lang-flag-img" alt="VN"></span>
+                    <span class="lang-label"> - VN</span>
+                    <i class="fa-solid fa-chevron-down lang-arrow"></i>
+                </button>
+                <ul class="lang-dropdown">
+                    <li>
+                        <button type="button" data-lang="vi" class="lang-option">
+                            <img src="${pageContext.request.contextPath}/assets/images/flags/vn.svg" class="lang-flag-img" alt="VN">
+                            <span> - VN</span>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" data-lang="en" class="lang-option">
+                            <img src="${pageContext.request.contextPath}/assets/images/flags/us.svg" class="lang-flag-img" alt="US">
+                            <span> - US</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
 
             <!-- Admin User Profile Dropdown -->
             <div class="dropdown">
@@ -75,13 +100,13 @@
                 </a>
                 <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow border-secondary mt-2">
                     <li class="px-3 py-2 border-bottom border-secondary">
-                        <div class="small text-muted">Đang đăng nhập với vai trò:</div>
+                        <div class="small text-muted" data-i18n="nav.loggedInAs">Đang đăng nhập với vai trò:</div>
                         <div class="fw-bold text-danger"><i class="fa-solid fa-shield-halved me-1"></i>ADMINISTRATOR</div>
                     </li>
-                    <li><a class="dropdown-item py-2" href="${pageContext.request.contextPath}/profile"><i class="fa-solid fa-user-gear me-2"></i>Tài Khoản Cá Nhân</a></li>
-                    <li><a class="dropdown-item py-2" href="${pageContext.request.contextPath}/home"><i class="fa-solid fa-house me-2"></i>Trang Khách Hàng</a></li>
+                    <li><a class="dropdown-item py-2" href="${pageContext.request.contextPath}/profile"><i class="fa-solid fa-user-gear me-2"></i><span data-i18n="nav.personalAccount">Tài Khoản Cá Nhân</span></a></li>
+                    <li><a class="dropdown-item py-2" href="${pageContext.request.contextPath}/home"><i class="fa-solid fa-house me-2"></i><span data-i18n="nav.customerPage">Trang Khách Hàng</span></a></li>
                     <li><hr class="dropdown-divider border-secondary my-1"></li>
-                    <li><a class="dropdown-item py-2 text-danger" href="${pageContext.request.contextPath}/logout"><i class="fa-solid fa-right-from-bracket me-2"></i>Đăng Xuất</a></li>
+                    <li><a class="dropdown-item py-2 text-danger" href="${pageContext.request.contextPath}/logout"><i class="fa-solid fa-right-from-bracket me-2"></i><span data-i18n="nav.logout">Đăng Xuất</span></a></li>
                 </ul>
             </div>
         </div>
@@ -93,41 +118,41 @@
     <div class="offcanvas-header border-bottom border-secondary">
         <div class="d-flex align-items-center gap-2">
             <i class="fa-solid fa-film text-danger fs-4"></i>
-            <h5 class="offcanvas-title fw-bold m-0" id="adminSidebarOffcanvasLabel">CineStar Admin</h5>
+            <h5 class="offcanvas-title fw-bold m-0" id="adminSidebarOffcanvasLabel" data-i18n="admin.adminBrand">CineStar Admin</h5>
         </div>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body p-3">
-        <h6 class="text-uppercase text-muted fw-bold px-2 mb-3 small">Hệ Thống Quản Trị</h6>
+        <h6 class="text-uppercase text-muted fw-bold px-2 mb-3 small" data-i18n="admin.sidebarTitle">Hệ Thống Quản Trị</h6>
         <ul class="nav flex-column admin-nav-list mb-4">
             <li class="nav-item">
                 <a class="nav-link ${param.activeMenu == 'dashboard' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/dashboard">
-                    <i class="fa-solid fa-chart-pie me-2"></i>Tổng Quan
+                    <i class="fa-solid fa-chart-pie me-2"></i><span data-i18n="admin.overview">Tổng Quan</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link ${param.activeMenu == 'movies' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/movies">
-                    <i class="fa-solid fa-film me-2"></i>Quản Lý Phim
+                    <i class="fa-solid fa-film me-2"></i><span data-i18n="admin.manageMovies">Quản Lý Phim</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link ${param.activeMenu == 'rooms' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/rooms">
-                    <i class="fa-solid fa-door-open me-2"></i>Quản Lý Phòng Chiếu
+                    <i class="fa-solid fa-door-open me-2"></i><span data-i18n="admin.manageRooms">Quản Lý Phòng Chiếu</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link ${param.activeMenu == 'showtimes' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/showtimes">
-                    <i class="fa-solid fa-clock me-2"></i>Quản Lý Suất Chiếu
+                    <i class="fa-solid fa-clock me-2"></i><span data-i18n="admin.manageShowtimes">Quản Lý Suất Chiếu</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link ${param.activeMenu == 'bookings' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/bookings">
-                    <i class="fa-solid fa-receipt me-2"></i>Lịch Sử Đặt Vé
+                    <i class="fa-solid fa-receipt me-2"></i><span data-i18n="admin.manageBookings">Lịch Sử Đặt Vé</span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link ${param.activeMenu == 'users' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/users">
-                    <i class="fa-solid fa-users me-2"></i>Người Dùng
+                    <i class="fa-solid fa-users me-2"></i><span data-i18n="admin.manageUsers">Người Dùng</span>
                 </a>
             </li>
         </ul>
@@ -135,10 +160,10 @@
         <hr class="border-secondary my-3">
         <div class="d-grid gap-2">
             <a href="${pageContext.request.contextPath}/home" class="btn btn-outline-light btn-sm text-start">
-                <i class="fa-solid fa-house me-2"></i>Xem Website Khách Hàng
+                <i class="fa-solid fa-house me-2"></i><span data-i18n="admin.viewWebsite">Xem Website Khách Hàng</span>
             </a>
             <a href="${pageContext.request.contextPath}/logout" class="btn btn-outline-danger btn-sm text-start">
-                <i class="fa-solid fa-right-from-bracket me-2"></i>Đăng Xuất
+                <i class="fa-solid fa-right-from-bracket me-2"></i><span data-i18n="admin.logout">Đăng Xuất</span>
             </a>
         </div>
     </div>
@@ -149,36 +174,36 @@
     <div class="row min-vh-100 flex-nowrap">
         <!-- Desktop Sidebar (Hidden on mobile/tablet < lg) -->
         <nav class="col-lg-2 d-none d-lg-block admin-sidebar p-3">
-            <h6 class="text-uppercase text-muted fw-bold px-3 mb-3 small">Hệ Thống Quản Trị</h6>
+            <h6 class="text-uppercase text-muted fw-bold px-3 mb-3 small" data-i18n="admin.sidebarTitle">Hệ Thống Quản Trị</h6>
             <ul class="nav flex-column admin-nav-list">
                 <li class="nav-item">
                     <a class="nav-link ${param.activeMenu == 'dashboard' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/dashboard">
-                        <i class="fa-solid fa-chart-pie me-2"></i>Tổng Quan
+                        <i class="fa-solid fa-chart-pie me-2"></i><span data-i18n="admin.overview">Tổng Quan</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link ${param.activeMenu == 'movies' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/movies">
-                        <i class="fa-solid fa-film me-2"></i>Quản Lý Phim
+                        <i class="fa-solid fa-film me-2"></i><span data-i18n="admin.manageMovies">Quản Lý Phim</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link ${param.activeMenu == 'rooms' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/rooms">
-                        <i class="fa-solid fa-door-open me-2"></i>Quản Lý Phòng Chiếu
+                        <i class="fa-solid fa-door-open me-2"></i><span data-i18n="admin.manageRooms">Quản Lý Phòng Chiếu</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link ${param.activeMenu == 'showtimes' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/showtimes">
-                        <i class="fa-solid fa-clock me-2"></i>Quản Lý Suất Chiếu
+                        <i class="fa-solid fa-clock me-2"></i><span data-i18n="admin.manageShowtimes">Quản Lý Suất Chiếu</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link ${param.activeMenu == 'bookings' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/bookings">
-                        <i class="fa-solid fa-receipt me-2"></i>Lịch Sử Đặt Vé
+                        <i class="fa-solid fa-receipt me-2"></i><span data-i18n="admin.manageBookings">Lịch Sử Đặt Vé</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link ${param.activeMenu == 'users' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/users">
-                        <i class="fa-solid fa-users me-2"></i>Người Dùng
+                        <i class="fa-solid fa-users me-2"></i><span data-i18n="admin.manageUsers">Người Dùng</span>
                     </a>
                 </li>
             </ul>

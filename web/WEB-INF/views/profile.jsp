@@ -14,14 +14,14 @@
             <div class="col-lg-8">
                 <div class="card bg-dark border-secondary p-4 rounded-4 shadow">
                     <h4 class="fw-bold text-white mb-4 border-bottom border-secondary pb-3">
-                        <i class="fa-solid fa-user-gear text-danger me-2"></i>THÔNG TIN TÀI KHOẢN
+                        <i class="fa-solid fa-user-gear text-danger me-2"></i><span data-i18n="profile.title">THÔNG TIN TÀI KHOẢN</span>
                     </h4>
 
                     <c:if test="${not empty successMsg}">
-                        <div class="alert alert-success py-2 small"><i class="fa-solid fa-check me-1"></i>${successMsg}</div>
+                        <div class="alert alert-success py-2 small auth-success-alert"><i class="fa-solid fa-check me-1"></i><span class="alert-text">${successMsg}</span></div>
                     </c:if>
                     <c:if test="${not empty error}">
-                        <div class="alert alert-danger py-2 small"><i class="fa-solid fa-circle-exclamation me-1"></i>${error}</div>
+                        <div class="alert alert-danger py-2 small auth-error-alert"><i class="fa-solid fa-circle-exclamation me-1"></i><span class="alert-text">${error}</span></div>
                     </c:if>
 
                     <!-- Update Info Form -->
@@ -29,33 +29,33 @@
                         <input type="hidden" name="action" value="updateInfo">
                         <div class="row g-3">
                             <div class="col-md-6">
-                                <label class="form-label text-light small">Tên đăng nhập</label>
+                                <label class="form-label text-light small" data-i18n="profile.username">Tên đăng nhập</label>
                                 <input type="text" class="form-control" value="${sessionScope.currentUser.username}" disabled>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label text-light small">Vai trò</label>
+                                <label class="form-label text-light small" data-i18n="profile.role">Vai trò</label>
                                 <input type="text" class="form-control" value="${sessionScope.currentUser.role}" disabled>
                             </div>
                             <div class="col-md-12">
-                                <label class="form-label text-light small">Họ và tên</label>
+                                <label class="form-label text-light small" data-i18n="profile.fullName">Họ và tên</label>
                                 <input type="text" class="form-control" name="fullName" value="${sessionScope.currentUser.fullName}" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label text-light small">Email</label>
+                                <label class="form-label text-light small" data-i18n="profile.email">Email</label>
                                 <input type="email" class="form-control" name="email" value="${sessionScope.currentUser.email}" required>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label text-light small">Số điện thoại</label>
+                                <label class="form-label text-light small" data-i18n="profile.phone">Số điện thoại</label>
                                 <input type="tel" class="form-control" name="phone" value="${sessionScope.currentUser.phone}">
                             </div>
                             <div class="col-12 mt-3">
-                                <button type="submit" class="btn btn-danger fw-bold px-4">Lưu Thay Đổi</button>
+                                <button type="submit" class="btn btn-danger fw-bold px-4" data-i18n="profile.save">Lưu Thay Đổi</button>
                             </div>
                         </div>
                     </form>
 
                     <h5 class="fw-bold text-white mb-3 border-bottom border-secondary pb-2">
-                        <i class="fa-solid fa-key text-warning me-2"></i>ĐỔI MẬT KHẨU
+                        <i class="fa-solid fa-key text-warning me-2"></i><span data-i18n="profile.changePassword">ĐỔI MẬT KHẨU</span>
                     </h5>
 
                     <c:if test="${not empty pwSuccess}">
@@ -70,19 +70,19 @@
                         <input type="hidden" name="action" value="changePassword">
                         <div class="row g-3">
                             <div class="col-md-4">
-                                <label class="form-label text-light small">Mật khẩu hiện tại</label>
+                                <label class="form-label text-light small" data-i18n="profile.currentPassword">Mật khẩu hiện tại</label>
                                 <input type="password" class="form-control" name="oldPassword" required>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label text-light small">Mật khẩu mới</label>
+                                <label class="form-label text-light small" data-i18n="profile.newPassword">Mật khẩu mới</label>
                                 <input type="password" class="form-control" name="newPassword" required>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label text-light small">Xác nhận mật khẩu mới</label>
+                                <label class="form-label text-light small" data-i18n="profile.confirmNewPassword">Xác nhận mật khẩu mới</label>
                                 <input type="password" class="form-control" name="confirmNewPassword" required>
                             </div>
                             <div class="col-12 mt-3">
-                                <button type="submit" class="btn btn-outline-warning fw-bold px-4">Đổi Mật Khẩu</button>
+                                <button type="submit" class="btn btn-outline-warning fw-bold px-4" data-i18n="profile.changeBtn">Đổi Mật Khẩu</button>
                             </div>
                         </div>
                     </form>
