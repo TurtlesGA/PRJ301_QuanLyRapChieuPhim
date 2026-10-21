@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.LinkedHashSet;
 
 public class MovieDAO extends DBContext {
 
@@ -83,6 +85,72 @@ public class MovieDAO extends DBContext {
             ps.setString(1, pattern);
             ps.setString(2, pattern);
             ps.setString(3, pattern);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(mapMovie(rs));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        attachTranslations(list);
+        return list;
+    }
+
+    public List<String> getAllGenres() {
+        List<String> list = new ArrayList<>();
+        String sql = "SELECT DISTINCT genre FROM Movies WHERE genre IS NOT NULL AND genre <> ''";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            Set<String> set = new LinkedHashSet<>();
+            while (rs.next()) {
+                String g = rs.getString("genre");
+                String[] parts = g.split(",");
+                for (String p : parts) {
+                    if (!p.trim().isEmpty()) {
+                        set.add(p.trim());
+                    }
+                }
+            }
+            list.addAll(set);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public List<Movie> filterMovies(String keyword, String genre, String filter) {
+        List<Movie> list = new ArrayList<>();
+        StringBuilder sql = new StringBuilder("SELECT * FROM Movies WHERE 1=1 ");
+        List<Object> params = new ArrayList<>();
+
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            sql.append("AND (title LIKE ? OR director LIKE ? OR cast LIKE ?) ");
+            String pattern = "%" + keyword.trim() + "%";
+            params.add(pattern);
+            params.add(pattern);
+            params.add(pattern);
+        }
+
+        if (genre != null && !genre.trim().isEmpty() && !genre.equalsIgnoreCase("all")) {
+            sql.append("AND genre LIKE ? ");
+            params.add("%" + genre.trim() + "%");
+        }
+
+        if ("now".equalsIgnoreCase(filter)) {
+            sql.append("AND status = 'NOW_SHOWING' ");
+        } else if ("soon".equalsIgnoreCase(filter)) {
+            sql.append("AND status = 'COMING_SOON' ");
+        }
+
+        sql.append("ORDER BY movie_id DESC");
+
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql.toString())) {
+            for (int i = 0; i < params.size(); i++) {
+                ps.setObject(i + 1, params.get(i));
+            }
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     list.add(mapMovie(rs));

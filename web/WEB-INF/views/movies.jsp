@@ -10,25 +10,70 @@
 
 <main class="main-content py-5">
     <div class="container">
-        <!-- Filter Tabs -->
+        <div class="card bg-dark border-secondary p-3 mb-4 rounded-4 shadow-sm">
+            <form action="${pageContext.request.contextPath}/movies" method="GET" class="row g-2 align-items-center">
+                <div class="col-12 col-md-5">
+                    <div class="input-group">
+                        <span class="input-group-text bg-black border-secondary text-secondary">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </span>
+                        <input type="text" class="form-control bg-black text-white border-secondary" name="q" value="${searchKeyword}" placeholder="Tìm theo tên phim, diễn viên, đạo diễn...">
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-3">
+                    <select class="form-select bg-black text-white border-secondary" name="genre">
+                        <option value="" ${empty selectedGenre ? 'selected' : ''}>Tất cả thể loại</option>
+                        <c:forEach items="${genres}" var="g">
+                            <option value="${g}" ${selectedGenre == g ? 'selected' : ''}>${g}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+
+                <div class="col-6 col-md-2">
+                    <select class="form-select bg-black text-white border-secondary" name="filter">
+                        <option value="all" ${activeFilter == 'all' || empty activeFilter ? 'selected' : ''}>Tất cả trạng thái</option>
+                        <option value="now" ${activeFilter == 'now' ? 'selected' : ''}>Đang chiếu</option>
+                        <option value="soon" ${activeFilter == 'soon' ? 'selected' : ''}>Sắp chiếu</option>
+                    </select>
+                </div>
+
+                <div class="col-12 col-md-2 d-flex gap-2">
+                    <button type="submit" class="btn btn-danger fw-bold flex-grow-1">
+                        <i class="fa-solid fa-filter me-1"></i>Lọc
+                    </button>
+                    <c:if test="${not empty searchKeyword or not empty selectedGenre or (not empty activeFilter and activeFilter != 'all')}">
+                        <a href="${pageContext.request.contextPath}/movies" class="btn btn-outline-secondary" title="Đặt lại bộ lọc">
+                            <i class="fa-solid fa-rotate-left"></i>
+                        </a>
+                    </c:if>
+                </div>
+            </form>
+        </div>
+
         <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 pb-3 border-bottom border-secondary gap-3">
-            <h2 class="h3 fw-bold text-white mb-0">
+            <h2 class="h4 fw-bold text-white mb-0">
                 <c:choose>
-                    <c:when test="${not empty searchKeyword}"><span data-i18n="movies.searchResult">Kết quả tìm kiếm cho:</span> "${searchKeyword}"</c:when>
+                    <c:when test="${not empty searchKeyword}">
+                        <span data-i18n="movies.searchResult">Kết quả tìm kiếm cho:</span> "${searchKeyword}"
+                        <c:if test="${not empty selectedGenre}"> • ${selectedGenre}</c:if>
+                    </c:when>
+                    <c:when test="${not empty selectedGenre}">
+                        <span>Thể loại:</span> ${selectedGenre}
+                        <c:if test="${activeFilter == 'now'}"> (Đang Chiếu)</c:if>
+                        <c:if test="${activeFilter == 'soon'}"> (Sắp Chiếu)</c:if>
+                    </c:when>
                     <c:when test="${activeFilter == 'now'}"><span data-i18n="movies.nowShowing">Phim Đang Chiếu</span></c:when>
                     <c:when test="${activeFilter == 'soon'}"><span data-i18n="movies.comingSoon">Phim Sắp Chiếu</span></c:when>
                     <c:otherwise><span data-i18n="movies.allMovies">Tất Cả Phim</span></c:otherwise>
                 </c:choose>
             </h2>
 
-            <div class="btn-group filter-btn-group" role="group">
-                <a href="${pageContext.request.contextPath}/movies" class="btn btn-sm ${activeFilter == 'all' || empty activeFilter ? 'btn-danger' : 'btn-outline-secondary'}" data-i18n="movies.filterAll">Tất Cả</a>
-                <a href="${pageContext.request.contextPath}/movies?filter=now" class="btn btn-sm ${activeFilter == 'now' ? 'btn-danger' : 'btn-outline-secondary'}" data-i18n="movies.filterNow">Đang Chiếu</a>
-                <a href="${pageContext.request.contextPath}/movies?filter=soon" class="btn btn-sm ${activeFilter == 'soon' ? 'btn-danger' : 'btn-outline-secondary'}" data-i18n="movies.filterSoon">Sắp Chiếu</a>
+            <div class="d-flex align-items-center gap-2">
+                <span class="text-secondary small">Tìm thấy <span class="fw-bold text-danger">${movies.size()}</span> phim</span>
             </div>
         </div>
 
-        <!-- Movie List Grid -->
         <c:choose>
             <c:when test="${empty movies}">
                 <div class="text-center py-5">

@@ -20,25 +20,18 @@ public class MoviesListController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         String keyword = request.getParameter("q");
-        String filter = request.getParameter("filter"); // "now", "soon", or null
+        String genre = request.getParameter("genre");
+        String filter = request.getParameter("filter");
 
-        List<Movie> movies;
-        if (keyword != null && !keyword.trim().isEmpty()) {
-            movies = movieDAO.searchMovies(keyword.trim());
-            request.setAttribute("searchKeyword", keyword.trim());
-        } else if ("soon".equalsIgnoreCase(filter)) {
-            movies = movieDAO.getComingSoonMovies();
-            request.setAttribute("activeFilter", "soon");
-        } else if ("now".equalsIgnoreCase(filter)) {
-            movies = movieDAO.getNowShowingMovies();
-            request.setAttribute("activeFilter", "now");
-        } else {
-            movies = movieDAO.getAllMovies();
-            request.setAttribute("activeFilter", "all");
-        }
+        List<Movie> movies = movieDAO.filterMovies(keyword, genre, filter);
+        List<String> genres = movieDAO.getAllGenres();
 
         request.setAttribute("movies", movies);
+        request.setAttribute("genres", genres);
+        request.setAttribute("searchKeyword", keyword != null ? keyword.trim() : "");
+        request.setAttribute("selectedGenre", genre != null ? genre.trim() : "");
+        request.setAttribute("activeFilter", (filter != null && !filter.trim().isEmpty()) ? filter.trim() : "all");
+
         request.getRequestDispatcher("/WEB-INF/views/movies.jsp").forward(request, response);
     }
 }
-
