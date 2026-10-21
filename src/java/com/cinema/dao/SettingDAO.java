@@ -1,7 +1,6 @@
 package com.cinema.dao;
 
 import com.cinema.context.DBContext;
-import com.cinema.model.SystemSetting;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

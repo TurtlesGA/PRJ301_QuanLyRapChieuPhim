@@ -76,27 +76,6 @@ public class MovieDAO extends DBContext {
         return null;
     }
 
-    public List<Movie> searchMovies(String keyword) {
-        List<Movie> list = new ArrayList<>();
-        String sql = "SELECT * FROM Movies WHERE title LIKE ? OR genre LIKE ? OR director LIKE ? ORDER BY movie_id DESC";
-        try (Connection conn = getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            String pattern = "%" + keyword + "%";
-            ps.setString(1, pattern);
-            ps.setString(2, pattern);
-            ps.setString(3, pattern);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    list.add(mapMovie(rs));
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        attachTranslations(list);
-        return list;
-    }
-
     public List<String> getAllGenres() {
         List<String> list = new ArrayList<>();
         String sql = "SELECT DISTINCT genre FROM Movies WHERE genre IS NOT NULL AND genre <> ''";
@@ -126,11 +105,8 @@ public class MovieDAO extends DBContext {
         List<Object> params = new ArrayList<>();
 
         if (keyword != null && !keyword.trim().isEmpty()) {
-            sql.append("AND (title LIKE ? OR director LIKE ? OR cast LIKE ?) ");
-            String pattern = "%" + keyword.trim() + "%";
-            params.add(pattern);
-            params.add(pattern);
-            params.add(pattern);
+            sql.append("AND title LIKE ? ");
+            params.add("%" + keyword.trim() + "%");
         }
 
         if (genre != null && !genre.trim().isEmpty() && !genre.equalsIgnoreCase("all")) {
