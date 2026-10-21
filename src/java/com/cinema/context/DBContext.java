@@ -15,7 +15,7 @@ public class DBContext {
     private static final String PORT_NUMBER = "1433";
     private static final String DATABASE_NAME = "CinemaDB";
     private static final String USER_ID = "sa";
-    private static final String PASSWORD = "123"; // Đổi thành mật khẩu SA của máy bạn
+    private static final String PASSWORD = "123"; 
 
     /**
      * Mở kết nối đến SQL Server

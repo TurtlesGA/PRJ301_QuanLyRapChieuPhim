@@ -14,12 +14,15 @@ USE CinemaDB;
 GO
 
 -- Drop tables if exists to allow clean re-runs
+IF OBJECT_ID('MovieTranslations', 'U') IS NOT NULL DROP TABLE MovieTranslations;
 IF OBJECT_ID('Tickets', 'U') IS NOT NULL DROP TABLE Tickets;
 IF OBJECT_ID('Bookings', 'U') IS NOT NULL DROP TABLE Bookings;
 IF OBJECT_ID('Seats', 'U') IS NOT NULL DROP TABLE Seats;
 IF OBJECT_ID('Showtimes', 'U') IS NOT NULL DROP TABLE Showtimes;
 IF OBJECT_ID('Rooms', 'U') IS NOT NULL DROP TABLE Rooms;
 IF OBJECT_ID('Movies', 'U') IS NOT NULL DROP TABLE Movies;
+IF OBJECT_ID('Languages', 'U') IS NOT NULL DROP TABLE Languages;
+IF OBJECT_ID('SystemSettings', 'U') IS NOT NULL DROP TABLE SystemSettings;
 IF OBJECT_ID('Users', 'U') IS NOT NULL DROP TABLE Users;
 GO
 
@@ -281,4 +284,111 @@ CREATE TABLE MovieTranslations (
     CONSTRAINT FK_MovieTranslations_Movies FOREIGN KEY (movie_id) REFERENCES Movies(movie_id) ON DELETE CASCADE,
     CONSTRAINT UQ_Movie_Lang UNIQUE(movie_id, lang_code)
 );
+GO
+
+-- ================================================================
+-- 11. SEED DEFAULT DATA: Languages, SystemSettings, MovieTranslations
+-- ================================================================
+
+-- Seed Languages
+IF NOT EXISTS (SELECT * FROM Languages WHERE lang_code='vi')
+INSERT INTO Languages (lang_code, country_name, flag_url, is_active, is_default) VALUES ('vi', N'Việt Nam', '/assets/images/flags/vn.svg', 1, 1);
+IF NOT EXISTS (SELECT * FROM Languages WHERE lang_code='en')
+INSERT INTO Languages (lang_code, country_name, flag_url, is_active, is_default) VALUES ('en', N'United States', '/assets/images/flags/us.svg', 1, 0);
+GO
+
+-- Seed SystemSettings
+IF NOT EXISTS (SELECT * FROM SystemSettings WHERE setting_key='site_title')
+INSERT INTO SystemSettings (setting_key, setting_value) VALUES ('site_title', N'CineStar - Đặt Vé Xem Phim Trực Tuyến');
+IF NOT EXISTS (SELECT * FROM SystemSettings WHERE setting_key='site_favicon')
+INSERT INTO SystemSettings (setting_key, setting_value) VALUES ('site_favicon', N'/assets/images/favicon.ico');
+IF NOT EXISTS (SELECT * FROM SystemSettings WHERE setting_key='header_brand_prefix')
+INSERT INTO SystemSettings (setting_key, setting_value) VALUES ('header_brand_prefix', N'CINE');
+IF NOT EXISTS (SELECT * FROM SystemSettings WHERE setting_key='header_brand_suffix')
+INSERT INTO SystemSettings (setting_key, setting_value) VALUES ('header_brand_suffix', N'STAR');
+IF NOT EXISTS (SELECT * FROM SystemSettings WHERE setting_key='footer_brand')
+INSERT INTO SystemSettings (setting_key, setting_value) VALUES ('footer_brand', N'CINESTAR CINEMA');
+IF NOT EXISTS (SELECT * FROM SystemSettings WHERE setting_key='footer_description')
+INSERT INTO SystemSettings (setting_key, setting_value) VALUES ('footer_description', N'Hệ thống rạp chiếu phim hiện đại chuẩn quốc tế. Mang đến trải nghiệm điện ảnh chân thực và sống động nhất cho khán giả.');
+IF NOT EXISTS (SELECT * FROM SystemSettings WHERE setting_key='footer_hotline')
+INSERT INTO SystemSettings (setting_key, setting_value) VALUES ('footer_hotline', N'1900 6017');
+IF NOT EXISTS (SELECT * FROM SystemSettings WHERE setting_key='footer_email')
+INSERT INTO SystemSettings (setting_key, setting_value) VALUES ('footer_email', N'support@cinestar.vn');
+IF NOT EXISTS (SELECT * FROM SystemSettings WHERE setting_key='footer_hours')
+INSERT INTO SystemSettings (setting_key, setting_value) VALUES ('footer_hours', N'8:00 - 22:00 Hàng ngày');
+IF NOT EXISTS (SELECT * FROM SystemSettings WHERE setting_key='footer_copyright')
+INSERT INTO SystemSettings (setting_key, setting_value) VALUES ('footer_copyright', N'© 2026 CineStar Cinema - PRJ302 Quản Lý Rạp Chiếu Phim. Thiết kế & phát triển bởi Nhóm Dự Án.');
+IF NOT EXISTS (SELECT * FROM SystemSettings WHERE setting_key='script_head')
+INSERT INTO SystemSettings (setting_key, setting_value) VALUES ('script_head', N'');
+IF NOT EXISTS (SELECT * FROM SystemSettings WHERE setting_key='script_body')
+INSERT INTO SystemSettings (setting_key, setting_value) VALUES ('script_body', N'');
+IF NOT EXISTS (SELECT * FROM SystemSettings WHERE setting_key='script_foot')
+INSERT INTO SystemSettings (setting_key, setting_value) VALUES ('script_foot', N'');
+GO
+
+-- Seed MovieTranslations
+IF EXISTS (SELECT * FROM Movies WHERE movie_id=1)
+BEGIN
+    IF NOT EXISTS (SELECT * FROM MovieTranslations WHERE movie_id=1 AND lang_code='vi')
+        INSERT INTO MovieTranslations (movie_id, lang_code, title, genre, description, director, cast)
+        VALUES (1, 'vi', N'Mai', N'Tâm Lý, Tình Cảm', N'Mai xoay quanh cuộc đời của người phụ nữ cùng tên. Số phận đưa đẩy cô gặp gỡ Dương - chàng trai trẻ tuổi, đào hoa, mở ra mối tình vừa ngọt ngào vừa đầy thử thách.', N'Trấn Thành', N'Phương Anh Đào, Tuấn Trần, Trấn Thành, Hồng Đào');
+    IF NOT EXISTS (SELECT * FROM MovieTranslations WHERE movie_id=1 AND lang_code='en')
+        INSERT INTO MovieTranslations (movie_id, lang_code, title, genre, description, director, cast)
+        VALUES (1, 'en', N'Mai', N'Drama, Romance', N'Mai revolves around the life of a woman of the same name. Fate brings her together with Duong - a young, charming man, unfolding a romance that is both sweet and challenging.', N'Tran Thanh', N'Phuong Anh Dao, Tuan Tran, Tran Thanh, Hong Dao');
+END
+GO
+
+IF EXISTS (SELECT * FROM Movies WHERE movie_id=2)
+BEGIN
+    IF NOT EXISTS (SELECT * FROM MovieTranslations WHERE movie_id=2 AND lang_code='vi')
+        INSERT INTO MovieTranslations (movie_id, lang_code, title, genre, description, director, cast)
+        VALUES (2, 'vi', N'Dune: Hành Tinh Cát 2', N'Khoa Học Viễn Tưởng, Phiêu Lưu', N'Hành trình của Paul Atreides khi anh hợp nhất với Chani và người Fremen để trả thù những kẻ đã hủy hoại gia đình mình.', N'Denis Villeneuve', N'Timothée Chalamet, Zendaya, Rebecca Ferguson');
+    IF NOT EXISTS (SELECT * FROM MovieTranslations WHERE movie_id=2 AND lang_code='en')
+        INSERT INTO MovieTranslations (movie_id, lang_code, title, genre, description, director, cast)
+        VALUES (2, 'en', N'Dune: Part Two', N'Sci-Fi, Adventure', N'Paul Atreides unites with Chani and the Fremen while seeking revenge against the conspirators who destroyed his family.', N'Denis Villeneuve', N'Timothée Chalamet, Zendaya, Rebecca Ferguson');
+END
+GO
+
+IF EXISTS (SELECT * FROM Movies WHERE movie_id=3)
+BEGIN
+    IF NOT EXISTS (SELECT * FROM MovieTranslations WHERE movie_id=3 AND lang_code='vi')
+        INSERT INTO MovieTranslations (movie_id, lang_code, title, genre, description, director, cast)
+        VALUES (3, 'vi', N'Godzilla x Kong: Đế Chế Mới', N'Hành Động, Viễn Tưởng', N'Hai thực thể hùng mạnh Godzilla và Kong phải hợp sức chống lại mối hiểm họa khổng lồ tiềm ẩn sâu trong lòng Trái Đất.', N'Adam Wingard', N'Rebecca Hall, Brian Tyree Henry, Dan Stevens');
+    IF NOT EXISTS (SELECT * FROM MovieTranslations WHERE movie_id=3 AND lang_code='en')
+        INSERT INTO MovieTranslations (movie_id, lang_code, title, genre, description, director, cast)
+        VALUES (3, 'en', N'Godzilla x Kong: The New Empire', N'Action, Sci-Fi', N'Two ancient titans, Godzilla and Kong, clash in an epic battle as humans unravel their intertwined origins and connection to Skull Island''s mysteries.', N'Adam Wingard', N'Rebecca Hall, Brian Tyree Henry, Dan Stevens');
+END
+GO
+
+IF EXISTS (SELECT * FROM Movies WHERE movie_id=4)
+BEGIN
+    IF NOT EXISTS (SELECT * FROM MovieTranslations WHERE movie_id=4 AND lang_code='vi')
+        INSERT INTO MovieTranslations (movie_id, lang_code, title, genre, description, director, cast)
+        VALUES (4, 'vi', N'Kung Fu Panda 4', N'Hoạt Hình, Hài Hước', N'Po chuẩn bị trở thành Thủ lĩnh Tinh thần của Thung lũng Bình Yên nhưng phải đối đầu với phù thủy Tắc Kè Hoa có khả năng biến hình nguy hiểm.', N'Mike Mitchell', N'Jack Black, Awkwafina, Viola Davis');
+    IF NOT EXISTS (SELECT * FROM MovieTranslations WHERE movie_id=4 AND lang_code='en')
+        INSERT INTO MovieTranslations (movie_id, lang_code, title, genre, description, director, cast)
+        VALUES (4, 'en', N'Kung Fu Panda 4', N'Animation, Comedy', N'Po must train a new Dragon Warrior while facing a wicked chameleon sorceress who can shapeshift into any creature.', N'Mike Mitchell', N'Jack Black, Awkwafina, Viola Davis');
+END
+GO
+
+IF EXISTS (SELECT * FROM Movies WHERE movie_id=5)
+BEGIN
+    IF NOT EXISTS (SELECT * FROM MovieTranslations WHERE movie_id=5 AND lang_code='vi')
+        INSERT INTO MovieTranslations (movie_id, lang_code, title, genre, description, director, cast)
+        VALUES (5, 'vi', N'Lật Mặt 7: Một Điều Ước', N'Gia Đình, Tâm Lý', N'Câu chuyện cảm động về gia đình bà Hai và 5 người con, phản ánh tình mẫu tử thiêng liêng và thực trạng đạo hiếu trong xã hội hiện đại.', N'Lý Hải', N'Thanh Hiền, Trương Minh Cường, Đinh Y Nhung');
+    IF NOT EXISTS (SELECT * FROM MovieTranslations WHERE movie_id=5 AND lang_code='en')
+        INSERT INTO MovieTranslations (movie_id, lang_code, title, genre, description, director, cast)
+        VALUES (5, 'en', N'Face Off 7: One Wish', N'Family, Drama', N'A touching story about Mrs. Hai and her five children, reflecting sacred maternal love and filial piety in modern society.', N'Ly Hai', N'Thanh Hien, Truong Minh Cuong, Dinh Y Nhung');
+END
+GO
+
+IF EXISTS (SELECT * FROM Movies WHERE movie_id=6)
+BEGIN
+    IF NOT EXISTS (SELECT * FROM MovieTranslations WHERE movie_id=6 AND lang_code='vi')
+        INSERT INTO MovieTranslations (movie_id, lang_code, title, genre, description, director, cast)
+        VALUES (6, 'vi', N'Deadpool & Wolverine', N'Hành Động, Siêu Anh Hùng', N'Deadpool và Wolverine bất đắc dĩ hợp tác để bảo vệ dòng thời gian và vũ trụ khỏi sự sụp đổ.', N'Shawn Levy', N'Ryan Reynolds, Hugh Jackman, Emma Corrin');
+    IF NOT EXISTS (SELECT * FROM MovieTranslations WHERE movie_id=6 AND lang_code='en')
+        INSERT INTO MovieTranslations (movie_id, lang_code, title, genre, description, director, cast)
+        VALUES (6, 'en', N'Deadpool & Wolverine', N'Action, Superhero', N'Deadpool and Wolverine reluctantly team up to protect the timeline and the multiverse from collapse.', N'Shawn Levy', N'Ryan Reynolds, Hugh Jackman, Emma Corrin');
+END
 GO
