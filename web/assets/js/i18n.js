@@ -1,13 +1,31 @@
 /**
  * CineStar Cinema - i18n (Internationalization) Engine
- * Supports Vietnamese (VN) & English (US) via JSON files
+ * Supports Vietnamese (VN), English (US), French (FR) & custom languages via JSON
+ * Features: Instant localStorage caching, Anti-FOUT synchronous streaming translation,
+ * and zero-delay multi-page switching.
  */
 
 (function () {
     'use strict';
 
     const STORAGE_KEY = 'cinema_lang';
-    let currentLang = localStorage.getItem(STORAGE_KEY) || 'vi';
+    const CACHE_PREFIX = 'cinema_i18n_cache_';
+    const CACHE_LANGS = 'cinema_i18n_cache_languages';
+
+    // 1. Initial Language Detection
+    let currentLang = 'vi';
+    try {
+        currentLang = localStorage.getItem(STORAGE_KEY) || document.documentElement.getAttribute('lang') || 'vi';
+    } catch (e) {
+        currentLang = document.documentElement.getAttribute('lang') || 'vi';
+    }
+
+    // Synchronize Cookie immediately so subsequent HTTP requests carry the language header
+    try {
+        document.cookie = 'cinema_lang=' + encodeURIComponent(currentLang) + ';path=/;max-age=31536000;SameSite=Lax';
+    } catch (e) {}
+
+    // Translations in-memory store
     let translations = { vi: null, en: null };
 
     // Dynamic list of active languages from languages.json / server
@@ -16,43 +34,21 @@
         { code: 'en', name: 'English', country: 'United States', flag: '/assets/images/flags/us.svg' }
     ];
 
-    // Load available active languages
-    async function loadAvailableLanguages() {
-        const contextPath = getContextPath();
-        const jsonUrl = (contextPath ? contextPath : '') + '/assets/i18n/languages.json?v=' + Date.now();
-        try {
-            const res = await fetch(jsonUrl);
-            if (res.ok) {
-                const data = await res.json();
-                if (Array.isArray(data) && data.length > 0) {
-                    availableLanguages = data;
-                    renderLanguageDropdowns();
-                    updateSwitcherUI(currentLang);
-                }
+    // Synchronously read cached language list and current language dictionary from localStorage
+    try {
+        const cachedLangs = localStorage.getItem(CACHE_LANGS);
+        if (cachedLangs) {
+            const parsedLangs = JSON.parse(cachedLangs);
+            if (Array.isArray(parsedLangs) && parsedLangs.length > 0) {
+                availableLanguages = parsedLangs;
             }
-        } catch (e) {
-            // fallback
         }
-    }
-
-    // Render dropdown options dynamically for all language switchers on page
-    function renderLanguageDropdowns() {
-        const contextPath = getContextPath();
-        document.querySelectorAll('.lang-dropdown').forEach(dropdown => {
-            let html = '';
-            availableLanguages.forEach(l => {
-                const flagUrl = l.flag.startsWith('/') ? ((contextPath ? contextPath : '') + l.flag) : ((contextPath ? contextPath : '') + '/' + l.flag);
-                const displayCode = l.code.toUpperCase();
-                const isActive = l.code.toLowerCase() === currentLang.toLowerCase();
-                html += '<li>'
-                     + '<button type="button" data-lang="' + l.code.toLowerCase() + '" class="lang-option' + (isActive ? ' active' : '') + '">'
-                     + '<img src="' + flagUrl + '" class="lang-flag-img" alt="' + displayCode + '">'
-                     + '<span> - ' + displayCode + '</span>'
-                     + '</button>'
-                     + '</li>';
-            });
-            dropdown.innerHTML = html;
-        });
+        const cachedDict = localStorage.getItem(CACHE_PREFIX + currentLang);
+        if (cachedDict) {
+            translations[currentLang] = JSON.parse(cachedDict);
+        }
+    } catch (e) {
+        console.warn('[i18n] Error reading localStorage cache:', e);
     }
 
     // Determine Base / Context Path dynamically
@@ -63,9 +59,7 @@
             try {
                 const url = new URL(script.src, window.location.origin);
                 return url.pathname.replace(/\/assets\/js\/.*$/, '');
-            } catch (e) {
-                // fallback
-            }
+            } catch (e) {}
         }
         return '';
     }
@@ -82,34 +76,6 @@
         return val;
     }
 
-    // Load translation JSON file
-    async function loadTranslations(lang) {
-        if (translations[lang]) return translations[lang];
-
-        const contextPath = getContextPath();
-        const jsonUrl = (contextPath ? contextPath : '') + '/assets/i18n/' + lang + '.json?v=' + Date.now();
-
-        try {
-            const res = await fetch(jsonUrl);
-            if (!res.ok) throw new Error('HTTP ' + res.status);
-            const data = await res.json();
-            translations[lang] = data;
-            return data;
-        } catch (err) {
-            console.warn('[i18n] Failed to fetch ' + jsonUrl + ', retrying relative path...', err);
-            try {
-                const fallbackUrl = 'assets/i18n/' + lang + '.json';
-                const res = await fetch(fallbackUrl);
-                const data = await res.json();
-                translations[lang] = data;
-                return data;
-            } catch (err2) {
-                console.error('[i18n] Could not load language JSON: ' + lang, err2);
-                return null;
-            }
-        }
-    }
-
     // Helper: Translate key
     function t(key, defaultVal) {
         const langData = translations[currentLang];
@@ -124,7 +90,6 @@
         const trimmed = text.trim();
         const mapped = t('status.' + trimmed);
         if (mapped && mapped !== 'status.' + trimmed) return mapped;
-        // Check common status labels using unicode escapes
         if (trimmed === 'Ho\u1ea1t \u0111\u1ed9ng') return currentLang === 'en' ? 'Active' : trimmed;
         if (trimmed === 'B\u1ecb kh\u00f3a') return currentLang === 'en' ? 'Banned' : trimmed;
         if (trimmed === 'T\u1ea1m d\u1eebng') return currentLang === 'en' ? 'Paused' : trimmed;
@@ -134,16 +99,23 @@
     }
 
     // Dynamic Movie Content Translation (Titles, Genres, Descriptions, Rooms)
-    function translateDynamicMovieContent(data) {
+    function translateDynamicMovieContent(data, root) {
         if (!data) return;
+        root = root || document;
         const isEn = currentLang === 'en';
         const movieTitles = (data.movieData && data.movieData.titles) || {};
         const movieGenres = (data.movieData && data.movieData.genres) || {};
         const movieDescs = (data.movieData && data.movieData.descriptions) || {};
         const roomNames = (data.movieData && data.movieData.rooms) || {};
 
+        function getEls(selector) {
+            const list = root.querySelectorAll ? Array.from(root.querySelectorAll(selector)) : [];
+            if (root.matches && root.matches(selector)) list.unshift(root);
+            return list;
+        }
+
         // 1. Movie Titles (Database Attribute First, JSON Fallback)
-        document.querySelectorAll('.movie-title').forEach(el => {
+        getEls('.movie-title').forEach(el => {
             let orig = el.getAttribute('data-original-title');
             if (!orig) {
                 orig = el.textContent.trim();
@@ -168,7 +140,7 @@
         });
 
         // 2. Movie Genres (Database Attribute First, JSON Fallback)
-        document.querySelectorAll('.movie-genre').forEach(el => {
+        getEls('.movie-genre').forEach(el => {
             let orig = el.getAttribute('data-original-genre');
             if (!orig) {
                 orig = el.textContent.trim();
@@ -193,7 +165,7 @@
         });
 
         // 3. Movie Descriptions (Database Attribute First, JSON Fallback)
-        document.querySelectorAll('.movie-description').forEach(el => {
+        getEls('.movie-description').forEach(el => {
             let orig = el.getAttribute('data-original-desc');
             if (!orig) {
                 orig = el.textContent.trim();
@@ -226,7 +198,7 @@
         });
 
         // 3b. Movie Director & Cast (Database Attributes)
-        document.querySelectorAll('.movie-director').forEach(el => {
+        getEls('.movie-director').forEach(el => {
             let orig = el.getAttribute('data-original-director');
             if (!orig) {
                 orig = el.textContent.trim();
@@ -236,7 +208,7 @@
             el.textContent = dbDir ? dbDir : orig;
         });
 
-        document.querySelectorAll('.movie-cast').forEach(el => {
+        getEls('.movie-cast').forEach(el => {
             let orig = el.getAttribute('data-original-cast');
             if (!orig) {
                 orig = el.textContent.trim();
@@ -247,7 +219,7 @@
         });
 
         // 4. Room Names
-        document.querySelectorAll('.room-name').forEach(el => {
+        getEls('.room-name').forEach(el => {
             let orig = el.getAttribute('data-original-room');
             if (!orig) {
                 orig = el.textContent.trim();
@@ -265,7 +237,7 @@
         });
 
         // 5. Select Movie Options (Showtime Add form)
-        document.querySelectorAll('option.movie-option, option[data-original-title]').forEach(opt => {
+        getEls('option.movie-option, option[data-original-title]').forEach(opt => {
             let origTitle = opt.getAttribute('data-original-title');
             let duration = opt.getAttribute('data-duration');
             if (!origTitle) {
@@ -290,7 +262,7 @@
         });
 
         // 6. Select Room Options (Showtime Add form)
-        document.querySelectorAll('option.room-option, option[data-original-room]').forEach(opt => {
+        getEls('option.room-option, option[data-original-room]').forEach(opt => {
             let origRoom = opt.getAttribute('data-original-room');
             if (!origRoom) {
                 origRoom = opt.textContent.trim();
@@ -308,13 +280,21 @@
         });
     }
 
-    // Alerts & OTP Message Translation (Zero Mojibake with Orig Cache + Unicode Escapes)
-    function translateAlertsAndOtp(lang, data) {
+    // Alerts & OTP Message Translation
+    function translateAlertsAndOtp(lang, data, root) {
+        if (!data) return;
+        root = root || document;
         const isEn = lang === 'en';
-        const alertsDict = (data && data.alerts) || {};
+        const alertsDict = data.alerts || {};
+
+        function getEls(selector) {
+            const list = root.querySelectorAll ? Array.from(root.querySelectorAll(selector)) : [];
+            if (root.matches && root.matches(selector)) list.unshift(root);
+            return list;
+        }
 
         // 1. OTP alert box in Forgot Password
-        document.querySelectorAll('.otp-notice-alert, .alert-info').forEach(alertEl => {
+        getEls('.otp-notice-alert, .alert-info').forEach(alertEl => {
             const text = alertEl.textContent || '';
             if (text.includes('OTP') || alertEl.classList.contains('otp-notice-alert')) {
                 const match = text.match(/\b\d{4,6}\b/);
@@ -327,12 +307,12 @@
                         alertEl.setAttribute('data-original-msg', origMsg);
                     }
                     if (isEn) {
-                        const enTemplate = (data && data.forgotPassword && data.forgotPassword.otpNoticeFormat)
+                        const enTemplate = (data.forgotPassword && data.forgotPassword.otpNoticeFormat)
                             ? data.forgotPassword.otpNoticeFormat
                             : 'Your OTP verification code is: {code} (Valid code to reset password)';
                         msgEl.textContent = enTemplate.replace('{code}', code);
                     } else {
-                        const viTemplate = (data && data.forgotPassword && data.forgotPassword.otpNoticeFormat)
+                        const viTemplate = (data.forgotPassword && data.forgotPassword.otpNoticeFormat)
                             ? data.forgotPassword.otpNoticeFormat
                             : 'M\u00e3 x\u00e1c th\u1ef1c OTP c\u1ee7a b\u1ea1n l\u00e0: {code} (M\u00e3 c\u00f3 hi\u1ec7u l\u1ef1c \u0111\u1ec3 \u0111\u1ed5i m\u1eadt kh\u1ea9u)';
                         msgEl.textContent = origMsg || viTemplate.replace('{code}', code);
@@ -342,7 +322,7 @@
         });
 
         // 2. Auth error & success alerts
-        document.querySelectorAll('.alert-danger, .alert-success, .alert-warning').forEach(alertEl => {
+        getEls('.alert-danger, .alert-success, .alert-warning').forEach(alertEl => {
             if (alertEl.id === 'countdownTimer' || alertEl.querySelector('#countdownTimer')) return;
             const textSpan = alertEl.querySelector('.alert-text');
             if (textSpan) {
@@ -427,20 +407,18 @@
         }
     }
 
-    // Apply translations to the DOM
-    async function applyLanguage(lang) {
-        currentLang = lang;
-        localStorage.setItem(STORAGE_KEY, lang);
-        document.documentElement.setAttribute('lang', lang);
+    // Synchronously translate a subtree/container
+    function translateSubtree(root, data) {
+        if (!data || !root) return;
 
-        let data = translations[lang];
-        if (!data) {
-            data = await loadTranslations(lang);
+        function getEls(selector) {
+            const list = root.querySelectorAll ? Array.from(root.querySelectorAll(selector)) : [];
+            if (root.matches && root.matches(selector)) list.unshift(root);
+            return list;
         }
-        if (!data) return;
 
         // 1. Text elements
-        document.querySelectorAll('[data-i18n]').forEach(el => {
+        getEls('[data-i18n]').forEach(el => {
             const key = el.getAttribute('data-i18n');
             const translation = getNestedValue(data, key);
             if (translation !== undefined && translation !== null) {
@@ -449,7 +427,7 @@
         });
 
         // 2. HTML elements
-        document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        getEls('[data-i18n-html]').forEach(el => {
             const key = el.getAttribute('data-i18n-html');
             const translation = getNestedValue(data, key);
             if (translation !== undefined && translation !== null) {
@@ -458,7 +436,7 @@
         });
 
         // 3. Placeholders
-        document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        getEls('[data-i18n-placeholder]').forEach(el => {
             const key = el.getAttribute('data-i18n-placeholder');
             const translation = getNestedValue(data, key);
             if (translation !== undefined && translation !== null) {
@@ -467,7 +445,7 @@
         });
 
         // 4. Titles / aria-labels
-        document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        getEls('[data-i18n-title]').forEach(el => {
             const key = el.getAttribute('data-i18n-title');
             const translation = getNestedValue(data, key);
             if (translation !== undefined && translation !== null) {
@@ -477,19 +455,19 @@
         });
 
         // 5. SweetAlert2 data-confirm & data-title
-        document.querySelectorAll('[data-i18n-confirm]').forEach(el => {
+        getEls('[data-i18n-confirm]').forEach(el => {
             const key = el.getAttribute('data-i18n-confirm');
             const translation = getNestedValue(data, key);
             if (translation) el.setAttribute('data-confirm', translation);
         });
-        document.querySelectorAll('[data-i18n-confirm-title]').forEach(el => {
+        getEls('[data-i18n-confirm-title]').forEach(el => {
             const key = el.getAttribute('data-i18n-confirm-title');
             const translation = getNestedValue(data, key);
             if (translation) el.setAttribute('data-title', translation);
         });
 
         // 6. Dynamic status badges
-        document.querySelectorAll('.badge-status, [data-i18n-status]').forEach(el => {
+        getEls('.badge-status, [data-i18n-status]').forEach(el => {
             const statusCode = el.getAttribute('data-status-code') || el.textContent.trim();
             if (!el.hasAttribute('data-status-code')) {
                 el.setAttribute('data-status-code', statusCode);
@@ -500,20 +478,109 @@
             }
         });
 
-        // 7. Dynamic Movie Content (Titles, Genres, Descriptions, Rooms)
-        translateDynamicMovieContent(data);
+        // 7. Dynamic Movie Content
+        translateDynamicMovieContent(data, root);
 
-        // 8. Dynamic Alerts & OTP Messages
-        translateAlertsAndOtp(lang, data);
+        // 8. Alerts & OTP
+        translateAlertsAndOtp(currentLang, data, root);
+    }
 
-        // 9. Document / Tab Title
+    // Apply translations to the entire DOM
+    async function applyLanguage(lang) {
+        currentLang = lang;
+        try {
+            localStorage.setItem(STORAGE_KEY, lang);
+            document.cookie = 'cinema_lang=' + encodeURIComponent(lang) + ';path=/;max-age=31536000;SameSite=Lax';
+        } catch (e) {}
+        document.documentElement.setAttribute('lang', lang);
+
+        let data = translations[lang];
+        if (!data) {
+            data = await loadTranslations(lang);
+        }
+        if (!data) {
+            document.documentElement.removeAttribute('data-i18n-loading');
+            return;
+        }
+
+        translateSubtree(document.body || document.documentElement, data);
         translateDocumentTitle(lang, data);
-
-        // 10. Update Language Switcher UI Widgets
         updateSwitcherUI(lang);
+        document.documentElement.removeAttribute('data-i18n-loading');
 
-        // 11. Fire event for other dynamic components
         window.dispatchEvent(new CustomEvent('cinema:langChanged', { detail: { lang, data } }));
+    }
+
+    // Load available active languages (with background update & cache)
+    async function loadAvailableLanguages(background) {
+        const contextPath = getContextPath();
+        const jsonUrl = (contextPath ? contextPath : '') + '/assets/i18n/languages.json?v=' + Date.now();
+        try {
+            const res = await fetch(jsonUrl);
+            if (res.ok) {
+                const data = await res.json();
+                if (Array.isArray(data) && data.length > 0) {
+                    availableLanguages = data;
+                    try {
+                        localStorage.setItem(CACHE_LANGS, JSON.stringify(data));
+                    } catch (e) {}
+                    renderLanguageDropdowns();
+                    updateSwitcherUI(currentLang);
+                }
+            }
+        } catch (e) {}
+    }
+
+    // Load translation JSON file (with background update & cache)
+    async function loadTranslations(lang, background) {
+        if (!background && translations[lang]) return translations[lang];
+
+        const contextPath = getContextPath();
+        const jsonUrl = (contextPath ? contextPath : '') + '/assets/i18n/' + lang + '.json?v=' + Date.now();
+
+        try {
+            const res = await fetch(jsonUrl);
+            if (!res.ok) throw new Error('HTTP ' + res.status);
+            const data = await res.json();
+            translations[lang] = data;
+            try {
+                localStorage.setItem(CACHE_PREFIX + lang, JSON.stringify(data));
+            } catch (e) {}
+            return data;
+        } catch (err) {
+            try {
+                const fallbackUrl = 'assets/i18n/' + lang + '.json';
+                const res = await fetch(fallbackUrl);
+                const data = await res.json();
+                translations[lang] = data;
+                try {
+                    localStorage.setItem(CACHE_PREFIX + lang, JSON.stringify(data));
+                } catch (e) {}
+                return data;
+            } catch (err2) {
+                return translations[lang] || null;
+            }
+        }
+    }
+
+    // Render dropdown options dynamically for all language switchers on page
+    function renderLanguageDropdowns() {
+        const contextPath = getContextPath();
+        document.querySelectorAll('.lang-dropdown').forEach(dropdown => {
+            let html = '';
+            availableLanguages.forEach(l => {
+                const flagUrl = l.flag.startsWith('/') ? ((contextPath ? contextPath : '') + l.flag) : ((contextPath ? contextPath : '') + '/' + l.flag);
+                const displayCode = l.code.toUpperCase();
+                const isActive = l.code.toLowerCase() === currentLang.toLowerCase();
+                html += '<li>'
+                     + '<button type="button" data-lang="' + l.code.toLowerCase() + '" class="lang-option' + (isActive ? ' active' : '') + '">'
+                     + '<img src="' + flagUrl + '" class="lang-flag-img" alt="' + displayCode + '">'
+                     + '<span> - ' + displayCode + '</span>'
+                     + '</button>'
+                     + '</li>';
+            });
+            dropdown.innerHTML = html;
+        });
     }
 
     // Update Language Switcher UI (Button label, flag image, active state)
@@ -536,7 +603,6 @@
                 labelEl.textContent = labelText;
             }
 
-            // Highlight options
             switcher.querySelectorAll('.lang-option').forEach(opt => {
                 const optLang = opt.getAttribute('data-lang');
                 if (optLang === lang) {
@@ -550,7 +616,6 @@
 
     // Setup event listeners for language switchers
     function setupSwitcherEvents() {
-        // Toggle dropdown on button click
         document.addEventListener('click', function (e) {
             const btn = e.target.closest('.lang-btn');
             if (btn) {
@@ -559,7 +624,6 @@
                 const switcher = btn.closest('.lang-switcher');
                 if (switcher) {
                     const isOpen = switcher.classList.contains('open');
-                    // Close all others
                     document.querySelectorAll('.lang-switcher.open').forEach(s => s.classList.remove('open'));
                     if (!isOpen) {
                         switcher.classList.add('open');
@@ -568,7 +632,6 @@
                 return;
             }
 
-            // Click option in dropdown
             const optionBtn = e.target.closest('.lang-option');
             if (optionBtn) {
                 e.preventDefault();
@@ -580,11 +643,61 @@
                 return;
             }
 
-            // Click outside closes dropdowns
             if (!e.target.closest('.lang-switcher')) {
                 document.querySelectorAll('.lang-switcher.open').forEach(s => s.classList.remove('open'));
             }
         });
+    }
+
+    // Setup early MutationObserver to catch elements during initial DOM streaming
+    if (window.MutationObserver && currentLang !== 'vi' && translations[currentLang]) {
+        try {
+            const observer = new MutationObserver(function (mutations) {
+                const data = translations[currentLang];
+                if (!data) return;
+                for (let i = 0; i < mutations.length; i++) {
+                    const added = mutations[i].addedNodes;
+                    for (let j = 0; j < added.length; j++) {
+                        const node = added[j];
+                        if (node.nodeType === 1) {
+                            translateSubtree(node, data);
+                        }
+                    }
+                }
+            });
+            observer.observe(document.documentElement, { childList: true, subtree: true });
+        } catch (e) {}
+    }
+
+    // Ready hook
+    function onReady() {
+        setupSwitcherEvents();
+        renderLanguageDropdowns();
+        updateSwitcherUI(currentLang);
+
+        if (translations[currentLang]) {
+            applyLanguage(currentLang);
+        } else {
+            loadTranslations(currentLang).then(() => {
+                applyLanguage(currentLang);
+            });
+        }
+        document.documentElement.removeAttribute('data-i18n-loading');
+
+        // Silent background preload of all active languages into localStorage cache
+        loadAvailableLanguages(true).then(() => {
+            availableLanguages.forEach(l => {
+                if (l.code !== currentLang && !translations[l.code]) {
+                    loadTranslations(l.code, true);
+                }
+            });
+        });
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', onReady);
+    } else {
+        onReady();
     }
 
     // Public API
@@ -596,19 +709,8 @@
         apply: () => applyLanguage(currentLang),
         translateDynamicMovieContent: translateDynamicMovieContent,
         translateAlertsAndOtp: translateAlertsAndOtp,
-        translateDocumentTitle: translateDocumentTitle
+        translateDocumentTitle: translateDocumentTitle,
+        translateSubtree: translateSubtree
     };
-
-    // Preload & Apply on DOM Ready
-    document.addEventListener('DOMContentLoaded', async function () {
-        setupSwitcherEvents();
-        await loadAvailableLanguages();
-        await loadTranslations(currentLang);
-        // Prefetch other languages
-        availableLanguages.forEach(l => {
-            if (l.code !== currentLang) loadTranslations(l.code);
-        });
-        applyLanguage(currentLang);
-    });
 
 })();

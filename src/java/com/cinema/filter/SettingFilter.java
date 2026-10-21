@@ -53,6 +53,37 @@ public class SettingFilter implements Filter {
                 context.setAttribute("activeLanguages", activeLanguages);
             }
             req.setAttribute("activeLanguages", activeLanguages);
+
+            // Determine current user language preference from parameter, session, or cookie
+            String currentLang = req.getParameter("lang");
+            if (currentLang != null && !currentLang.trim().isEmpty()) {
+                currentLang = currentLang.trim().toLowerCase();
+                req.getSession().setAttribute("cinema_lang", currentLang);
+                if (response instanceof jakarta.servlet.http.HttpServletResponse) {
+                    jakarta.servlet.http.Cookie c = new jakarta.servlet.http.Cookie("cinema_lang", currentLang);
+                    c.setPath("/");
+                    c.setMaxAge(31536000);
+                    ((jakarta.servlet.http.HttpServletResponse) response).addCookie(c);
+                }
+            } else {
+                currentLang = (String) req.getSession().getAttribute("cinema_lang");
+                if (currentLang == null || currentLang.trim().isEmpty()) {
+                    jakarta.servlet.http.Cookie[] cookies = req.getCookies();
+                    if (cookies != null) {
+                        for (jakarta.servlet.http.Cookie c : cookies) {
+                            if ("cinema_lang".equals(c.getName()) && c.getValue() != null && !c.getValue().trim().isEmpty()) {
+                                currentLang = c.getValue().trim().toLowerCase();
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            if (currentLang == null || currentLang.trim().isEmpty()) {
+                currentLang = "vi";
+            }
+            req.setAttribute("currentLang", currentLang);
+            req.getSession().setAttribute("cinema_lang", currentLang);
         }
         chain.doFilter(request, response);
     }

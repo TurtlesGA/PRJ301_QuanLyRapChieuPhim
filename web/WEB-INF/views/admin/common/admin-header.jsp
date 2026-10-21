@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="${not empty currentLang ? currentLang : 'vi'}" <c:if test="${not empty currentLang and currentLang != 'vi'}">data-i18n-loading="true"</c:if>>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,15 +19,39 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=3.2">
+    <!-- Anti-FOUT: Prevent Flash of Untranslated Vietnamese when language is not 'vi' -->
+    <style id="anti-fout-style">
+        html[data-i18n-loading="true"] [data-i18n],
+        html[data-i18n-loading="true"] [data-i18n-html],
+        html[data-i18n-loading="true"] [data-i18n-placeholder],
+        html[data-i18n-loading="true"] .movie-title,
+        html[data-i18n-loading="true"] .movie-genre,
+        html[data-i18n-loading="true"] .movie-description,
+        html[data-i18n-loading="true"] .movie-director,
+        html[data-i18n-loading="true"] .movie-cast,
+        html[data-i18n-loading="true"] .room-name,
+        html[data-i18n-loading="true"] .badge-status {
+            visibility: hidden !important;
+        }
+    </style>
     <!-- Load Theme Mode Before Render -->
     <script>
+        window.CONTEXT_PATH = '${pageContext.request.contextPath}';
         (function() {
             var theme = localStorage.getItem('cinema_theme') || 'dark';
             document.documentElement.setAttribute('data-bs-theme', theme);
-            var lang = localStorage.getItem('cinema_lang') || 'vi';
+            var lang = localStorage.getItem('cinema_lang') || '${not empty currentLang ? currentLang : "vi"}';
+            if (lang !== 'vi') {
+                document.documentElement.setAttribute('data-i18n-loading', 'true');
+                setTimeout(function() {
+                    document.documentElement.removeAttribute('data-i18n-loading');
+                }, 400);
+            }
             document.documentElement.setAttribute('lang', lang);
         })();
     </script>
+    <!-- Load i18n Translation Engine Early in Head -->
+    <script src="${pageContext.request.contextPath}/assets/js/i18n.js?v=3.0" charset="UTF-8"></script>
     <!-- Custom Head Script (From System Settings) -->
     <c:if test="${not empty siteSettings.script_head}">
         ${siteSettings.script_head}
@@ -77,8 +101,8 @@
             <!-- Language Switcher (Admin) -->
             <div class="lang-switcher">
                 <button type="button" class="lang-btn" id="adminLangToggle" title="Đổi ngôn ngữ / Change Language">
-                    <span class="lang-flag"><img src="${pageContext.request.contextPath}/assets/images/flags/vn.svg" class="lang-flag-img" alt="VN"></span>
-                    <span class="lang-label"> - VN</span>
+                    <span class="lang-flag"><img src="${pageContext.request.contextPath}${currentLang == 'en' ? '/assets/images/flags/us.svg' : '/assets/images/flags/vn.svg'}" class="lang-flag-img" alt="${currentLang == 'en' ? 'US' : 'VN'}"></span>
+                    <span class="lang-label"> - ${currentLang == 'en' ? 'US' : 'VN'}</span>
                     <i class="fa-solid fa-chevron-down lang-arrow"></i>
                 </button>
                 <ul class="lang-dropdown">

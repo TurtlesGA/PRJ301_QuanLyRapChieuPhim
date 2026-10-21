@@ -51,7 +51,7 @@
 <!-- Bootstrap 5 Bundle JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- i18n Translation Engine -->
-<script src="${pageContext.request.contextPath}/assets/js/i18n.js?v=2.5" charset="UTF-8"></script>
+
 <!-- Main App JS -->
 <script src="${pageContext.request.contextPath}/assets/js/main.js?v=2.1" charset="UTF-8"></script>
 

@@ -28,7 +28,7 @@
 <!-- SweetAlert2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- i18n Translation Engine -->
-<script src="${pageContext.request.contextPath}/assets/js/i18n.js?v=2.5" charset="UTF-8"></script>
+
 <!-- Admin SweetAlert2 and UI Script -->
 <script src="${pageContext.request.contextPath}/assets/js/admin.js?v=2.3" charset="UTF-8"></script>
 

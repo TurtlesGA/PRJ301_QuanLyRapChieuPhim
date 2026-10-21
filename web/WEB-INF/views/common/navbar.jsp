@@ -20,8 +20,8 @@
             <!-- Language Switcher Mobile -->
             <div class="lang-switcher">
                 <button type="button" class="lang-btn" id="langToggleMobile">
-                    <span class="lang-flag"><img src="${pageContext.request.contextPath}/assets/images/flags/vn.svg" class="lang-flag-img" alt="VN"></span>
-                    <span class="lang-label"> - VN</span>
+                    <span class="lang-flag"><img src="${pageContext.request.contextPath}${currentLang == 'en' ? '/assets/images/flags/us.svg' : '/assets/images/flags/vn.svg'}" class="lang-flag-img" alt="${currentLang == 'en' ? 'US' : 'VN'}"></span>
+                    <span class="lang-label"> - ${currentLang == 'en' ? 'US' : 'VN'}</span>
                     <i class="fa-solid fa-chevron-down lang-arrow"></i>
                 </button>
                 <ul class="lang-dropdown">
@@ -112,8 +112,8 @@
                 <li class="nav-item ms-lg-1 d-none d-lg-block">
                     <div class="lang-switcher">
                         <button type="button" class="lang-btn" id="langToggle">
-                            <span class="lang-flag"><img src="${pageContext.request.contextPath}/assets/images/flags/vn.svg" class="lang-flag-img" alt="VN"></span>
-                            <span class="lang-label"> - VN</span>
+                            <span class="lang-flag"><img src="${pageContext.request.contextPath}${currentLang == 'en' ? '/assets/images/flags/us.svg' : '/assets/images/flags/vn.svg'}" class="lang-flag-img" alt="${currentLang == 'en' ? 'US' : 'VN'}"></span>
+                            <span class="lang-label"> - ${currentLang == 'en' ? 'US' : 'VN'}</span>
                             <i class="fa-solid fa-chevron-down lang-arrow"></i>
                         </button>
                         <ul class="lang-dropdown">
