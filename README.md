@@ -212,7 +212,7 @@ CSDL mẫu đã được khởi tạo sẵn các tài khoản demo để tiện 
 > - **Web Server**: **Apache Tomcat 10.1+** (hoặc Tomcat 10.0+).  
 > *Lưu ý: Không sử dụng Tomcat 9 trở xuống vì dự án sử dụng đặc tả **Jakarta EE 10** (`jakarta.servlet.*`), Tomcat 9 chỉ hỗ trợ `javax.servlet.*` sẽ gây lỗi khi khởi chạy.*
 
-### 1. Chạy với Apache NetBeans (Khuyến nghị)
+### Chạy với Apache NetBeans
 1. Mở **Apache NetBeans** (phiên bản 15, 17, 19, 21 hoặc mới hơn).
 2. Chọn **File** -> **Open Project** -> Duyệt đến thư mục `PRJ302_QuanLyRapChieuPhim`.
 3. Kiểm tra Server: Chuột phải vào Project -> Chọn **Properties** -> mục **Run** -> đảm bảo Server đã chọn là **Apache Tomcat 10.x** (hoặc Tomcat 10.1+).
@@ -221,18 +221,7 @@ CSDL mẫu đã được khởi tạo sẵn các tài khoản demo để tiện 
 6. Nhấn nút **Run** (F6) hoặc chuột phải chọn **Run**. Ứng dụng sẽ tự động mở trên trình duyệt tại địa chỉ:
    `http://localhost:8080/PRJ302_QuanLyRapChieuPhim/`
 
-### 2. Chạy với IntelliJ IDEA Ultimate
-1. Mở IntelliJ IDEA Ultimate -> Chọn **Open** -> Chọn thư mục `PRJ302_QuanLyRapChieuPhim`.
-2. Vào **File** -> **Project Structure**:
-   - **Project**: Chọn **SDK 17**.
-   - **Modules** -> tab **Dependencies**: Thêm các file JAR trong thư mục `allowedlib/` vào project.
-   - **Facets** / **Artifacts**: Thêm **Web Application: Exploded** trỏ đến thư mục `web/`.
-3. Cấu hình **Run/Debug Configurations**:
-   - Nhấn `+` -> Chọn **Tomcat Server** -> **Local**.
-   - Chọn đường dẫn đến thư mục cài đặt Tomcat 10.x / 10.1+.
-   - Tab **Deployment**: Thêm Artifact `PRJ302_QuanLyRapChieuPhim:war exploded`.
-   - Đặt **Application context**: `/PRJ302_QuanLyRapChieuPhim` (hoặc `/`).
-4. Nhấn **Run** hoặc **Debug**.
+
 
 ---
 
