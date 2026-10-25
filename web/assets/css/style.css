@@ -1340,3 +1340,45 @@ body {
 .lang-option .lang-flag-img {
     margin-right: 4px;
 }
+
+
+/* ===================================
+   Settings Mechanism Info Box (Cơ Chế Hoạt Động)
+   =================================== */
+/* Dark Mode: Nền hộp sáng (#252d3d) nổi bật trên card tối, viền xanh neon, chữ sáng rõ */
+.settings-info-box {
+    background-color: #252d3d !important;
+    border: 1px solid #38455e !important;
+    border-left: 4px solid #00d2ff !important;
+    border-radius: 0.5rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.settings-info-box .info-box-title {
+    color: #38bdf8 !important;
+}
+.settings-info-box .info-box-desc {
+    color: #e2e8f0 !important;
+}
+.settings-info-box code {
+    background-color: rgba(56, 189, 248, 0.2) !important;
+    color: #7dd3fc !important;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+/* Light Mode: Nền hộp màu xám nhạt (#f1f5f9) chuẩn tone Light Theme, viền xanh dương, chữ xám đậm sắc nét */
+[data-bs-theme="light"] .settings-info-box {
+    background-color: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    border-left: 4px solid #0284c7 !important;
+}
+[data-bs-theme="light"] .settings-info-box .info-box-title {
+    color: #0369a1 !important;
+}
+[data-bs-theme="light"] .settings-info-box .info-box-desc {
+    color: #334155 !important;
+}
+[data-bs-theme="light"] .settings-info-box code {
+    background-color: #e2e8f0 !important;
+    color: #0284c7 !important;
+}

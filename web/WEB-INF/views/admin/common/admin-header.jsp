@@ -18,7 +18,7 @@
     <!-- SweetAlert2 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=3.2">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=3.3">
     <!-- Anti-FOUT: Prevent Flash of Untranslated Vietnamese when language is not 'vi' -->
     <style id="anti-fout-style">
         html[data-i18n-loading="true"] [data-i18n],

@@ -218,9 +218,9 @@
                         </table>
                     </div>
 
-                    <div class="mt-4 p-3 rounded-3" style="background-color: #1a1a1a; border-left: 4px solid #0dcaf0;">
-                        <h6 class="text-info fw-bold mb-1"><i class="fa-solid fa-circle-question me-1"></i>Cơ Chế Hoạt Động</h6>
-                        <p class="small text-muted mb-0">
+                    <div class="mt-4 p-3 rounded-3 settings-info-box">
+                        <h6 class="info-box-title fw-bold mb-1"><i class="fa-solid fa-circle-question me-1"></i>Cơ Chế Hoạt Động</h6>
+                        <p class="small info-box-desc mb-0">
                             Các văn bản cốt lõi (Core UI) được tải từ file <code>assets/i18n/{code}.json</code>. Khi thêm một ngôn ngữ mới, bộ chọn cờ ở thanh Navbar sẽ tự động hiển thị lá cờ và tên quốc gia của ngôn ngữ đó ngay lập tức mà không cần khởi động lại máy chủ.
                         </p>
                     </div>
