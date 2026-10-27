@@ -11,6 +11,21 @@
     const STORAGE_KEY = 'cinema_lang';
     const CACHE_PREFIX = 'cinema_i18n_cache_';
     const CACHE_LANGS = 'cinema_i18n_cache_languages';
+    const CACHE_VERSION = 'v3.5';
+    const CACHE_VERSION_KEY = 'cinema_i18n_version';
+
+    // Invalidate stale caches if i18n engine/dictionaries are updated
+    try {
+        if (localStorage.getItem(CACHE_VERSION_KEY) !== CACHE_VERSION) {
+            for (let i = localStorage.length - 1; i >= 0; i--) {
+                const key = localStorage.key(i);
+                if (key && (key.startsWith(CACHE_PREFIX) || key === CACHE_LANGS)) {
+                    localStorage.removeItem(key);
+                }
+            }
+            localStorage.setItem(CACHE_VERSION_KEY, CACHE_VERSION);
+        }
+    } catch (e) {}
 
     // 1. Initial Language Detection
     let currentLang = 'vi';
@@ -546,6 +561,10 @@
             try {
                 localStorage.setItem(CACHE_PREFIX + lang, JSON.stringify(data));
             } catch (e) {}
+            if (background && lang === currentLang) {
+                translateSubtree(document.body || document.documentElement, data);
+                translateDocumentTitle(lang, data);
+            }
             return data;
         } catch (err) {
             try {
@@ -687,9 +706,7 @@
         // Silent background preload of all active languages into localStorage cache
         loadAvailableLanguages(true).then(() => {
             availableLanguages.forEach(l => {
-                if (l.code !== currentLang && !translations[l.code]) {
-                    loadTranslations(l.code, true);
-                }
+                loadTranslations(l.code, true);
             });
         });
     }

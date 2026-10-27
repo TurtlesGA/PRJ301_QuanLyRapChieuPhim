@@ -78,6 +78,10 @@ public class AdminSettingsController extends HttpServlet {
             handleSaveSettings(request, response);
         } else if ("uploadLanguage".equalsIgnoreCase(action)) {
             handleUploadLanguage(request, response);
+        } else if ("editLanguage".equalsIgnoreCase(action)) {
+            handleEditLanguage(request, response);
+        } else if ("deleteLanguage".equalsIgnoreCase(action)) {
+            handleDeleteLanguage(request, response);
         } else {
             response.sendRedirect(request.getContextPath() + "/admin/settings");
         }
@@ -219,6 +223,187 @@ public class AdminSettingsController extends HttpServlet {
         }
     }
 
+    private void handleEditLanguage(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String rawLangCode = getParam(request, "langCode", "");
+        String countryName = getParam(request, "countryName", "");
+
+        if (rawLangCode.isEmpty() || countryName.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/admin/settings?tab=languages&error=missing_fields");
+            return;
+        }
+
+        String langCode = rawLangCode.trim().toLowerCase();
+        Language existing = languageDAO.getLanguageByCode(langCode);
+        if (existing == null) {
+            response.sendRedirect(request.getContextPath() + "/admin/settings?tab=languages&error=lang_not_found");
+            return;
+        }
+
+        existing.setCountryName(countryName.trim());
+
+        // 1. Kiểm tra nếu có upload cờ mới
+        Part flagPart = null;
+        try {
+            flagPart = request.getPart("flagImage");
+        } catch (Exception ignored) {
+        }
+
+        if (flagPart != null && flagPart.getSize() > 0 && flagPart.getSubmittedFileName() != null && !flagPart.getSubmittedFileName().trim().isEmpty()) {
+            String flagFileName = Paths.get(flagPart.getSubmittedFileName()).getFileName().toString();
+            String flagExt = "";
+            int dotIdx = flagFileName.lastIndexOf('.');
+            if (dotIdx > 0) {
+                flagExt = flagFileName.substring(dotIdx).toLowerCase();
+            }
+
+            if (!ALLOWED_IMAGE_EXTS.contains(flagExt)) {
+                response.sendRedirect(request.getContextPath() + "/admin/settings?tab=languages&error=invalid_image_format");
+                return;
+            }
+
+            String flagContentType = flagPart.getContentType();
+            if (flagContentType == null || (!flagContentType.startsWith("image/") && !flagContentType.contains("svg"))) {
+                response.sendRedirect(request.getContextPath() + "/admin/settings?tab=languages&error=invalid_image_mime");
+                return;
+            }
+
+            String flagSavedName = langCode + flagExt;
+            saveFileToDisk(request, flagPart.getInputStream(), "assets/images/flags", flagSavedName);
+            existing.setFlagUrl("/assets/images/flags/" + flagSavedName);
+        }
+
+        // 2. Kiểm tra nếu có upload file JSON mới
+        Part jsonPart = null;
+        try {
+            jsonPart = request.getPart("jsonFile");
+        } catch (Exception ignored) {
+        }
+
+        if (jsonPart != null && jsonPart.getSize() > 0 && jsonPart.getSubmittedFileName() != null && !jsonPart.getSubmittedFileName().trim().isEmpty()) {
+            String jsonFileName = Paths.get(jsonPart.getSubmittedFileName()).getFileName().toString();
+            if (!jsonFileName.toLowerCase().endsWith(".json")) {
+                response.sendRedirect(request.getContextPath() + "/admin/settings?tab=languages&error=invalid_json_extension");
+                return;
+            }
+
+            byte[] jsonBytes = jsonPart.getInputStream().readAllBytes();
+            String jsonContent = new String(jsonBytes, StandardCharsets.UTF_8).trim();
+
+            if (!jsonContent.startsWith("{") || !jsonContent.endsWith("}")) {
+                response.sendRedirect(request.getContextPath() + "/admin/settings?tab=languages&error=json_syntax_invalid");
+                return;
+            }
+
+            // Kiểm tra các trường bắt buộc của template
+            for (String key : REQUIRED_JSON_KEYS) {
+                if (!jsonContent.contains(key)) {
+                    response.sendRedirect(request.getContextPath() + "/admin/settings?tab=languages&error=json_missing_keys&missing=" + key.replace("\"", ""));
+                    return;
+                }
+            }
+
+            String jsonSavedName = langCode + ".json";
+            saveContentToDisk(request, jsonBytes, "assets/i18n", jsonSavedName);
+        }
+
+        // 3. Đặt làm mặc định nếu được chọn
+        String isDefaultStr = request.getParameter("isDefault");
+        boolean makeDefault = "true".equalsIgnoreCase(isDefaultStr) || "on".equalsIgnoreCase(isDefaultStr) || "1".equals(isDefaultStr);
+        if (makeDefault) {
+            languageDAO.setDefaultLanguage(langCode);
+            existing.setDefault(true);
+        }
+
+        // 4. Lưu lại thông tin ngôn ngữ vào Database
+        boolean dbSaved = languageDAO.saveLanguage(existing);
+
+        if (dbSaved) {
+            // Đồng bộ file languages.json và cache ServletContext
+            List<Language> allLangs = languageDAO.getAllActiveLanguages();
+            request.getServletContext().setAttribute("activeLanguages", allLangs);
+            updateLanguagesJson(request, allLangs);
+
+            response.sendRedirect(request.getContextPath() + "/admin/settings?tab=languages&msg=lang_updated&code=" + langCode);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/admin/settings?tab=languages&error=lang_db_failed");
+        }
+    }
+
+    private void handleDeleteLanguage(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String rawLangCode = getParam(request, "langCode", "");
+        if (rawLangCode.isEmpty()) {
+            response.sendRedirect(request.getContextPath() + "/admin/settings?tab=languages&error=missing_fields");
+            return;
+        }
+
+        String langCode = rawLangCode.trim().toLowerCase();
+        Language existing = languageDAO.getLanguageByCode(langCode);
+        if (existing == null) {
+            response.sendRedirect(request.getContextPath() + "/admin/settings?tab=languages&error=lang_not_found");
+            return;
+        }
+
+        // Không cho phép xóa ngôn ngữ mặc định
+        if (existing.isDefault()) {
+            response.sendRedirect(request.getContextPath() + "/admin/settings?tab=languages&error=cannot_delete_default");
+            return;
+        }
+
+        // 1. Xóa trong database
+        boolean deleted = languageDAO.deleteLanguage(langCode);
+        if (deleted) {
+            // 2. Xóa file {langCode}.json trên đĩa
+            deleteFileFromDisk(request, "assets/i18n", langCode + ".json");
+
+            // 3. Xóa file cờ nếu là cờ custom (không xóa cờ gốc vn.svg / us.svg)
+            if (existing.getFlagUrl() != null && !existing.getFlagUrl().isEmpty()) {
+                String flagFile = Paths.get(existing.getFlagUrl()).getFileName().toString();
+                if (!"vn.svg".equalsIgnoreCase(flagFile) && !"us.svg".equalsIgnoreCase(flagFile)) {
+                    deleteFileFromDisk(request, "assets/images/flags", flagFile);
+                }
+            }
+
+            // 4. Đồng bộ file languages.json và cache ServletContext
+            List<Language> allLangs = languageDAO.getAllActiveLanguages();
+            request.getServletContext().setAttribute("activeLanguages", allLangs);
+            updateLanguagesJson(request, allLangs);
+
+            response.sendRedirect(request.getContextPath() + "/admin/settings?tab=languages&msg=lang_deleted&code=" + langCode);
+        } else {
+            response.sendRedirect(request.getContextPath() + "/admin/settings?tab=languages&error=lang_delete_failed");
+        }
+    }
+
+    private void deleteFileFromDisk(HttpServletRequest request, String relativeDir, String fileName) {
+        try {
+            // 1. Deployed directory
+            String deployPath = request.getServletContext().getRealPath("/" + relativeDir);
+            if (deployPath != null) {
+                File deployFile = new File(deployPath, fileName);
+                if (deployFile.exists()) {
+                    deployFile.delete();
+                }
+            }
+            // 2. Source directory web/
+            String appPath = request.getServletContext().getRealPath("/");
+            if (appPath != null) {
+                File appDir = new File(appPath);
+                File projectRoot = appDir.getParentFile() != null ? appDir.getParentFile().getParentFile() : null;
+                if (projectRoot != null) {
+                    File srcWebDir = new File(projectRoot, "web" + File.separator + relativeDir.replace('/', File.separatorChar));
+                    File srcFile = new File(srcWebDir, fileName);
+                    if (srcFile.exists()) {
+                        srcFile.delete();
+                    }
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("AdminSettingsController.deleteFileFromDisk error: " + e.getMessage());
+        }
+    }
+
     private void downloadTemplate(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String templatePath = request.getServletContext().getRealPath("/assets/i18n/template.json");
         File file = new File(templatePath);
@@ -261,7 +446,6 @@ public class AdminSettingsController extends HttpServlet {
         // 2. Thư mục project nguồn web/ (để code không bị mất khi build lại)
         try {
             String appPath = request.getServletContext().getRealPath("/");
-            // appPath typically: D:\Java Coding\PRJ302_QuanLyRapChieuPhim\build\web\
             File appDir = new File(appPath);
             File projectRoot = appDir.getParentFile().getParentFile(); // Back up to project root
             File srcWebDir = new File(projectRoot, "web" + File.separator + relativeDir.replace('/', File.separatorChar));

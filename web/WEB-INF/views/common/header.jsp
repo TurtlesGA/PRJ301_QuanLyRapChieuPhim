@@ -16,7 +16,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=3.3">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css?v=3.4">
     <!-- Anti-FOUT: Prevent Flash of Untranslated Vietnamese when language is not 'vi' -->
     <style id="anti-fout-style">
         html[data-i18n-loading="true"] [data-i18n],
@@ -49,7 +49,7 @@
         })();
     </script>
     <!-- Load i18n Translation Engine Early in Head -->
-    <script src="${pageContext.request.contextPath}/assets/js/i18n.js?v=3.0" charset="UTF-8"></script>
+    <script src="${pageContext.request.contextPath}/assets/js/i18n.js?v=3.5" charset="UTF-8"></script>
     <!-- Custom Head Script (From System Settings) -->
     <c:if test="${not empty siteSettings.script_head}">
         ${siteSettings.script_head}
