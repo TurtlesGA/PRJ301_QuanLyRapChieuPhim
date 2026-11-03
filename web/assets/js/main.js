@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     this.classList.remove('selected');
                 } else {
                     if (selectedSeats.length >= 8) {
-                        const alertMsg = window.CinemaI18n ? window.CinemaI18n.t('seatSelection.maxSeats', 'Bạn chỉ có thể đặt tối đa 8 ghế trong một lần đặt!') : 'Bạn chỉ có thể đặt tối đa 8 ghế trong một lần đặt!';
+                        const alertMsg = window.CinemaI18n ? window.CinemaI18n.t('seatSelection.maxSeats', 'B\u1ea1n ch\u1ec9 c\xf3 th\u1ec3 \u0111\u1eb7t t\u1ed1i \u0111a 8 gh\u1ebf trong m\u1ed9t l\u1ea7n \u0111\u1eb7t!') : 'B\u1ea1n ch\u1ec9 c\xf3 th\u1ec3 \u0111\u1eb7t t\u1ed1i \u0111a 8 gh\u1ebf trong m\u1ed9t l\u1ea7n \u0111\u1eb7t!';
                         alert(alertMsg);
                         return;
                     }
@@ -37,10 +37,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         function updateBookingSummary() {
-            const noSeatText = window.CinemaI18n ? window.CinemaI18n.t('seatSelection.noSeatSelected', 'Chưa chọn ghế') : 'Chưa chọn ghế';
+            const noSeatText = window.CinemaI18n ? window.CinemaI18n.t('seatSelection.noSeatSelected', 'Ch\u01b0a ch\u1ecdn gh\u1ebf') : 'Ch\u01b0a ch\u1ecdn gh\u1ebf';
+            const currency = window.CinemaI18n ? window.CinemaI18n.t('seatSelection.currency', '\u0111') : '\u0111';
+            const lang = (window.CinemaI18n && window.CinemaI18n.getLang) ? window.CinemaI18n.getLang() : 'vi';
+            const locale = lang === 'en' ? 'en-US' : 'vi-VN';
+
             if (selectedSeats.length === 0) {
                 if (selectedSeatCodesSpan) selectedSeatCodesSpan.textContent = noSeatText;
-                if (totalPriceSpan) totalPriceSpan.textContent = '0 đ';
+                if (totalPriceSpan) totalPriceSpan.textContent = '0 ' + currency;
                 if (selectedSeatsInput) selectedSeatsInput.value = '';
                 if (checkoutBtn) checkoutBtn.disabled = true;
             } else {
@@ -49,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const ids = selectedSeats.map(s => s.id).join(',');
 
                 if (selectedSeatCodesSpan) selectedSeatCodesSpan.textContent = codes;
-                if (totalPriceSpan) totalPriceSpan.textContent = total.toLocaleString('vi-VN') + ' đ';
+                if (totalPriceSpan) totalPriceSpan.textContent = total.toLocaleString(locale) + ' ' + currency;
                 if (selectedSeatsInput) selectedSeatsInput.value = ids;
                 if (checkoutBtn) checkoutBtn.disabled = false;
             }
@@ -58,6 +62,9 @@ document.addEventListener('DOMContentLoaded', function () {
         window.addEventListener('cinema:langChanged', function () {
             updateBookingSummary();
         });
+
+        // Initialize booking summary display on load
+        updateBookingSummary();
     }
 
     const themeToggleBtns = document.querySelectorAll('.theme-toggle-btn');

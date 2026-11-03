@@ -53,7 +53,7 @@
 <!-- i18n Translation Engine -->
 
 <!-- Main App JS -->
-<script src="${pageContext.request.contextPath}/assets/js/main.js?v=2.1" charset="UTF-8"></script>
+<script src="${pageContext.request.contextPath}/assets/js/main.js?v=2.2" charset="UTF-8"></script>
 
 <!-- Custom Foot Script (From System Settings) -->
 <c:if test="${not empty siteSettings.script_foot}">
