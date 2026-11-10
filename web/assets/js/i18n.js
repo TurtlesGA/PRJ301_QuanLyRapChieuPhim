@@ -11,7 +11,7 @@
     const STORAGE_KEY = 'cinema_lang';
     const CACHE_PREFIX = 'cinema_i18n_cache_';
     const CACHE_LANGS = 'cinema_i18n_cache_languages';
-    const CACHE_VERSION = 'v3.5';
+    const CACHE_VERSION = 'v3.9';
     const CACHE_VERSION_KEY = 'cinema_i18n_version';
 
     // Invalidate stale caches if i18n engine/dictionaries are updated
@@ -113,6 +113,45 @@
         return text;
     }
 
+    function cleanMojibake(str) {
+        if (!str) return str;
+        if (str.indexOf('Ã') !== -1 || str.indexOf('Ä') !== -1 || str.indexOf('á»') !== -1 || str.indexOf('áº') !== -1 || str.indexOf('Æ') !== -1) {
+            const map = {
+                'VÃ¢y HÃ£m: Káº» Trá»«ng Pháº¡t (The Roundup 4)': 'Vây Hãm: Kẻ Trừng Phạt (The Roundup 4)',
+                'HÃ nh Tinh Khá»‰: VÆ°Æ¡ng Quá»‘c Má»›i': 'Hành Tinh Khỉ: Vương Quốc Mới',
+                'Furiosa: CÃ¢u Chuyá»‡n Tá»« Max Ä iÃªn': 'Furiosa: Câu Chuyện Từ Max Điên',
+                'Káº» Trá»™m Máº·t TrÄƒng 4 (Despicable Me 4)': 'Kẻ Trộm Mặt Trăng 4 (Despicable Me 4)',
+                'Exhuma: Quáº­t Má»™ TrÃ¹ng Ma': 'Exhuma: Quật Mộ Trùng Ma',
+                'Láº­t Máº·t 7: Má»™t Ä iá» u Æ¯á»›c': 'Lật Mặt 7: Một Điều Ước',
+                'Godzilla x Kong: Ä áº¿ Cháº¿ Má»›i': 'Godzilla x Kong: Đế Chế Mới',
+                'Transformers: Má»™t (Transformers One)': 'Transformers: Một (Transformers One)',
+                'Moana 2: HÃ nh TrÃ¬nh Má»›i': 'Moana 2: Hành Trình Mới',
+                'Joker: Ä iÃªn CÃ³ Ä Ã´i (Folie Ã  Deux)': 'Joker: Điên Có Đôi (Folie à Deux)',
+                'Gia ÄÃ¬nh': 'Gia Đình',
+                'TÃ¢m LÃ½': 'Tâm Lý',
+                'HÃ nh Äá»™ng': 'Hành Động',
+                'SiÃªu Anh HÃ¹ng': 'Siêu Anh Hùng',
+                'HÃ i HÆ°á»›c': 'Hài Hước',
+                'Tá»™i Pháº¡m': 'Tội Phạm',
+                'Viá»…n TÆ°á»Ÿng': 'Viễn Tưởng',
+                'PhiÃªu LÆ°u': 'Phiêu Lưu',
+                'Hoáº¡t HÃ¬nh': 'Hoạt Hình',
+                'Ã‚m Nháº¡c': 'Âm Nhạc',
+                'Khoa Há» c Viá»…n TÆ°á»Ÿng': 'Khoa Học Viễn Tưởng',
+                'Kinh Dá»‹': 'Kinh Dị',
+                'BÃ­ áº¨n': 'Bí Ẩn',
+                'Ca Nháº¡c': 'Ca Nhạc',
+                'TÃ¬nh Cáº£m': 'Tình Cảm'
+            };
+            for (const k in map) {
+                if (str.indexOf(k) !== -1) {
+                    str = str.split(k).join(map[k]);
+                }
+            }
+        }
+        return str;
+    }
+
     // Dynamic Movie Content Translation (Titles, Genres, Descriptions, Rooms)
     function translateDynamicMovieContent(data, root) {
         if (!data) return;
@@ -133,16 +172,17 @@
         getEls('.movie-title').forEach(el => {
             let orig = el.getAttribute('data-original-title');
             if (!orig) {
-                orig = el.textContent.trim();
+                orig = cleanMojibake(el.textContent.trim());
                 el.setAttribute('data-original-title', orig);
             }
+            orig = cleanMojibake(orig);
             const dbTitle = el.getAttribute('data-title-' + currentLang);
             if (dbTitle) {
                 el.textContent = dbTitle;
                 if (el.hasAttribute('title')) el.setAttribute('title', dbTitle);
                 return;
             }
-            if (isEn) {
+            if (isEn || currentLang !== 'vi') {
                 const translated = movieTitles[orig];
                 if (translated) {
                     el.textContent = translated;
@@ -158,20 +198,42 @@
         getEls('.movie-genre').forEach(el => {
             let orig = el.getAttribute('data-original-genre');
             if (!orig) {
-                orig = el.textContent.trim();
+                orig = cleanMojibake(el.textContent.trim());
                 el.setAttribute('data-original-genre', orig);
             }
+            orig = cleanMojibake(orig);
             const dbGenre = el.getAttribute('data-genre-' + currentLang);
             if (dbGenre) {
                 el.textContent = dbGenre;
                 return;
             }
-            if (isEn) {
+            if (isEn || currentLang !== 'vi') {
                 if (movieGenres[orig]) {
                     el.textContent = movieGenres[orig];
                     return;
                 }
-                const parts = orig.split(',').map(s => s.trim());
+                const parts = orig.split(',').map(s => cleanMojibake(s.trim()));
+                const translatedParts = parts.map(p => movieGenres[p] || p);
+                el.textContent = translatedParts.join(', ');
+                return;
+            }
+            el.textContent = orig;
+        });
+
+        // 2b. Movie Genre Select Options (in Filter Form)
+        getEls('[data-genre-option]').forEach(el => {
+            let orig = el.getAttribute('data-original-genre');
+            if (!orig) {
+                orig = cleanMojibake(el.getAttribute('data-genre-option') || el.textContent.trim());
+                el.setAttribute('data-original-genre', orig);
+            }
+            orig = cleanMojibake(orig);
+            if (isEn || currentLang !== 'vi') {
+                if (movieGenres[orig]) {
+                    el.textContent = movieGenres[orig];
+                    return;
+                }
+                const parts = orig.split(',').map(s => cleanMojibake(s.trim()));
                 const translatedParts = parts.map(p => movieGenres[p] || p);
                 el.textContent = translatedParts.join(', ');
                 return;

@@ -25,7 +25,7 @@
                 <!-- SECTION 1: Cấu hình thông số kỹ thuật chung -->
                 <div class="card bg-dark border-secondary rounded-4 p-4 shadow mb-4">
                     <h5 class="fw-bold text-white mb-3 border-bottom border-secondary pb-2">
-                        <i class="fa-solid fa-film text-danger me-2"></i>Thông Tin Kỹ Thuật & Xuất Bản
+                        <i class="fa-solid fa-film text-danger me-2"></i><span data-i18n="admin.movieForm.techSection">Thông Tin Kỹ Thuật & Xuất Bản</span>
                     </h5>
                     <div class="row g-3">
                         <div class="col-md-3">
@@ -75,16 +75,16 @@
                     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-3 border-bottom border-secondary pb-3">
                         <div>
                             <h5 class="fw-bold text-white mb-1">
-                                <i class="fa-solid fa-language text-warning me-2"></i>Nội Dung Phim Đa Ngôn Ngữ (Database)
+                                <i class="fa-solid fa-language text-warning me-2"></i><span data-i18n="admin.movieForm.multiLangSection">Nội Dung Phim Đa Ngôn Ngữ (Database)</span>
                             </h5>
-                            <p class="small text-muted mb-0">Chọn các ngôn ngữ bộ phim này sẽ hỗ trợ. Dữ liệu dịch chi tiết sẽ được lưu trực tiếp vào cơ sở dữ liệu.</p>
+                            <p class="small text-muted mb-0" data-i18n="admin.movieForm.multiLangDesc">Chọn các ngôn ngữ bộ phim này sẽ hỗ trợ. Dữ liệu dịch chi tiết sẽ được lưu trực tiếp vào cơ sở dữ liệu.</p>
                         </div>
                     </div>
 
                     <!-- Danh sách Checkbox chọn ngôn ngữ hỗ trợ -->
-                    <div class="p-3 rounded-3 mb-4" style="background-color: #1a1a1a; border: 1px dashed #444;">
+                    <div class="p-3 rounded-3 mb-4 lang-selector-box">
                         <label class="form-label text-warning small fw-bold text-uppercase mb-2 d-block">
-                            <i class="fa-solid fa-check-double me-1"></i>Ngôn Ngữ Kích Hoạt Cho Bộ Phim Này:
+                            <i class="fa-solid fa-check-double me-1"></i><span data-i18n="admin.movieForm.activeLangsLabel">Ngôn Ngữ Kích Hoạt Cho Bộ Phim Này:</span>
                         </label>
                         <div class="d-flex flex-wrap gap-3">
                             <c:forEach items="${activeLanguages}" var="lang">
@@ -127,7 +127,7 @@
                             <c:set var="valDesc" value="${trans != null ? trans.description : (codeLower == 'vi' && movie != null ? movie.description : '')}" />
 
                             <div class="tab-pane fade ${vs.first ? 'show active' : ''}" id="tab-pane-${codeLower}" role="tabpanel">
-                                <div class="row g-3 p-3 rounded-3" style="background-color: #212121;">
+                                <div class="row g-3 p-3 rounded-3 lang-pane-box">
                                     <div class="col-md-8">
                                         <label class="form-label text-light small fw-semibold">
                                             Tên phim (${lang.langCode.toUpperCase()}) *
@@ -167,10 +167,10 @@
                 <!-- Nút thao tác -->
                 <div class="d-flex justify-content-end gap-2 mt-4">
                     <a href="${pageContext.request.contextPath}/admin/movies" class="btn btn-admin-back px-4">
-                        <i class="fa-solid fa-xmark me-1"></i>Hủy Bỏ
+                        <i class="fa-solid fa-xmark me-1"></i><span data-i18n="admin.movieForm.cancelBtn">Hủy Bỏ</span>
                     </a>
                     <button type="button" id="btnSubmitMovie" class="btn btn-danger fw-bold px-4 py-2">
-                        <i class="fa-solid fa-save me-1"></i>Lưu Toàn Bộ Thông Tin Phim
+                        <i class="fa-solid fa-save me-1"></i><span data-i18n="admin.movieForm.saveBtn">Lưu Toàn Bộ Thông Tin Phim</span>
                     </button>
                 </div>
             </form>

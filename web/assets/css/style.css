@@ -221,6 +221,97 @@ body {
     box-shadow: 0 0 0 0.25rem rgba(229, 9, 20, 0.25) !important;
 }
 
+/* Movie Filter Bar (Dark Mode Default) */
+.movie-filter-card {
+    background-color: #1e1e1e !important;
+    border-color: #3f3f46 !important;
+}
+.movie-filter-card .movie-search-icon {
+    background-color: #262626 !important;
+    border-color: #3f3f46 !important;
+    border-right: none !important;
+    color: #a1a1aa !important;
+}
+.movie-filter-card .movie-search-input {
+    background-color: #262626 !important;
+    border-color: #3f3f46 !important;
+    border-left: none !important;
+    color: #ffffff !important;
+}
+.movie-filter-card .movie-search-input::placeholder {
+    color: #71717a !important;
+}
+.movie-filter-card .movie-filter-select {
+    background-color: #262626 !important;
+    border-color: #3f3f46 !important;
+    color: #ffffff !important;
+}
+.movie-filter-card .movie-search-input:focus,
+.movie-filter-card .movie-filter-select:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(229, 9, 20, 0.25) !important;
+}
+.movie-filter-card .input-group:focus-within .movie-search-icon {
+    border-color: var(--primary-color) !important;
+}
+
+/* ===================================
+   Payment Page (Dark Mode Default)
+   =================================== */
+.payment-card {
+    background-color: #1e1e1e !important;
+    border-color: #3f3f46 !important;
+}
+.payment-main-title {
+    color: #ffffff !important;
+}
+.qr-box {
+    background-color: #ffffff !important;
+    border: 3px solid #3f3f46 !important;
+}
+.payment-ticket-info {
+    background-color: #141414 !important;
+    border: 1px solid #3f3f46 !important;
+}
+.payment-ticket-title {
+    color: #ffffff !important;
+    border-color: #2e2e2e !important;
+}
+.payment-label {
+    color: #a1a1aa !important;
+}
+.payment-value {
+    color: #f4f4f5 !important;
+}
+.payment-value-warning {
+    color: #f59e0b !important;
+}
+.payment-total-label {
+    color: #ffffff !important;
+}
+.payment-divider {
+    border-color: #2e2e2e !important;
+}
+.payment-seat-badge {
+    background-color: #3f3f46 !important;
+    color: #f4f4f5 !important;
+    border: 1px solid #52525b !important;
+}
+.payment-code {
+    color: #f59e0b !important;
+    background-color: #09090b !important;
+    border: 1px solid #27272a !important;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+.payment-notice-box {
+    background-color: #18181b !important;
+    border: 1px solid #27272a !important;
+    border-left: 4px solid #06b6d4 !important;
+    color: #e4e4e7 !important;
+}
+
 /* ===================================
    Theme Switch Toggle (Sáng / Tối)
    =================================== */
@@ -719,6 +810,105 @@ body {
     background-color: #f8fafc !important;
     border-color: #cbd5e1 !important;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+/* Light Mode: Movie Filter Bar */
+[data-bs-theme="light"] .movie-filter-card {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05) !important;
+}
+[data-bs-theme="light"] .movie-filter-card .movie-search-icon,
+[data-bs-theme="light"] .input-group-text {
+    background-color: #f1f5f9 !important;
+    border-color: #cbd5e1 !important;
+    color: #64748b !important;
+}
+[data-bs-theme="light"] .movie-filter-card .movie-search-icon {
+    border-right: none !important;
+}
+[data-bs-theme="light"] .movie-filter-card .movie-search-input {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    border-left: none !important;
+    color: #0f172a !important;
+}
+[data-bs-theme="light"] .movie-filter-card .movie-search-input::placeholder {
+    color: #94a3b8 !important;
+}
+[data-bs-theme="light"] .movie-filter-card .movie-filter-select {
+    background-color: #ffffff !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+}
+[data-bs-theme="light"] .movie-filter-card .movie-search-input:focus,
+[data-bs-theme="light"] .movie-filter-card .movie-filter-select:focus {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 0 0 0.2rem rgba(229, 9, 20, 0.15) !important;
+}
+[data-bs-theme="light"] .movie-filter-card .input-group:focus-within .movie-search-icon {
+    border-color: var(--primary-color) !important;
+}
+
+/* Light Mode: Payment Page */
+[data-bs-theme="light"] .payment-card {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06) !important;
+}
+[data-bs-theme="light"] .payment-main-title {
+    color: #0f172a !important;
+}
+[data-bs-theme="light"] .qr-box {
+    background-color: #ffffff !important;
+    border: 2px solid #e2e8f0 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05) !important;
+}
+[data-bs-theme="light"] .payment-ticket-info {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03) !important;
+}
+[data-bs-theme="light"] .payment-ticket-title {
+    color: #0f172a !important;
+    border-color: #e2e8f0 !important;
+}
+[data-bs-theme="light"] .payment-label {
+    color: #64748b !important;
+}
+[data-bs-theme="light"] .payment-value {
+    color: #0f172a !important;
+}
+[data-bs-theme="light"] .payment-value-warning {
+    color: #d97706 !important;
+}
+[data-bs-theme="light"] .payment-total-label {
+    color: #0f172a !important;
+}
+[data-bs-theme="light"] .payment-divider {
+    border-color: #e2e8f0 !important;
+}
+[data-bs-theme="light"] .payment-seat-badge {
+    background-color: #e2e8f0 !important;
+    color: #334155 !important;
+    border: 1px solid #cbd5e1 !important;
+}
+[data-bs-theme="light"] .payment-code {
+    color: #b45309 !important;
+    background-color: #fef3c7 !important;
+    border: 1px solid #fde68a !important;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-weight: 700;
+}
+[data-bs-theme="light"] .payment-notice-box {
+    background-color: #f0fdf4 !important;
+    border: 1px solid #bbf7d0 !important;
+    border-left: 4px solid #16a34a !important;
+    color: #166534 !important;
+}
+[data-bs-theme="light"] .payment-notice-box .text-info {
+    color: #16a34a !important;
 }
 
 /* Light mode: Seat Map & Screen Visual */
@@ -1468,3 +1658,96 @@ body {
 [data-bs-theme="light"] .custom-modal-edit .form-text {
     color: #64748b !important;
 }
+
+/* ===================================
+   Admin Movie Form & Code Editor Themes
+   =================================== */
+.lang-selector-box {
+    background-color: #1a1a1a;
+    border: 1px dashed #444;
+}
+.lang-pane-box {
+    background-color: #212121;
+}
+.custom-code-editor {
+    background-color: #1a1a1a !important;
+    color: #e2e8f0 !important;
+}
+
+[data-bs-theme="light"] .lang-selector-box {
+    background-color: #f8fafc !important;
+    border: 1px dashed #cbd5e1 !important;
+}
+[data-bs-theme="light"] .lang-selector-box label {
+    color: #0f172a !important;
+}
+[data-bs-theme="light"] .lang-pane-box {
+    background-color: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+}
+[data-bs-theme="light"] .lang-pane-box label {
+    color: #0f172a !important;
+}
+[data-bs-theme="light"] .custom-code-editor {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+    border-color: #cbd5e1 !important;
+}
+
+
+/* ===================================
+   Pagination Styling (Dark & Light Theme)
+   =================================== */
+.pagination {
+    margin-bottom: 0;
+    gap: 4px;
+}
+.page-link {
+    background-color: #27272a;
+    border: 1px solid #3f3f46;
+    color: #e4e4e7;
+    font-weight: 600;
+    border-radius: 8px !important;
+    padding: 0.35rem 0.75rem;
+    transition: all 0.2s ease;
+}
+.page-link:hover {
+    background-color: #3f3f46;
+    border-color: #52525b;
+    color: #ffffff;
+}
+.page-item.active .page-link {
+    background-color: #e50914 !important;
+    border-color: #e50914 !important;
+    color: #ffffff !important;
+    box-shadow: 0 2px 8px rgba(229, 9, 20, 0.4);
+}
+.page-item.disabled .page-link {
+    background-color: #18181b;
+    border-color: #27272a;
+    color: #71717a;
+    opacity: 0.6;
+}
+
+[data-bs-theme="light"] .page-link {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+    color: #334155;
+}
+[data-bs-theme="light"] .page-link:hover {
+    background-color: #e2e8f0;
+    border-color: #94a3b8;
+    color: #0f172a;
+}
+[data-bs-theme="light"] .page-item.active .page-link {
+    background-color: #e50914 !important;
+    border-color: #e50914 !important;
+    color: #ffffff !important;
+}
+[data-bs-theme="light"] .page-item.disabled .page-link {
+    background-color: #f1f5f9;
+    border-color: #e2e8f0;
+    color: #94a3b8;
+    opacity: 0.6;
+}
+

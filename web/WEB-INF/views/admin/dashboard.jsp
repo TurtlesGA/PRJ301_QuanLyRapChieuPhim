@@ -30,7 +30,7 @@
                             <div>
                                 <small class="text-muted d-block" data-i18n="admin.dashboard.revenue">Doanh Thu</small>
                                 <h4 class="text-white fw-bold mb-0">
-                                    <fmt:formatNumber value="${totalRevenue}" type="number" groupingUsed="true"/> đ
+                                    <fmt:formatNumber value="${totalRevenue}" type="number" groupingUsed="true"/> <span data-i18n="common.currency">đ</span>
                                 </h4>
                             </div>
                         </div>
@@ -112,7 +112,7 @@
                                             <span class="badge bg-secondary">${t.seat.seatCode}</span>
                                         </c:forEach>
                                     </td>
-                                    <td class="text-danger fw-bold"><fmt:formatNumber value="${b.totalAmount}" type="number"/> đ</td>
+                                    <td class="text-danger fw-bold"><fmt:formatNumber value="${b.totalAmount}" type="number"/> <span data-i18n="common.currency">đ</span></td>
                                     <td><span class="badge badge-status ${b.paymentStatus == 'PAID' ? 'bg-success' : 'bg-warning'}" data-status-code="${b.paymentStatus}">${b.paymentStatus}</span></td>
                                 </tr>
                             </c:forEach>
