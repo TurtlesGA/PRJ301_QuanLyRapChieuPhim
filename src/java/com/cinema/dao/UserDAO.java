@@ -204,6 +204,26 @@ public class UserDAO extends DBContext {
         return list;
     }
 
+    public List<User> getUsersByPage(int page, int pageSize) {
+        List<User> list = new ArrayList<>();
+        if (page < 1) page = 1;
+        int offset = (page - 1) * pageSize;
+        String sql = "SELECT * FROM Users ORDER BY created_at DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, offset);
+            ps.setInt(2, pageSize);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    list.add(mapUser(rs));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public boolean toggleUserStatus(int userId, boolean currentStatus) {
         String sql = "UPDATE Users SET status = ? WHERE user_id = ?";
         try (Connection conn = getConnection();
@@ -297,7 +317,7 @@ public class UserDAO extends DBContext {
                 rs.getInt("user_id"),
                 rs.getString("username"),
                 rs.getString("password"),
-                rs.getString("full_name"),
+                MovieDAO.fixEncoding(rs.getString("full_name")),
                 rs.getString("email"),
                 rs.getString("phone"),
                 rs.getString("role"),

@@ -15,7 +15,7 @@
                 <span class="badge bg-success bg-opacity-25 text-success border border-success border-opacity-50">
                     <i class="fa-solid fa-circle text-success me-1" style="font-size: 0.5rem;"></i><span data-i18n="admin.systemStable">Hệ thống ổn định</span>
                 </span>
-                <span class="d-none d-md-inline">PRJ302 Quản Lý Rạp Chiếu Phim</span>
+                <span class="d-none d-md-inline">PRJ301 Quản Lý Rạp Chiếu Phim</span>
             </div>
         </div>
     </div>
@@ -30,7 +30,7 @@
 <!-- i18n Translation Engine -->
 
 <!-- Admin SweetAlert2 and UI Script -->
-<script src="${pageContext.request.contextPath}/assets/js/admin.js?v=2.3" charset="UTF-8"></script>
+<script src="${pageContext.request.contextPath}/assets/js/admin.js?v=2.4" charset="UTF-8"></script>
 
 <!-- Custom Foot Script (From System Settings) -->
 <c:if test="${not empty siteSettings.script_foot}">
