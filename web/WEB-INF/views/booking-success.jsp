@@ -51,7 +51,7 @@
                         <div class="d-flex justify-content-between">
                             <span class="text-white fw-bold" data-i18n="bookingSuccess.total">Tổng thanh toán:</span>
                             <span class="text-danger fw-bold fs-5">
-                                <fmt:formatNumber value="${booking.totalAmount}" type="number" groupingUsed="true"/> đ
+                                <fmt:formatNumber value="${booking.totalAmount}" type="number" groupingUsed="true"/> <span data-i18n="common.currency">đ</span>
                             </span>
                         </div>
                     </div>

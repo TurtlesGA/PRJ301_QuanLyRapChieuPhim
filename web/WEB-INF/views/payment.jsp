@@ -12,7 +12,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-10 col-xl-9">
-                <div class="card bg-dark border-secondary p-4 p-md-5 rounded-4 shadow">
+                <div class="card payment-card border-secondary p-4 p-md-5 rounded-4 shadow">
                     
                     <div class="text-center mb-4 border-bottom border-secondary pb-3">
                         <c:choose>
@@ -27,13 +27,13 @@
                                 </span>
                             </c:otherwise>
                         </c:choose>
-                        <h3 class="fw-bold text-white mt-2" data-i18n="payment.title">CỔNG THANH TOÁN TRỰC TUYẾN</h3>
+                        <h3 class="fw-bold payment-main-title mt-2" data-i18n="payment.title">CỔNG THANH TOÁN TRỰC TUYẾN</h3>
                         <p class="text-muted small mb-0" data-i18n="payment.subtitle">Quét mã QR để hoàn tất thanh toán đơn vé của bạn</p>
                     </div>
 
                     <div class="row g-4 align-items-center">
                         <div class="col-md-5 text-center">
-                            <div class="p-3 bg-white rounded-3 shadow-sm d-inline-block border border-3 border-secondary">
+                            <div class="p-3 rounded-3 shadow-sm d-inline-block qr-box">
                                 <img src="https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=CINESTAR_PAYMENT_ACCOUNT" 
                                      alt="QR Code Thanh Toán" 
                                      class="img-fluid" 
@@ -42,7 +42,7 @@
 
                             <div class="mt-3">
                                 <span class="text-muted small d-block mb-1" data-i18n="payment.expiresIn">Giao dịch hết hạn trong:</span>
-                                <span id="countdownTimer" class="fw-bold text-warning fs-5">10:00</span>
+                                <span id="countdownTimer" class="fw-bold payment-value-warning fs-5">10:00</span>
                             </div>
 
                             <div class="mt-2 text-muted small">
@@ -51,72 +51,72 @@
                         </div>
 
                         <div class="col-md-7">
-                            <div class="p-3 rounded-3 border border-secondary" style="background-color: #1a1a1a;">
-                                <h5 class="fw-bold text-white mb-3 border-bottom border-secondary pb-2">
+                            <div class="p-3 p-md-4 rounded-3 payment-ticket-info">
+                                <h5 class="fw-bold mb-3 border-bottom pb-2 payment-ticket-title">
                                     <i class="fa-solid fa-receipt text-warning me-2"></i><span data-i18n="payment.ticketInfo">Thông Tin Đơn Vé</span>
                                 </h5>
 
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span class="text-muted small" data-i18n="payment.bookingCode">Mã đơn vé:</span>
-                                    <strong class="text-warning">#${booking.bookingCode}</strong>
+                                    <span class="payment-label small" data-i18n="payment.bookingCode">Mã đơn vé:</span>
+                                    <strong class="payment-value-warning">#${booking.bookingCode}</strong>
                                 </div>
 
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span class="text-muted small" data-i18n="payment.movie">Phim:</span>
-                                    <span class="text-white fw-bold movie-title" data-original-title="${booking.showtime.movie.title}">${booking.showtime.movie.title}</span>
+                                    <span class="payment-label small" data-i18n="payment.movie">Phim:</span>
+                                    <span class="fw-bold movie-title payment-value" data-original-title="${booking.showtime.movie.title}">${booking.showtime.movie.title}</span>
                                 </div>
 
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span class="text-muted small" data-i18n="payment.room">Phòng chiếu:</span>
-                                    <span class="text-white"><span class="room-name" data-original-room="${booking.showtime.room.roomName}">${booking.showtime.room.roomName}</span> (${booking.showtime.room.roomType})</span>
+                                    <span class="payment-label small" data-i18n="payment.room">Phòng chiếu:</span>
+                                    <span class="payment-value"><span class="room-name" data-original-room="${booking.showtime.room.roomName}">${booking.showtime.room.roomName}</span> (${booking.showtime.room.roomType})</span>
                                 </div>
 
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span class="text-muted small" data-i18n="payment.showtime">Suất chiếu:</span>
-                                    <span class="text-white">
+                                    <span class="payment-label small" data-i18n="payment.showtime">Suất chiếu:</span>
+                                    <span class="payment-value">
                                         <fmt:formatDate value="${booking.showtime.startTime}" pattern="HH:mm"/> - <fmt:formatDate value="${booking.showtime.showDate}" pattern="dd/MM/yyyy"/>
                                     </span>
                                 </div>
 
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span class="text-muted small" data-i18n="payment.selectedSeats">Ghế đã chọn:</span>
+                                    <span class="payment-label small" data-i18n="payment.selectedSeats">Ghế đã chọn:</span>
                                     <div>
                                         <c:forEach items="${booking.tickets}" var="t">
-                                            <span class="badge bg-secondary">${t.seat.seatCode}</span>
+                                            <span class="badge payment-seat-badge">${t.seat.seatCode}</span>
                                         </c:forEach>
                                     </div>
                                 </div>
 
                                 <div class="d-flex justify-content-between mb-2">
-                                    <span class="text-muted small" data-i18n="payment.transferContent">Nội dung chuyển khoản:</span>
-                                    <code class="text-warning bg-black px-2 py-1 rounded">CINESTAR ${booking.bookingCode}</code>
+                                    <span class="payment-label small" data-i18n="payment.transferContent">Nội dung chuyển khoản:</span>
+                                    <code class="payment-code">CINESTAR ${booking.bookingCode}</code>
                                 </div>
 
-                                <hr class="border-secondary my-3">
+                                <hr class="payment-divider my-3">
 
                                 <div class="d-flex justify-content-between align-items-center">
-                                    <span class="text-white fw-bold" data-i18n="payment.paymentAmount">Số tiền thanh toán:</span>
+                                    <span class="fw-bold payment-total-label" data-i18n="payment.paymentAmount">Số tiền thanh toán:</span>
                                     <span class="text-danger fw-bold fs-4">
-                                        <fmt:formatNumber value="${booking.totalAmount}" type="number" groupingUsed="true"/> đ
+                                        <fmt:formatNumber value="${booking.totalAmount}" type="number" groupingUsed="true"/> <span data-i18n="common.currency">đ</span>
                                     </span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="alert alert-secondary bg-black border-secondary text-light small mt-4 mb-4" data-i18n-html="payment.notice">
+                    <div class="alert payment-notice-box small mt-4 mb-4" data-i18n-html="payment.notice">
                         <i class="fa-solid fa-circle-info text-info me-2"></i>
                         Vui lòng chuyển đúng số tiền và nội dung chuyển khoản. Sau khi chuyển khoản thành công trên điện thoại, bấm <strong>"Tôi Đã Chuyển Khoản Thành Công"</strong> để hoàn tất đơn vé.
                     </div>
 
-                    <form action="${pageContext.request.contextPath}/payment-confirm" method="POST">
+                    <form id="paymentForm" action="${pageContext.request.contextPath}/payment-confirm" method="POST">
                         <input type="hidden" name="bookingId" value="${booking.bookingId}">
+                        <input type="hidden" name="action" id="paymentAction" value="confirm">
                         <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
-                            <button type="submit" name="action" value="confirm" class="btn btn-success fw-bold py-2 px-4">
+                            <button type="submit" id="btnConfirmPayment" class="btn btn-success fw-bold py-2 px-4">
                                 <i class="fa-solid fa-circle-check me-2"></i><span data-i18n="payment.iHavePaid">Tôi Đã Chuyển Khoản Thành Công</span>
                             </button>
-                            <button type="submit" name="action" value="cancel" class="btn btn-outline-danger py-2 px-4"
-                                    onclick="return confirm(window.CinemaI18n ? window.CinemaI18n.t('payment.cancelConfirm', 'Bạn có chắc chắn muốn hủy thanh toán không? Vé và ghế đã giữ sẽ được giải phóng ngay.') : 'Bạn có chắc chắn muốn hủy thanh toán không?');">
+                            <button type="button" id="btnCancelPayment" class="btn btn-outline-danger py-2 px-4">
                                 <i class="fa-solid fa-xmark me-2"></i><span data-i18n="payment.cancelPayment">Hủy Thanh Toán</span>
                             </button>
                         </div>
@@ -134,20 +134,85 @@
     var timerInterval = setInterval(function () {
         if (timeLeft <= 0) {
             clearInterval(timerInterval);
+            var isEn = (window.CinemaI18n && window.CinemaI18n.getLang() === 'en');
             var expiredLabel = window.CinemaI18n ? window.CinemaI18n.t('payment.expired', 'Hết hạn') : 'Hết hạn';
-            var alertMsg = window.CinemaI18n ? window.CinemaI18n.t('payment.timeoutAlert', 'Thời gian giữ chỗ thanh toán đã hết hạn! Đơn đặt vé sẽ được đưa về danh sách vé.') : 'Thời gian giữ chỗ thanh toán đã hết hạn!';
-            timerElement.innerText = expiredLabel;
-            alert(alertMsg);
-            window.location.href = "${pageContext.request.contextPath}/my-bookings";
+            var alertMsg = window.CinemaI18n ? window.CinemaI18n.t('payment.timeoutAlert', 'Thời gian giữ chỗ thanh toán đã hết hạn! Đơn đặt vé sẽ được đưa về danh sách vé.') : 'Thời gian giữ chỗ thanh toán đã hết hạn! Đơn đặt vé sẽ được đưa về danh sách vé.';
+            var title = isEn ? 'Payment Timeout' : 'Hết hạn thanh toán';
+            var confirmBtnText = isEn ? 'OK' : 'Đã hiểu';
+            if (timerElement) timerElement.innerText = expiredLabel;
+
+            if (typeof Swal !== 'undefined') {
+                var dark = document.documentElement.getAttribute('data-bs-theme') !== 'light';
+                Swal.fire({
+                    icon: 'warning',
+                    title: title,
+                    text: alertMsg,
+                    confirmButtonColor: '#dc2626',
+                    confirmButtonText: confirmBtnText,
+                    background: dark ? '#1e1e1e' : '#ffffff',
+                    color: dark ? '#f5f5f5' : '#0f172a',
+                    customClass: {
+                        popup: 'rounded-4 shadow-lg border ' + (dark ? 'border-secondary' : 'border-light-subtle')
+                    }
+                }).then(function () {
+                    window.location.href = "${pageContext.request.contextPath}/my-bookings";
+                });
+            } else {
+                alert(alertMsg);
+                window.location.href = "${pageContext.request.contextPath}/my-bookings";
+            }
         } else {
             var minutes = Math.floor(timeLeft / 60);
             var seconds = timeLeft % 60;
             var displayMin = minutes < 10 ? "0" + minutes : minutes;
             var displaySec = seconds < 10 ? "0" + seconds : seconds;
-            timerElement.innerText = displayMin + ":" + displaySec;
+            if (timerElement) timerElement.innerText = displayMin + ":" + displaySec;
             timeLeft--;
         }
     }, 1000);
+
+    var btnCancel = document.getElementById('btnCancelPayment');
+    if (btnCancel) {
+        btnCancel.addEventListener('click', function (e) {
+            e.preventDefault();
+            var isEn = (window.CinemaI18n && window.CinemaI18n.getLang() === 'en');
+            var title = isEn ? 'Cancel Payment?' : 'Hủy thanh toán?';
+            var message = window.CinemaI18n ? window.CinemaI18n.t('payment.cancelConfirm', 'Bạn có chắc chắn muốn hủy thanh toán không? Vé và ghế đã giữ sẽ được giải phóng ngay.') : 'Bạn có chắc chắn muốn hủy thanh toán không? Vé và ghế đã giữ sẽ được giải phóng ngay.';
+            var confirmText = isEn ? '<i class="fa-solid fa-xmark me-1"></i> Yes, Cancel' : '<i class="fa-solid fa-xmark me-1"></i> Xác nhận hủy';
+            var keepText = isEn ? '<i class="fa-solid fa-arrow-left me-1"></i> Keep Ticket' : '<i class="fa-solid fa-arrow-left me-1"></i> Giữ vé & tiếp tục';
+            var dark = document.documentElement.getAttribute('data-bs-theme') !== 'light';
+
+            if (typeof Swal !== 'undefined') {
+                Swal.fire({
+                    title: title,
+                    text: message,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#dc2626',
+                    cancelButtonColor: '#6b7280',
+                    confirmButtonText: confirmText,
+                    cancelButtonText: keepText,
+                    reverseButtons: true,
+                    background: dark ? '#1e1e1e' : '#ffffff',
+                    color: dark ? '#f5f5f5' : '#0f172a',
+                    customClass: {
+                        popup: 'rounded-4 shadow-lg border ' + (dark ? 'border-secondary' : 'border-light-subtle')
+                    }
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        document.getElementById('paymentAction').value = 'cancel';
+                        document.getElementById('paymentForm').submit();
+                    }
+                });
+            } else {
+                if (confirm(message)) {
+                    document.getElementById('paymentAction').value = 'cancel';
+                    document.getElementById('paymentForm').submit();
+                }
+            }
+        });
+    }
+</script>
 </script>
 
 <jsp:include page="common/footer.jsp"/>

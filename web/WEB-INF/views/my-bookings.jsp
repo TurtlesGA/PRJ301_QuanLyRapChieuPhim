@@ -37,9 +37,10 @@
                                         <span class="badge badge-status ${b.paymentStatus == 'PAID' ? 'bg-success' : (b.paymentStatus == 'CANCELLED' ? 'bg-danger' : 'bg-warning text-dark')}" data-status-code="${b.paymentStatus}">${b.paymentStatus}</span>
                                         <c:if test="${b.paymentStatus == 'PAID'}">
                                             <a href="${pageContext.request.contextPath}/cancel-booking?id=${b.bookingId}" 
-                                               class="btn btn-sm btn-outline-danger ms-2"
+                                               class="btn btn-sm btn-outline-danger ms-2 btn-swal-confirm"
                                                data-i18n="myBookings.cancel"
-                                               onclick="return confirm(window.CinemaI18n ? window.CinemaI18n.t('myBookings.cancelConfirm', 'Bạn có chắc chắn muốn hủy đơn vé này không? Ghế sẽ được mở lại cho người khác.') : 'Bạn có chắc chắn muốn hủy đơn vé này không?');">
+                                               data-confirm="Bạn có chắc chắn muốn hủy đơn vé này không? Ghế sẽ được mở lại cho người khác."
+                                               data-i18n-confirm="myBookings.cancelConfirm">
                                                 Hủy Vé
                                             </a>
                                         </c:if>
@@ -49,9 +50,10 @@
                                                 Thanh Toán
                                             </a>
                                             <a href="${pageContext.request.contextPath}/cancel-booking?id=${b.bookingId}" 
-                                               class="btn btn-sm btn-outline-danger ms-2"
+                                               class="btn btn-sm btn-outline-danger ms-2 btn-swal-confirm"
                                                data-i18n="myBookings.cancel"
-                                               onclick="return confirm(window.CinemaI18n ? window.CinemaI18n.t('myBookings.cancelConfirm2', 'Bạn có chắc chắn muốn hủy đơn đặt vé này không? Ghế sẽ được mở lại.') : 'Bạn có chắc chắn muốn hủy đơn đặt vé này không?');">
+                                               data-confirm="Bạn có chắc chắn muốn hủy đơn đặt vé này không? Ghế sẽ được mở lại."
+                                               data-i18n-confirm="myBookings.cancelConfirm2">
                                                 Hủy Vé
                                             </a>
                                         </c:if>
@@ -76,7 +78,7 @@
                                     <div class="border-top border-secondary pt-2 d-flex justify-content-between align-items-center">
                                         <span class="small text-muted" data-i18n="myBookings.total">Tổng tiền:</span>
                                         <span class="text-danger fw-bold fs-5">
-                                            <fmt:formatNumber value="${b.totalAmount}" type="number" groupingUsed="true"/> đ
+                                            <fmt:formatNumber value="${b.totalAmount}" type="number" groupingUsed="true"/> <span data-i18n="common.currency">đ</span>
                                         </span>
                                     </div>
                                 </div>
