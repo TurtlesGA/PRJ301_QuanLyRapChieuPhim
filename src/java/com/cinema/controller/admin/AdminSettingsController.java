@@ -61,6 +61,7 @@ public class AdminSettingsController extends HttpServlet {
         Map<String, String> settings = settingDAO.getAllSettings();
         List<Language> languages = languageDAO.getAllActiveLanguages();
 
+        request.getServletContext().setAttribute("activeLanguages", languages);
         request.setAttribute("settings", settings);
         request.setAttribute("languages", languages);
         request.getRequestDispatcher("/WEB-INF/views/admin/settings.jsp").forward(request, response);
@@ -100,7 +101,7 @@ public class AdminSettingsController extends HttpServlet {
         settings.put("footer_hotline", getParam(request, "footer_hotline", "1900 6017"));
         settings.put("footer_email", getParam(request, "footer_email", "support@cinestar.vn"));
         settings.put("footer_hours", getParam(request, "footer_hours", "8:00 - 22:00 Hàng ngày"));
-        settings.put("footer_copyright", getParam(request, "footer_copyright", "© 2026 CineStar Cinema - PRJ302 Quản Lý Rạp Chiếu Phim."));
+        settings.put("footer_copyright", getParam(request, "footer_copyright", "© 2026 CineStar Cinema - PRJ301 Quản Lý Rạp Chiếu Phim."));
 
         settings.put("script_head", getParam(request, "script_head", ""));
         settings.put("script_body", getParam(request, "script_body", ""));

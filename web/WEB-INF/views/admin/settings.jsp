@@ -96,7 +96,7 @@
                     </div>
                     <div class="col-12">
                         <label class="form-label text-light small fw-semibold" data-i18n="admin.settings.footerCopyright">Thông tin bản quyền (Copyright)</label>
-                        <input type="text" class="form-control" name="footer_copyright" value="${settings.footer_copyright != null ? settings.footer_copyright : '© 2026 CineStar Cinema - PRJ302 Quản Lý Rạp Chiếu Phim.'}">
+                        <input type="text" class="form-control" name="footer_copyright" value="${settings.footer_copyright != null ? settings.footer_copyright : '© 2026 CineStar Cinema - PRJ301 Quản Lý Rạp Chiếu Phim.'}">
                     </div>
                 </div>
             </div>
@@ -132,7 +132,7 @@
                             <span><i class="fa-solid fa-terminal me-1 text-info"></i><span data-i18n="admin.settings.headScript">Mã nhúng trong thẻ &lt;head&gt; (Head Script):</span></span>
                             <span class="text-muted" data-i18n="admin.settings.headScriptHint">Chèn trước &lt;/head&gt;</span>
                         </label>
-                        <textarea class="form-control font-monospace text-light" style="background-color: #1a1a1a; font-size: 0.88rem;" name="script_head" rows="5" placeholder="&lt;!-- Ví dụ: Google Tag Manager hoặc CSS tùy chỉnh --&gt;&#10;&lt;script&gt;&#10;  console.log('Head script loaded');&#10;&lt;/script&gt;">${settings.script_head}</textarea>
+                        <textarea class="form-control font-monospace custom-code-editor" style="font-size: 0.88rem;" name="script_head" rows="5" placeholder="&lt;!-- Ví dụ: Google Tag Manager hoặc CSS tùy chỉnh --&gt;&#10;&lt;script&gt;&#10;  console.log('Head script loaded');&#10;&lt;/script&gt;">${settings.script_head}</textarea>
                     </div>
 
                     <!-- Body Script -->
@@ -141,7 +141,7 @@
                             <span><i class="fa-solid fa-terminal me-1 text-success"></i><span data-i18n="admin.settings.bodyScript">Mã nhúng ngay sau mở &lt;body&gt; (Body Script):</span></span>
                             <span class="text-muted" data-i18n="admin.settings.bodyScriptHint">Chèn ngay sau &lt;body&gt;</span>
                         </label>
-                        <textarea class="form-control font-monospace text-light" style="background-color: #1a1a1a; font-size: 0.88rem;" name="script_body" rows="5" placeholder="&lt;!-- Ví dụ: Google Tag Manager (noscript) --&gt;&#10;&lt;noscript&gt;&lt;iframe src='...' height='0' width='0'&gt;&lt;/iframe&gt;&lt;/noscript&gt;">${settings.script_body}</textarea>
+                        <textarea class="form-control font-monospace custom-code-editor" style="font-size: 0.88rem;" name="script_body" rows="5" placeholder="&lt;!-- Ví dụ: Google Tag Manager (noscript) --&gt;&#10;&lt;noscript&gt;&lt;iframe src='...' height='0' width='0'&gt;&lt;/iframe&gt;&lt;/noscript&gt;">${settings.script_body}</textarea>
                     </div>
 
                     <!-- Foot Script -->
@@ -150,7 +150,7 @@
                             <span><i class="fa-solid fa-terminal me-1 text-danger"></i><span data-i18n="admin.settings.footScript">Mã nhúng cuối trang trước &lt;/body&gt; (Foot Script):</span></span>
                             <span class="text-muted" data-i18n="admin.settings.footScriptHint">Chèn trước đóng &lt;/body&gt;</span>
                         </label>
-                        <textarea class="form-control font-monospace text-light" style="background-color: #1a1a1a; font-size: 0.88rem;" name="script_foot" rows="5" placeholder="&lt;!-- Ví dụ: Livechat widget, tracking pixel --&gt;&#10;&lt;script&gt;&#10;  console.log('Foot script loaded');&#10;&lt;/script&gt;">${settings.script_foot}</textarea>
+                        <textarea class="form-control font-monospace custom-code-editor" style="font-size: 0.88rem;" name="script_foot" rows="5" placeholder="&lt;!-- Ví dụ: Livechat widget, tracking pixel --&gt;&#10;&lt;script&gt;&#10;  console.log('Foot script loaded');&#10;&lt;/script&gt;">${settings.script_foot}</textarea>
                     </div>
                 </div>
             </div>
@@ -169,11 +169,12 @@
             <!-- Cột trái: Danh sách ngôn ngữ hiện có -->
             <div class="col-lg-6">
                 <div class="card bg-dark border-secondary rounded-4 p-4 shadow h-100">
+                    <c:set var="langList" value="${not empty languages ? languages : activeLanguages}" />
                     <div class="d-flex justify-content-between align-items-center border-bottom border-secondary pb-3 mb-3">
                         <h5 class="fw-bold text-white mb-0">
                             <i class="fa-solid fa-list-check text-danger me-2"></i><span data-i18n="admin.settings.activeLanguages">Gói Ngôn Ngữ Đang Kích Hoạt</span>
                         </h5>
-                        <span class="badge bg-danger">${languages.size()} <span data-i18n="admin.settings.languagesUnit">Ngôn ngữ</span></span>
+                        <span class="badge bg-danger">${not empty langList ? langList.size() : 0} <span data-i18n="admin.settings.languagesUnit">Ngôn ngữ</span></span>
                     </div>
 
                     <div class="table-responsive">
@@ -189,7 +190,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <c:forEach items="${languages}" var="lang">
+                                <c:forEach items="${langList}" var="lang">
                                     <tr>
                                         <td>
                                             <img src="${pageContext.request.contextPath}${lang.flagUrl}" alt="${lang.langCode}" style="width: 28px; height: 18px; object-fit: cover; border-radius: 3px; border: 1px solid #555;">
@@ -243,6 +244,14 @@
                                         </td>
                                     </tr>
                                 </c:forEach>
+                                <c:if test="${empty langList}">
+                                    <tr>
+                                        <td colspan="6" class="text-center py-4 text-muted">
+                                            <i class="fa-solid fa-earth-americas fs-2 mb-2 d-block"></i>
+                                            <span data-i18n="admin.settings.noLanguages">Chưa có gói ngôn ngữ nào được kích hoạt.</span>
+                                        </td>
+                                    </tr>
+                                </c:if>
                             </tbody>
                         </table>
                     </div>

@@ -48,7 +48,7 @@ public class SettingFilter implements Filter {
             // Cache active languages in applicationScope
             @SuppressWarnings("unchecked")
             List<Language> activeLanguages = (List<Language>) context.getAttribute("activeLanguages");
-            if (activeLanguages == null) {
+            if (activeLanguages == null || activeLanguages.isEmpty()) {
                 activeLanguages = languageDAO.getAllActiveLanguages();
                 context.setAttribute("activeLanguages", activeLanguages);
             }

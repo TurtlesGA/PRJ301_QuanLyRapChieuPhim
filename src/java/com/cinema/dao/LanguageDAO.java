@@ -24,7 +24,7 @@ public class LanguageDAO {
             while (rs.next()) {
                 Language l = new Language();
                 l.setLangCode(rs.getString("lang_code"));
-                l.setCountryName(rs.getString("country_name"));
+                l.setCountryName(MovieDAO.fixEncoding(rs.getString("country_name")));
                 l.setFlagUrl(rs.getString("flag_url"));
                 l.setActive(rs.getBoolean("is_active"));
                 l.setDefault(rs.getBoolean("is_default"));
@@ -34,7 +34,58 @@ public class LanguageDAO {
         } catch (Exception e) {
             System.err.println("LanguageDAO.getAllActiveLanguages error: " + e.getMessage());
         }
+
+        if (list.isEmpty()) {
+            ensureDefaultLanguages();
+            try (Connection conn = db.getConnection();
+                 PreparedStatement ps = conn.prepareStatement(sql);
+                 ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Language l = new Language();
+                    l.setLangCode(rs.getString("lang_code"));
+                    l.setCountryName(MovieDAO.fixEncoding(rs.getString("country_name")));
+                    l.setFlagUrl(rs.getString("flag_url"));
+                    l.setActive(rs.getBoolean("is_active"));
+                    l.setDefault(rs.getBoolean("is_default"));
+                    l.setCreatedAt(rs.getTimestamp("created_at"));
+                    list.add(l);
+                }
+            } catch (Exception ex) {
+                System.err.println("LanguageDAO.getAllActiveLanguages retry error: " + ex.getMessage());
+            }
+        }
+
         return list;
+    }
+
+    private void ensureDefaultLanguages() {
+        try (Connection conn = db.getConnection()) {
+            String checkTable = "IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='Languages' AND xtype='U') "
+                              + "CREATE TABLE Languages ("
+                              + "  lang_code VARCHAR(10) PRIMARY KEY,"
+                              + "  country_name NVARCHAR(100) NOT NULL,"
+                              + "  flag_url VARCHAR(255) NOT NULL,"
+                              + "  is_active BIT DEFAULT 1,"
+                              + "  is_default BIT DEFAULT 0,"
+                              + "  created_at DATETIME DEFAULT GETDATE()"
+                              + ");";
+            try (PreparedStatement ps = conn.prepareStatement(checkTable)) {
+                ps.executeUpdate();
+            }
+
+            String seedSql = "IF NOT EXISTS (SELECT 1 FROM Languages WHERE lang_code = 'vi') "
+                           + "INSERT INTO Languages (lang_code, country_name, flag_url, is_active, is_default) VALUES ('vi', N'Việt Nam', '/assets/images/flags/vn.svg', 1, 1); "
+                           + "ELSE UPDATE Languages SET country_name = N'Việt Nam' WHERE lang_code = 'vi'; "
+                           + "IF NOT EXISTS (SELECT 1 FROM Languages WHERE lang_code = 'en') "
+                           + "INSERT INTO Languages (lang_code, country_name, flag_url, is_active, is_default) VALUES ('en', N'United States', '/assets/images/flags/us.svg', 1, 0); "
+                           + "IF NOT EXISTS (SELECT 1 FROM Languages WHERE lang_code = 'fr') "
+                           + "INSERT INTO Languages (lang_code, country_name, flag_url, is_active, is_default) VALUES ('fr', N'France', '/assets/images/flags/fr.svg', 1, 0);";
+            try (PreparedStatement ps = conn.prepareStatement(seedSql)) {
+                ps.executeUpdate();
+            }
+        } catch (Exception ex) {
+            System.err.println("LanguageDAO.ensureDefaultLanguages error: " + ex.getMessage());
+        }
     }
 
     /**

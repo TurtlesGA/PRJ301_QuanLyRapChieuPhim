@@ -97,7 +97,19 @@
     "nowShowing": "Films à l'affiche",
     "comingSoon": "Prochainement",
     "allMovies": "Tous les films",
-    "filterAll": "Tous"
+    "filterAll": "Tous",
+    "searchPlaceholder": "Rechercher par titre, acteur, réalisateur...",
+    "allGenres": "Tous les genres",
+    "allStatus": "Tous les statuts",
+    "nowShowingOption": "À l'affiche",
+    "comingSoonOption": "Prochainement",
+    "filterBtn": "Filtrer",
+    "resetFilter": "Réinitialiser",
+    "found": "Trouvé",
+    "moviesUnit": "films",
+    "genreLabel": "Genre:",
+    "nowShowingParen": "(À l'affiche)",
+    "comingSoonParen": "(Prochainement)"
   },
   "movieDetail": {
     "genre": "Genre:",

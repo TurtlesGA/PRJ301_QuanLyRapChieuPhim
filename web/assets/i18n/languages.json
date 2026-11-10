@@ -12,5 +12,12 @@
     "country": "United States",
     "flag": "/assets/images/flags/us.svg",
     "isDefault": false
+  },
+  {
+    "code": "fr",
+    "name": "France",
+    "country": "France",
+    "flag": "/assets/images/flags/fr.svg",
+    "isDefault": false
   }
 ]
