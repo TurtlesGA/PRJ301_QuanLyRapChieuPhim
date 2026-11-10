@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 /**
  * DBContext - Quản lý kết nối cơ sở dữ liệu (SQL Server / MySQL)
- * Chuẩn mô hình JDBC cho các môn PRJ301 / PRJ302
+ * Chuẩn mô hình JDBC cho môn PRJ301
  */
 public class DBContext {
 

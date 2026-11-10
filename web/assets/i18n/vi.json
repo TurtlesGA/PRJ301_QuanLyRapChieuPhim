@@ -16,7 +16,9 @@
     "locked": "Bị khóa",
     "all": "Tất Cả",
     "viewAll": "Xem tất cả",
-    "close": "Đóng"
+    "close": "Đóng",
+    "page": "Trang",
+    "total": "Tổng"
   },
   "status": {
     "NOW_SHOWING": "Đang Chiếu",
@@ -31,6 +33,8 @@
     "STAFF": "Nhân viên",
     "ADMIN": "Quản trị viên",
     "ACTIVE": "Hoạt động",
+    "INACTIVE": "Tạm dừng",
+    "LOCKED": "Bị khóa",
     "BANNED": "Bị khóa"
   },
   "nav": {
@@ -65,7 +69,7 @@
     "hours": "8:00 - 22:00 Hàng ngày",
     "mobileApp": "Ứng Dụng Di Động",
     "mobileDesc": "Tải ngay ứng dụng để đặt vé nhanh chóng và nhận ngập tràn ưu đãi.",
-    "copyright": "© 2026 CineStar Cinema - PRJ302 Quản Lý Rạp Chiếu Phim. Thiết kế & phát triển bởi Nhóm Dự Án."
+    "copyright": "© 2026 CineStar Cinema - PRJ301 Quản Lý Rạp Chiếu Phim. Thiết kế & phát triển bởi Nhóm Dự Án."
   },
   "home": {
     "heroBadge1": "BOM TẤN HOT",
@@ -111,7 +115,19 @@
     "buyTicket": "Mua Vé",
     "viewDetails": "Xem Chi Tiết",
     "comingSoonBadge": "Sắp chiếu",
-    "minutes": "phút"
+    "minutes": "phút",
+    "searchPlaceholder": "Tìm theo tên phim, diễn viên, đạo diễn...",
+    "allGenres": "Tất cả thể loại",
+    "allStatus": "Tất cả trạng thái",
+    "nowShowingOption": "Đang chiếu",
+    "comingSoonOption": "Sắp chiếu",
+    "filterBtn": "Lọc",
+    "resetFilter": "Đặt lại bộ lọc",
+    "found": "Tìm thấy",
+    "moviesUnit": "phim",
+    "genreLabel": "Thể loại:",
+    "nowShowingParen": "(Đang Chiếu)",
+    "comingSoonParen": "(Sắp Chiếu)"
   },
   "movieDetail": {
     "genre": "Thể loại:",
@@ -280,7 +296,7 @@
     "logout": "Đăng Xuất",
     "viewSite": "Xem Website",
     "systemStable": "Hệ thống ổn định",
-    "footerText": "CineStar Cinema © 2026 Admin Control Panel. Phiên bản 2.0",
+    "footerText": "Phiên bản 2.0",
     "dashboard": {
       "title": "BẢNG ĐIỀU KHIỂN HỆ THỐNG",
       "addMovie": "Thêm Phim Mới",
@@ -315,7 +331,8 @@
       "editTitle": "Chỉnh sửa phim",
       "deleteTitle": "Xóa phim",
       "deleteConfirmTitle": "Xác nhận xóa phim",
-      "deleteConfirm": "Bạn có chắc chắn muốn xóa phim này không? Mọi suất chiếu liên quan cũng sẽ bị xóa!"
+      "deleteConfirm": "Bạn có chắc chắn muốn xóa phim này không? Mọi suất chiếu liên quan cũng sẽ bị xóa!",
+      "titleUnit": "bộ phim"
     },
     "movieForm": {
       "addTitle": "THÊM PHIM MỚI",
@@ -335,7 +352,13 @@
       "status": "Trạng thái phim",
       "description": "Mô tả tóm tắt nội dung",
       "cancel": "Hủy Bỏ",
-      "save": "Lưu Thông Tin Phim"
+      "save": "Lưu Thông Tin Phim",
+      "techSection": "Thông Tin Kỹ Thuật & Xuất Bản",
+      "multiLangSection": "Nội Dung Phim Đa Ngôn Ngữ (Database)",
+      "multiLangDesc": "Chọn các ngôn ngữ bộ phim này sẽ hỗ trợ. Dữ liệu dịch chi tiết sẽ được lưu trực tiếp vào cơ sở dữ liệu.",
+      "activeLangsLabel": "Ngôn Ngữ Kích Hoạt Cho Bộ Phim Này:",
+      "cancelBtn": "Hủy Bỏ",
+      "saveBtn": "Lưu Toàn Bộ Thông Tin Phim"
     },
     "rooms": {
       "title": "DANH SÁCH PHÒNG CHIẾU",
@@ -390,7 +413,13 @@
       "deleteConfirmTitle": "Xác nhận xóa suất chiếu",
       "deleteConfirm": "Bạn có chắc chắn muốn xóa suất chiếu này? Các thông tin đặt vé liên quan cũng sẽ bị ảnh hưởng!",
       "deleteTitle": "Xóa suất chiếu",
-      "currency": "đ"
+      "titleUnit": "suất chiếu",
+      "currency": "đ",
+      "cleanupBtn": "Dọn Dẹp Quá Hạn",
+      "cleanupTitle": "Dọn dẹp suất chiếu quá hạn",
+      "cleanupConfirmTitle": "Dọn dẹp suất chiếu hết hạn?",
+      "cleanupConfirm": "Hệ thống sẽ tự động quét và xóa sạch tất cả các suất chiếu đã kết thúc trong quá khứ khỏi cơ sở dữ liệu.",
+      "cleanupSuccess": "Đã dọn dẹp thành công các suất chiếu hết hạn!"
     },
     "showtimeForm": {
       "title": "THÊM SUẤT CHIẾU MỚI",
@@ -420,11 +449,13 @@
       "cancelBtn": "Hủy Đơn",
       "cancelConfirmTitle": "Hủy đơn vé?",
       "cancelConfirm": "Bạn có chắc chắn muốn hủy đơn vé này không? Vé sẽ bị hủy và không thể hoàn tác.",
+      "titleUnit": "đơn vé",
       "currency": "đ"
     },
     "users": {
       "title": "DANH SÁCH NGƯỜI DÙNG",
       "addNew": "Thêm Người Dùng Mới",
+      "titleUnit": "người dùng",
       "colId": "ID",
       "colUsername": "TÀI KHOẢN",
       "colFullName": "HỌ VÀ TÊN",
@@ -502,6 +533,7 @@
       "footScriptHint": "Chèn trước đóng </body>",
       "btnSaveScripts": "Lưu Mã Script",
       "activeLanguages": "Gói Ngôn Ngữ Đang Kích Hoạt",
+      "noLanguages": "Chưa có gói ngôn ngữ nào được kích hoạt.",
       "languagesUnit": "Ngôn ngữ",
       "thFlag": "Cờ",
       "thCode": "Mã",

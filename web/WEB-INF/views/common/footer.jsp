@@ -41,7 +41,7 @@
         </div>
         <hr class="border-secondary my-4">
         <div class="text-center small text-muted" data-i18n="footer.copyright">
-            ${not empty siteSettings.footer_copyright ? siteSettings.footer_copyright : '&copy; 2026 CineStar Cinema - PRJ302 Quản Lý Rạp Chiếu Phim. Thiết kế & phát triển bởi Nhóm Dự Án.'}
+            ${not empty siteSettings.footer_copyright ? siteSettings.footer_copyright : '&copy; 2026 CineStar Cinema - PRJ301 Quản Lý Rạp Chiếu Phim. Thiết kế & phát triển bởi Nhóm Dự Án.'}
         </div>
     </div>
 </footer>
@@ -50,10 +50,10 @@
 <script>window.CONTEXT_PATH = '${pageContext.request.contextPath}';</script>
 <!-- Bootstrap 5 Bundle JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<!-- i18n Translation Engine -->
-
+<!-- SweetAlert2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Main App JS -->
-<script src="${pageContext.request.contextPath}/assets/js/main.js?v=2.1" charset="UTF-8"></script>
+<script src="${pageContext.request.contextPath}/assets/js/main.js?v=2.3" charset="UTF-8"></script>
 
 <!-- Custom Foot Script (From System Settings) -->
 <c:if test="${not empty siteSettings.script_foot}">

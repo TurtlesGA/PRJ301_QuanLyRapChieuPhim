@@ -3,7 +3,7 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd">
 
-    <display-name>PRJ302_QuanLyRapChieuPhim</display-name>
+    <display-name>PRJ301_QuanLyRapChieuPhim</display-name>
 
     <filter>
         <filter-name>EncodingFilter</filter-name>

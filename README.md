@@ -1,8 +1,8 @@
-# PRJ302 - Hệ Thống Quản Lý Và Đặt Vé Rạp Chiếu Phim (CineStar Cinema Management System)
+# PRJ301 - Hệ Thống Quản Lý Và Đặt Vé Rạp Chiếu Phim (CineStar Cinema Management System)
 
 <p align="left">
-  <a href="https://github.com/TurtlesGA/PRJ302_QuanLyRapChieuPhim/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/TurtlesGA/PRJ302_QuanLyRapChieuPhim?style=flat-square&logo=github&color=e50914" alt="Contributors" />
+  <a href="https://github.com/TurtlesGA/PRJ301_QuanLyRapChieuPhim/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/TurtlesGA/PRJ301_QuanLyRapChieuPhim?style=flat-square&logo=github&color=e50914" alt="Contributors" />
   </a>
   <img src="https://img.shields.io/badge/Java-17%20%2F%2011%2B-orange?style=flat-square&logo=openjdk" alt="Java 17" />
   <img src="https://img.shields.io/badge/Jakarta%20EE-10%20(Servlet%206.0)-red?style=flat-square&logo=apachetomcat" alt="Jakarta EE 10" />
@@ -11,7 +11,7 @@
   <img src="https://img.shields.io/badge/Theme-Dark%20%2F%20Light-success?style=flat-square" alt="Theme" />
 </p>
 
-Hệ thống Quản lý và Đặt vé Rạp chiếu phim (**CineStar Cinema Management System**) được xây dựng trên nền tảng **Java Web (Jakarta Servlet 6.0 - JSP - JDBC)** theo mô hình kiến trúc chuẩn **MVC (Model - View - Controller)** kết hợp **DAO Pattern**, **Database Transaction**, và chuẩn hóa theo định dạng **NetBeans Ant Web Project** cho học phần PRJ301 / PRJ302.
+Hệ thống Quản lý và Đặt vé Rạp chiếu phim (**CineStar Cinema Management System**) được xây dựng trên nền tảng **Java Web (Jakarta Servlet 6.0 - JSP - JDBC)** theo mô hình kiến trúc chuẩn **MVC (Model - View - Controller)** kết hợp **DAO Pattern**, **Database Transaction**, và chuẩn hóa theo định dạng **NetBeans Ant Web Project** cho học phần PRJ301 / PRJ301.
 
 ---
 
@@ -73,7 +73,7 @@ Dự án cung cấp giải pháp toàn diện cho hoạt động quản lý rạ
 ## Cấu Trúc Thư Mục Dự Án
 
 ```
-PRJ302_QuanLyRapChieuPhim/
+PRJ301_QuanLyRapChieuPhim/
 |-- allowedlib/                                    # Thư viện JAR cần thiết cho dự án
 |   |-- jakarta.servlet.jsp.jstl-2.0.0.jar
 |   |-- jakarta.servlet.jsp.jstl-api-2.0.0.jar
@@ -237,22 +237,22 @@ CSDL mẫu đã được khởi tạo sẵn các tài khoản demo để tiện 
 
 ### Chạy với Apache NetBeans (Khuyến nghị chuẩn)
 1. Mở **Apache NetBeans** (phiên bản 15, 17, 19, 21 hoặc mới hơn).
-2. Chọn **File** -> **Open Project** -> Duyệt đến thư mục `PRJ302_QuanLyRapChieuPhim`.
+2. Chọn **File** -> **Open Project** -> Duyệt đến thư mục `PRJ301_QuanLyRapChieuPhim`.
 3. Kiểm tra Server: Chuột phải vào Project -> Chọn **Properties** -> mục **Run** -> đảm bảo Server đã chọn là **Apache Tomcat 10.x** (hoặc Tomcat 10.1+).
 4. Các thư viện JAR trong thư mục `allowedlib/` đã được liên kết tự động trong `nbproject/project.properties`.
 5. Chuột phải vào Project -> Chọn **Clean and Build**.
 6. Nhấn nút **Run** (F6) hoặc chuột phải chọn **Run**. Ứng dụng sẽ tự động mở trên trình duyệt tại địa chỉ:
-   `http://localhost:8080/PRJ302_QuanLyRapChieuPhim/`
+   `http://localhost:8080/PRJ301_QuanLyRapChieuPhim/`
 
 ### Chạy với IntelliJ IDEA Ultimate
-1. Mở IntelliJ IDEA -> Chọn **Open** -> Duyệt tới thư mục `PRJ302_QuanLyRapChieuPhim`.
+1. Mở IntelliJ IDEA -> Chọn **Open** -> Duyệt tới thư mục `PRJ301_QuanLyRapChieuPhim`.
 2. Cấu hình SDK: Vào **File** -> **Project Structure** -> **Project** -> Chọn JDK 17 (Language Level 17).
 3. Cấu hình Thư viện: Vào **Project Structure** -> **Libraries** -> Nhấn `+` -> Chọn thư mục `allowedlib/` chứa các file `.jar`.
 4. Cấu hình Run Configuration:
    - Thêm cấu hình mới: **Tomcat Server** -> **Local**.
    - Chọn đường dẫn đến thư mục cài đặt Apache Tomcat 10.x.
    - Chuyển sang tab **Deployment**: Nhấn `+` -> Chọn thư mục `web/` (hoặc Artifact Web Application Exploded).
-   - Thiết lập Application Context là `/PRJ302_QuanLyRapChieuPhim` hoặc `/`.
+   - Thiết lập Application Context là `/PRJ301_QuanLyRapChieuPhim` hoặc `/`.
 5. Nhấn **Run** hoặc **Debug**.
 
 ---
@@ -298,13 +298,13 @@ CSDL mẫu đã được khởi tạo sẵn các tài khoản demo để tiện 
 Cảm ơn tất cả các thành viên đã tham gia xây dựng và đóng góp cho dự án!
 
 <p align="center">
-  <a href="https://github.com/TurtlesGA/PRJ302_QuanLyRapChieuPhim/graphs/contributors">
-    <img src="https://img.shields.io/github/contributors/TurtlesGA/PRJ302_QuanLyRapChieuPhim?style=for-the-badge&logo=github&color=e50914" alt="Contributors Count" />
+  <a href="https://github.com/TurtlesGA/PRJ301_QuanLyRapChieuPhim/graphs/contributors">
+    <img src="https://img.shields.io/github/contributors/TurtlesGA/PRJ301_QuanLyRapChieuPhim?style=for-the-badge&logo=github&color=e50914" alt="Contributors Count" />
   </a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/TurtlesGA/PRJ302_QuanLyRapChieuPhim/graphs/contributors">
-    <img src="https://contrib.rocks/image?repo=TurtlesGA/PRJ302_QuanLyRapChieuPhim" alt="Contributors Avatar Grid" />
+  <a href="https://github.com/TurtlesGA/PRJ301_QuanLyRapChieuPhim/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=TurtlesGA/PRJ301_QuanLyRapChieuPhim" alt="Contributors Avatar Grid" />
   </a>
 </p>

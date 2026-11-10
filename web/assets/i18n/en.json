@@ -16,7 +16,9 @@
     "locked": "Banned",
     "all": "All",
     "viewAll": "View all",
-    "close": "Close"
+    "close": "Close",
+    "page": "Page",
+    "total": "Total"
   },
   "status": {
     "NOW_SHOWING": "Now Showing",
@@ -31,6 +33,8 @@
     "STAFF": "Staff",
     "ADMIN": "Administrator",
     "ACTIVE": "Active",
+    "INACTIVE": "Paused",
+    "LOCKED": "Locked",
     "BANNED": "Banned"
   },
   "nav": {
@@ -65,7 +69,7 @@
     "hours": "8:00 AM - 10:00 PM Daily",
     "mobileApp": "Mobile Application",
     "mobileDesc": "Download the app now to book tickets fast and enjoy exclusive deals.",
-    "copyright": "© 2026 CineStar Cinema - PRJ302 Cinema Management System. Designed & developed by Project Team."
+    "copyright": "© 2026 CineStar Cinema - PRJ301 Cinema Management System. Designed & developed by Project Team."
   },
   "home": {
     "heroBadge1": "BLOCKBUSTER",
@@ -111,7 +115,19 @@
     "buyTicket": "Buy Ticket",
     "viewDetails": "View Details",
     "comingSoonBadge": "Coming Soon",
-    "minutes": "min"
+    "minutes": "min",
+    "searchPlaceholder": "Search by movie title, actor, director...",
+    "allGenres": "All Genres",
+    "allStatus": "All Statuses",
+    "nowShowingOption": "Now Showing",
+    "comingSoonOption": "Coming Soon",
+    "filterBtn": "Filter",
+    "resetFilter": "Reset Filter",
+    "found": "Found",
+    "moviesUnit": "movies",
+    "genreLabel": "Genre:",
+    "nowShowingParen": "(Now Showing)",
+    "comingSoonParen": "(Coming Soon)"
   },
   "movieDetail": {
     "genre": "Genre:",
@@ -280,7 +296,7 @@
     "logout": "Logout",
     "viewSite": "View Website",
     "systemStable": "System Normal",
-    "footerText": "CineStar Cinema © 2026 Admin Control Panel. Version 2.0",
+    "footerText": "Version 2.0",
     "dashboard": {
       "title": "SYSTEM DASHBOARD",
       "addMovie": "Add New Movie",
@@ -315,7 +331,8 @@
       "editTitle": "Edit movie",
       "deleteTitle": "Delete movie",
       "deleteConfirmTitle": "Confirm delete movie",
-      "deleteConfirm": "Are you sure you want to delete this movie? All related showtimes will also be deleted!"
+      "deleteConfirm": "Are you sure you want to delete this movie? All related showtimes will also be deleted!",
+      "titleUnit": "movies"
     },
     "movieForm": {
       "addTitle": "ADD NEW MOVIE",
@@ -335,7 +352,13 @@
       "status": "Movie Status",
       "description": "Synopsis / Description",
       "cancel": "Cancel",
-      "save": "Save Movie Information"
+      "save": "Save Movie Information",
+      "techSection": "Technical & Publishing Information",
+      "multiLangSection": "Multi-Language Movie Content (Database)",
+      "multiLangDesc": "Select the languages this movie will support. Detailed translations will be saved directly into the database.",
+      "activeLangsLabel": "Activated Languages For This Movie:",
+      "cancelBtn": "Cancel",
+      "saveBtn": "Save All Movie Information"
     },
     "rooms": {
       "title": "ROOM LIST",
@@ -390,7 +413,13 @@
       "deleteConfirmTitle": "Confirm delete showtime",
       "deleteConfirm": "Are you sure you want to delete this showtime? Related booking information will also be affected!",
       "deleteTitle": "Delete showtime",
-      "currency": "đ"
+      "titleUnit": "showtimes",
+      "currency": "đ",
+      "cleanupBtn": "Clean Expired",
+      "cleanupTitle": "Clean expired showtimes",
+      "cleanupConfirmTitle": "Clean expired showtimes?",
+      "cleanupConfirm": "The system will automatically scan and delete all past ended showtimes from the database.",
+      "cleanupSuccess": "Expired showtimes cleaned successfully!"
     },
     "showtimeForm": {
       "title": "ADD NEW SHOWTIME",
@@ -420,11 +449,13 @@
       "cancelBtn": "Cancel",
       "cancelConfirmTitle": "Cancel booking?",
       "cancelConfirm": "Are you sure you want to cancel this booking? It will be cancelled and cannot be undone.",
+      "titleUnit": "bookings",
       "currency": "đ"
     },
     "users": {
       "title": "USER LIST",
       "addNew": "Add New User",
+      "titleUnit": "users",
       "colId": "ID",
       "colUsername": "USERNAME",
       "colFullName": "FULL NAME",
@@ -502,6 +533,7 @@
       "footScriptHint": "Inserted before closing </body>",
       "btnSaveScripts": "Save Script Settings",
       "activeLanguages": "Active Language Packages",
+      "noLanguages": "No language packages activated.",
       "languagesUnit": "Languages",
       "thFlag": "Flag",
       "thCode": "Code",
@@ -553,7 +585,15 @@
       "Godzilla x Kong: Đế Chế Mới": "Godzilla x Kong: The New Empire",
       "Kung Fu Panda 4": "Kung Fu Panda 4",
       "Lật Mặt 7: Một Điều Ước": "Face Off 7: One Wish",
-      "Deadpool & Wolverine": "Deadpool & Wolverine"
+      "Deadpool & Wolverine": "Deadpool & Wolverine",
+      "Exhuma: Quật Mộ Trùng Ma": "Exhuma",
+      "Kẻ Trộm Mặt Trăng 4 (Despicable Me 4)": "Despicable Me 4",
+      "Furiosa: Câu Chuyện Từ Max Điên": "Furiosa: A Mad Max Saga",
+      "Hành Tinh Khỉ: Vương Quốc Mới": "Kingdom of the Planet of the Apes",
+      "Vây Hãm: Kẻ Trừng Phạt (The Roundup 4)": "The Roundup: Punishment",
+      "Transformers: Một (Transformers One)": "Transformers One",
+      "Moana 2: Hành Trình Mới": "Moana 2",
+      "Joker: Điên Có Đôi (Folie à Deux)": "Joker: Folie à Deux"
     },
     "genres": {
       "Tâm Lý, Tình Cảm": "Drama, Romance",
@@ -562,6 +602,15 @@
       "Hoạt Hình, Hài Hước": "Animation, Comedy",
       "Gia Đình, Tâm Lý": "Family, Drama",
       "Hành Động, Siêu Anh Hùng": "Action, Superhero",
+      "Hành Động, Siêu Anh Hùng, Hài Hước": "Action, Superhero, Comedy",
+      "Kinh Dị, Bí Ẩn": "Horror, Mystery",
+      "Hoạt Hình, Hài Hước, Gia Đình": "Animation, Comedy, Family",
+      "Hành Động, Viễn Tưởng, Phiêu Lưu": "Action, Sci-Fi, Adventure",
+      "Khoa Học Viễn Tưởng, Hành Động": "Sci-Fi, Action",
+      "Hành Động, Tội Phạm, Hài Hước": "Action, Crime, Comedy",
+      "Hoạt Hình, Hành Động, Viễn Tưởng": "Animation, Action, Sci-Fi",
+      "Hoạt Hình, Âm Nhạc, Phiêu Lưu": "Animation, Music, Adventure",
+      "Tâm Lý, Tội Phạm, Ca Nhạc": "Drama, Crime, Music",
       "Hành Động": "Action",
       "Viễn Tưởng": "Sci-Fi",
       "Khoa Học Viễn Tưởng": "Sci-Fi",
@@ -571,7 +620,12 @@
       "Tâm Lý": "Drama",
       "Tình Cảm": "Romance",
       "Gia Đình": "Family",
-      "Siêu Anh Hùng": "Superhero"
+      "Siêu Anh Hùng": "Superhero",
+      "Kinh Dị": "Horror",
+      "Bí Ẩn": "Mystery",
+      "Tội Phạm": "Crime",
+      "Ca Nhạc": "Music",
+      "Âm Nhạc": "Music"
     },
     "descriptions": {
       "Mai": "Mai revolves around the life of a woman of the same name. Fate brings her together with Duong - a young, charming man, unfolding a romance that is both sweet and challenging.",
