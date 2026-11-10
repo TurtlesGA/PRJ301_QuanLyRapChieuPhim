@@ -30,8 +30,25 @@ public class AdminBookingController extends HttpServlet {
             return;
         }
 
-        List<Booking> bookings = bookingDAO.getAllBookings();
+        int page = 1;
+        int pageSize = 10;
+        try {
+            String pageParam = request.getParameter("page");
+            if (pageParam != null) page = Math.max(1, Integer.parseInt(pageParam.trim()));
+        } catch (Exception ignored) {}
+
+        int totalBookings = bookingDAO.countBookings();
+        int totalPages = (int) Math.ceil((double) totalBookings / pageSize);
+        if (totalPages < 1) totalPages = 1;
+        if (page > totalPages) page = totalPages;
+
+        List<Booking> bookings = bookingDAO.getBookingsByPage(page, pageSize);
+
         request.setAttribute("bookings", bookings);
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("totalItems", totalBookings);
+        request.setAttribute("pageSize", pageSize);
         request.getRequestDispatcher("/WEB-INF/views/admin/bookings.jsp").forward(request, response);
     }
 }

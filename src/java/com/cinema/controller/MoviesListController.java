@@ -23,7 +23,19 @@ public class MoviesListController extends HttpServlet {
         String genre = request.getParameter("genre");
         String filter = request.getParameter("filter");
 
-        List<Movie> movies = movieDAO.filterMovies(keyword, genre, filter);
+        int page = 1;
+        int pageSize = 10;
+        try {
+            String pageParam = request.getParameter("page");
+            if (pageParam != null) page = Math.max(1, Integer.parseInt(pageParam.trim()));
+        } catch (Exception ignored) {}
+
+        int totalMovies = movieDAO.countFilterMovies(keyword, genre, filter);
+        int totalPages = (int) Math.ceil((double) totalMovies / pageSize);
+        if (totalPages < 1) totalPages = 1;
+        if (page > totalPages) page = totalPages;
+
+        List<Movie> movies = movieDAO.filterMovies(keyword, genre, filter, page, pageSize);
         List<String> genres = movieDAO.getAllGenres();
 
         request.setAttribute("movies", movies);
@@ -31,6 +43,10 @@ public class MoviesListController extends HttpServlet {
         request.setAttribute("searchKeyword", keyword != null ? keyword.trim() : "");
         request.setAttribute("selectedGenre", genre != null ? genre.trim() : "");
         request.setAttribute("activeFilter", (filter != null && !filter.trim().isEmpty()) ? filter.trim() : "all");
+        request.setAttribute("currentPage", page);
+        request.setAttribute("totalPages", totalPages);
+        request.setAttribute("totalItems", totalMovies);
+        request.setAttribute("pageSize", pageSize);
 
         request.getRequestDispatcher("/WEB-INF/views/movies.jsp").forward(request, response);
     }

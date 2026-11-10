@@ -49,7 +49,7 @@
                                         </c:forEach>
                                     </td>
                                     <td><span class="badge bg-info text-dark">${b.paymentMethod}</span></td>
-                                    <td class="text-danger fw-bold"><fmt:formatNumber value="${b.totalAmount}" type="number"/> đ</td>
+                                    <td class="text-danger fw-bold"><fmt:formatNumber value="${b.totalAmount}" type="number"/> <span data-i18n="common.currency">đ</span></td>
                                     <td>
                                         <span class="badge badge-status ${b.paymentStatus == 'PAID' ? 'bg-success' : (b.paymentStatus == 'CANCELLED' ? 'bg-danger' : 'bg-warning text-dark')}" data-status-code="${b.paymentStatus}">${b.paymentStatus}</span>
                                     </td>
@@ -73,6 +73,35 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Pagination -->
+                <c:if test="${totalPages > 1}">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-3 pt-3 border-top border-secondary gap-2">
+                        <div class="text-muted small">
+                            <span data-i18n="common.page">Trang</span> <strong>${currentPage}</strong> / <strong>${totalPages}</strong> (<span data-i18n="common.total">Tổng</span> <strong>${totalItems}</strong> <span data-i18n="admin.bookings.titleUnit">đơn vé</span>)
+                        </div>
+                        <nav aria-label="Pagination">
+                            <ul class="pagination pagination-sm mb-0">
+                                <li class="page-item ${currentPage <= 1 ? 'disabled' : ''}">
+                                    <a class="page-link" href="${pageContext.request.contextPath}/admin/bookings?page=${currentPage - 1}"><i class="fa-solid fa-angle-left"></i></a>
+                                </li>
+                                <c:forEach begin="1" end="${totalPages}" var="p">
+                                    <c:if test="${p == 1 || p == totalPages || (p >= currentPage - 2 && p <= currentPage + 2)}">
+                                        <li class="page-item ${currentPage == p ? 'active' : ''}">
+                                            <a class="page-link" href="${pageContext.request.contextPath}/admin/bookings?page=${p}">${p}</a>
+                                        </li>
+                                    </c:if>
+                                    <c:if test="${(p == 2 && currentPage - 2 > 2) || (p == totalPages - 1 && currentPage + 2 < totalPages - 1)}">
+                                        <li class="page-item disabled"><span class="page-link">...</span></li>
+                                    </c:if>
+                                </c:forEach>
+                                <li class="page-item ${currentPage >= totalPages ? 'disabled' : ''}">
+                                    <a class="page-link" href="${pageContext.request.contextPath}/admin/bookings?page=${currentPage + 1}"><i class="fa-solid fa-angle-right"></i></a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </c:if>
             </div>
 
 <jsp:include page="common/admin-footer.jsp"/>

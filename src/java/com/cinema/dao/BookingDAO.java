@@ -151,6 +151,42 @@ public class BookingDAO extends DBContext {
         return list;
     }
 
+    public int countBookings() {
+        String sql = "SELECT COUNT(*) FROM Bookings";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) return rs.getInt(1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Booking> getBookingsByPage(int page, int pageSize) {
+        List<Booking> list = new ArrayList<>();
+        if (page < 1) page = 1;
+        int offset = (page - 1) * pageSize;
+        String sql = "SELECT * FROM Bookings ORDER BY booking_time DESC OFFSET ? ROWS FETCH NEXT ? ROWS ONLY";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, offset);
+            ps.setInt(2, pageSize);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Booking b = mapBooking(rs);
+                    b.setUser(userDAO.getUserById(b.getUserId()));
+                    b.setShowtime(showtimeDAO.getShowtimeById(b.getShowtimeId()));
+                    b.setTickets(getTicketsByBookingId(b.getBookingId()));
+                    list.add(b);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
     public Booking getBookingById(int bookingId) {
         String sql = "SELECT * FROM Bookings WHERE booking_id = ?";
         try (Connection conn = getConnection();

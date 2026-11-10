@@ -27,8 +27,25 @@ public class AdminMovieController extends HttpServlet {
         String servletPath = request.getServletPath();
 
         if ("/admin/movies".equals(servletPath)) {
-            List<Movie> movies = movieDAO.getAllMovies();
+            int page = 1;
+            int pageSize = 10;
+            try {
+                String pageParam = request.getParameter("page");
+                if (pageParam != null) page = Math.max(1, Integer.parseInt(pageParam.trim()));
+            } catch (Exception ignored) {}
+
+            int totalMovies = movieDAO.countMovies();
+            int totalPages = (int) Math.ceil((double) totalMovies / pageSize);
+            if (totalPages < 1) totalPages = 1;
+            if (page > totalPages) page = totalPages;
+
+            List<Movie> movies = movieDAO.getMoviesByPage(page, pageSize);
+
             request.setAttribute("movies", movies);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("totalItems", totalMovies);
+            request.setAttribute("pageSize", pageSize);
             request.getRequestDispatcher("/WEB-INF/views/admin/movies.jsp").forward(request, response);
         } else if ("/admin/movie-add".equals(servletPath)) {
             List<Language> activeLanguages = languageDAO.getAllActiveLanguages();

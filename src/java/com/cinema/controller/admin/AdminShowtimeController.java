@@ -17,7 +17,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
-@WebServlet(name = "AdminShowtimeController", urlPatterns = {"/admin/showtimes", "/admin/showtime-add", "/admin/showtime-delete"})
+@WebServlet(name = "AdminShowtimeController", urlPatterns = {"/admin/showtimes", "/admin/showtime-add", "/admin/showtime-delete", "/admin/showtime-cleanup"})
 public class AdminShowtimeController extends HttpServlet {
 
     private ShowtimeDAO showtimeDAO = new ShowtimeDAO();
@@ -29,9 +29,32 @@ public class AdminShowtimeController extends HttpServlet {
             throws ServletException, IOException {
         String servletPath = request.getServletPath();
 
+        if ("/admin/showtime-cleanup".equals(servletPath)) {
+            int count = showtimeDAO.deleteExpiredShowtimes();
+            response.sendRedirect(request.getContextPath() + "/admin/showtimes?msg=cleanup_success&count=" + count);
+            return;
+        }
+
         if ("/admin/showtimes".equals(servletPath)) {
-            List<Showtime> showtimes = showtimeDAO.getAllShowtimes();
+            int page = 1;
+            int pageSize = 10;
+            try {
+                String pageParam = request.getParameter("page");
+                if (pageParam != null) page = Math.max(1, Integer.parseInt(pageParam.trim()));
+            } catch (Exception ignored) {}
+
+            int totalShowtimes = showtimeDAO.countShowtimes();
+            int totalPages = (int) Math.ceil((double) totalShowtimes / pageSize);
+            if (totalPages < 1) totalPages = 1;
+            if (page > totalPages) page = totalPages;
+
+            List<Showtime> showtimes = showtimeDAO.getShowtimesByPage(page, pageSize);
+
             request.setAttribute("showtimes", showtimes);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("totalItems", totalShowtimes);
+            request.setAttribute("pageSize", pageSize);
             request.getRequestDispatcher("/WEB-INF/views/admin/showtimes.jsp").forward(request, response);
         } else if ("/admin/showtime-add".equals(servletPath)) {
             List<Movie> movies = movieDAO.getAllMovies();

@@ -23,8 +23,25 @@ public class AdminUserController extends HttpServlet {
         String servletPath = request.getServletPath();
 
         if ("/admin/users".equals(servletPath)) {
-            List<User> users = userDAO.getAllUsers();
+            int page = 1;
+            int pageSize = 10;
+            try {
+                String pageParam = request.getParameter("page");
+                if (pageParam != null) page = Math.max(1, Integer.parseInt(pageParam.trim()));
+            } catch (Exception ignored) {}
+
+            int totalUsers = userDAO.countUsers();
+            int totalPages = (int) Math.ceil((double) totalUsers / pageSize);
+            if (totalPages < 1) totalPages = 1;
+            if (page > totalPages) page = totalPages;
+
+            List<User> users = userDAO.getUsersByPage(page, pageSize);
+
             request.setAttribute("users", users);
+            request.setAttribute("currentPage", page);
+            request.setAttribute("totalPages", totalPages);
+            request.setAttribute("totalItems", totalUsers);
+            request.setAttribute("pageSize", pageSize);
             request.getRequestDispatcher("/WEB-INF/views/admin/users.jsp").forward(request, response);
         } else if ("/admin/user-add".equals(servletPath)) {
             request.getRequestDispatcher("/WEB-INF/views/admin/user-form.jsp").forward(request, response);
