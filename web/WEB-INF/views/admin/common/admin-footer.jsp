@@ -30,7 +30,7 @@
 <!-- i18n Translation Engine -->
 
 <!-- Admin SweetAlert2 and UI Script -->
-<script src="${pageContext.request.contextPath}/assets/js/admin.js?v=2.4" charset="UTF-8"></script>
+<script src="${pageContext.request.contextPath}/assets/js/admin.js?v=3.0" charset="UTF-8"></script>
 
 <!-- Custom Foot Script (From System Settings) -->
 <c:if test="${not empty siteSettings.script_foot}">

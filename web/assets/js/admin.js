@@ -82,6 +82,16 @@ document.addEventListener('DOMContentLoaded', function () {
             Toast.fire({ icon: 'success', title: en ? 'Deleted successfully!' : '\u0110\u00e3 x\u00f3a d\u1eef li\u1ec7u th\u00e0nh c\u00f4ng!' });
         } else if (err === 'self_delete') {
             Toast.fire({ icon: 'error', title: en ? 'Cannot delete your currently logged-in account!' : 'Kh\u00f4ng th\u1ec3 x\u00f3a t\u00e0i kho\u1ea3n \u0111ang \u0111\u0103ng nh\u1eadp!' });
+        } else if (err === 'invalid_duration') {
+            Toast.fire({ icon: 'error', title: en ? 'Invalid duration! (Must be between 1 and 1440 minutes / 24h)' : 'Th\u1eddi l\u01b0\u1ee3ng phim kh\u00f4ng h\u1ee3p l\u1ec7! (Ph\u1ea3i t\u1eeb 1 \u0111\u1ebfn 1440 ph\u00fat / 24 gi\u1edd)' });
+        } else if (err === 'invalid_dates') {
+            Toast.fire({ icon: 'error', title: en ? 'Invalid release/end dates!' : 'Ng\u00e0y kh\u1edfi chi\u1ebfu ho\u1eb7c ng\u00e0y k\u1ebft th\u00fac kh\u00f4ng h\u1ee3p l\u1ec7!' });
+        } else if (err === 'showtime_past') {
+            Toast.fire({ icon: 'error', title: en ? 'Cannot schedule showtime in the past!' : 'Kh\u00f4ng th\u1ec3 t\u1ea1o su\u1ea5t chi\u1ebfu trong qu\u00e1 kh\u1ee9!' });
+        } else if (err === 'showtime_duration') {
+            Toast.fire({ icon: 'error', title: en ? 'Showtime interval must be greater than or equal to movie duration!' : 'Kho\u1ea3ng th\u1eddi gian chi\u1ebfu ph\u1ea3i l\u1edbn h\u01a1n ho\u1eb7c b\u1eb1ng th\u1eddi l\u01b0\u1ee3ng c\u1ee7a phim!' });
+        } else if (err === 'room_conflict') {
+            Toast.fire({ icon: 'error', title: en ? 'Screening room conflict detected!' : 'Ph\u00f2ng chi\u1ebfu \u0111\u00e3 c\u00f3 su\u1ea5t chi\u1ebfu kh\u00e1c trong khung gi\u1edd n\u00e0y!' });
         } else if (err) {
             Toast.fire({ icon: 'error', title: err });
         }
