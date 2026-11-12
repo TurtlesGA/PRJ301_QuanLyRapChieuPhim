@@ -7,6 +7,7 @@ import com.cinema.model.Showtime;
 
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.Time;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
@@ -29,6 +30,26 @@ public class ShowtimeDAO extends DBContext {
             lastAutoCleanup = now;
             deleteExpiredShowtimes();
         }
+    }
+
+    /**
+     * Đếm số lượng suất chiếu đã kết thúc trong quá khứ cần dọn dẹp
+     * @return số lượng suất chiếu quá hạn
+     */
+    public int countExpiredShowtimes() {
+        String condition = "WHERE show_date < CAST(GETDATE() AS DATE) "
+                         + "   OR (show_date = CAST(GETDATE() AS DATE) AND end_time < CAST(GETDATE() AS TIME))";
+        String sql = "SELECT COUNT(*) FROM Showtimes " + condition;
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     /**
@@ -98,7 +119,6 @@ public class ShowtimeDAO extends DBContext {
     }
 
     public List<Showtime> getAllShowtimes() {
-        autoCleanupIfDue();
         List<Showtime> list = new ArrayList<>();
         String sql = "SELECT * FROM Showtimes ORDER BY show_date DESC, start_time DESC";
         try (Connection conn = getConnection();
@@ -133,6 +153,48 @@ public class ShowtimeDAO extends DBContext {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * Kiểm tra xem phòng chiếu đã có suất chiếu bị trùng thời gian trong cùng một ngày hay không.
+     * Trùng lặp xảy ra khi: (startTime < existing_endTime) AND (endTime > existing_startTime)
+     * @param roomId mã phòng chiếu
+     * @param showDate ngày chiếu
+     * @param startTime giờ bắt đầu mới
+     * @param endTime giờ kết thúc mới
+     * @param excludeShowtimeId mã suất chiếu cần loại trừ (ví dụ khi sửa, hoặc 0 / null khi thêm mới)
+     * @return true nếu bị xung đột lịch chiếu, false nếu phòng trống
+     */
+    public boolean hasRoomConflict(int roomId, Date showDate, Time startTime, Time endTime, Integer excludeShowtimeId) {
+        String sql = "SELECT COUNT(*) FROM Showtimes "
+                   + "WHERE room_id = ? AND show_date = ? "
+                   + "  AND (? IS NULL OR ? <= 0 OR showtime_id != ?) "
+                   + "  AND (start_time < ? AND end_time > ?)";
+        try (Connection conn = getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, roomId);
+            ps.setDate(2, showDate);
+            if (excludeShowtimeId == null || excludeShowtimeId <= 0) {
+                ps.setNull(3, java.sql.Types.INTEGER);
+                ps.setInt(4, 0);
+                ps.setInt(5, 0);
+            } else {
+                ps.setInt(3, excludeShowtimeId);
+                ps.setInt(4, excludeShowtimeId);
+                ps.setInt(5, excludeShowtimeId);
+            }
+            ps.setTime(6, endTime);
+            ps.setTime(7, startTime);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public boolean insertShowtime(Showtime st) {
@@ -188,7 +250,6 @@ public class ShowtimeDAO extends DBContext {
     }
 
     public int countShowtimes() {
-        autoCleanupIfDue();
         String sql = "SELECT COUNT(*) FROM Showtimes";
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);

@@ -22,14 +22,14 @@ public class ShowtimeCleanupListener implements ServletContextListener {
             return t;
         });
 
-        // Run immediately on deployment, and then every 10 minutes in the background
-        scheduler.scheduleAtFixedRate(() -> {
+        // Delay 30 seconds after server startup, then run every 10 minutes in the background
+        scheduler.scheduleWithFixedDelay(() -> {
             try {
                 showtimeDAO.deleteExpiredShowtimes();
             } catch (Throwable t) {
                 System.err.println("[ShowtimeCleanupListener] Lỗi khi dọn dẹp suất chiếu: " + t.getMessage());
             }
-        }, 0, 10, TimeUnit.MINUTES);
+        }, 30, 600, TimeUnit.SECONDS);
 
         System.out.println("[ShowtimeCleanupListener] Đã kích hoạt cơ chế tự động dọn dẹp suất chiếu hết hạn định kỳ.");
     }

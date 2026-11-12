@@ -10,18 +10,15 @@
             <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 pb-2 mb-4 border-bottom border-secondary">
                 <h2 class="h3 fw-bold text-white mb-0" data-i18n="admin.showtimes.title">DANH SÁCH SUẤT CHIẾU</h2>
                 <div class="d-flex align-items-center gap-2">
-                    <a href="${pageContext.request.contextPath}/admin/showtime-cleanup" 
-                       class="btn btn-outline-warning fw-semibold btn-swal-confirm"
-                       data-title="Dọn dẹp suất chiếu quá hạn?"
-                       data-confirm="Hệ thống sẽ tự động quét và xóa sạch tất cả các suất chiếu đã kết thúc trong quá khứ khỏi cơ sở dữ liệu."
-                       data-icon="question"
-                       data-confirm-color="#eab308"
-                       data-i18n-title="admin.showtimes.cleanupTitle"
-                       data-i18n-confirm-title="admin.showtimes.cleanupConfirmTitle"
-                       data-i18n-confirm="admin.showtimes.cleanupConfirm"
-                       title="Dọn dẹp suất chiếu đã kết thúc trong quá khứ">
+                    <button type="button" id="btnCleanupShowtimes" 
+                            class="btn btn-outline-warning fw-semibold d-inline-flex align-items-center gap-1"
+                            data-count="${not empty expiredCount ? expiredCount : 0}"
+                            title="Dọn dẹp suất chiếu đã kết thúc trong quá khứ">
                         <i class="fa-solid fa-broom me-1"></i><span data-i18n="admin.showtimes.cleanupBtn">Dọn Dẹp Quá Hạn</span>
-                    </a>
+                        <c:if test="${expiredCount > 0}">
+                            <span class="badge bg-warning text-dark ms-1 rounded-pill">${expiredCount}</span>
+                        </c:if>
+                    </button>
                     <a href="${pageContext.request.contextPath}/admin/showtime-add" class="btn btn-danger fw-bold">
                         <i class="fa-solid fa-plus me-1"></i><span data-i18n="admin.showtimes.addNew">Thêm Suất Chiếu Mới</span>
                     </a>
@@ -34,6 +31,19 @@
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             </c:if>
+            <c:if test="${not empty param.error}">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                    <c:choose>
+                        <c:when test="${param.error == 'showtime_past'}">Không thể tạo suất chiếu trong quá khứ!</c:when>
+                        <c:when test="${param.error == 'showtime_duration'}">Khoảng thời gian chiếu phải lớn hơn hoặc bằng thời lượng của phim!</c:when>
+                        <c:when test="${param.error == 'room_conflict'}">Phòng chiếu đã có suất chiếu khác trong khung giờ này!</c:when>
+                        <c:otherwise>${param.error}</c:otherwise>
+                    </c:choose>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+
 
             <div class="card bg-dark border-secondary rounded-4 p-3 shadow">
                 <div class="table-responsive">
@@ -111,4 +121,96 @@
                     </div>
                 </c:if>
             </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var cleanupBtn = document.getElementById('btnCleanupShowtimes');
+    if (cleanupBtn) {
+        cleanupBtn.addEventListener('click', function (e) {
+            e.preventDefault();
+            var isDark = document.documentElement.getAttribute('data-bs-theme') !== 'light';
+            var isEn = (localStorage.getItem('cinema_lang') || 'vi') === 'en';
+
+            Swal.fire({
+                title: isEn ? 'Checking expired showtimes...' : 'Đang kiểm tra số lượng...',
+                text: isEn ? 'Please wait a moment' : 'Vui lòng chờ trong giây lát',
+                allowOutsideClick: false,
+                didOpen: function () {
+                    Swal.showLoading();
+                }
+            });
+
+            fetch(window.CONTEXT_PATH + '/admin/showtime-cleanup?action=count')
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    var count = (data && typeof data.count === 'number') ? data.count : (parseInt(cleanupBtn.getAttribute('data-count'), 10) || 0);
+                    if (count <= 0) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: isEn ? 'No Expired Showtimes' : 'Không có suất chiếu quá hạn',
+                            text: isEn ? 'There are currently no expired showtimes to clean up!' : 'Hiện tại không có suất chiếu nào đã kết thúc cần dọn dẹp. Tất cả các suất chiếu đều đang mở hoặc sắp diễn ra!',
+                            confirmButtonColor: '#eab308',
+                            background: isDark ? '#1e1e1e' : '#ffffff',
+                            color: isDark ? '#f5f5f5' : '#0f172a'
+                        });
+                        return;
+                    }
+
+                    var titleText = isEn ? ('Clean up ' + count + ' expired showtimes?') : ('Dọn dẹp ' + count + ' suất chiếu quá hạn?');
+                    var htmlText = isEn 
+                        ? ('The system found <strong>' + count + '</strong> expired showtime(s) that have ended.<br>Are you sure you want to permanently delete these <strong>' + count + '</strong> showtime(s)?')
+                        : ('Hệ thống phát hiện có <strong>' + count + '</strong> suất chiếu đã kết thúc trong quá khứ.<br>Bạn có chắc chắn muốn dọn dẹp và xóa sạch <strong>' + count + '</strong> suất chiếu này khỏi cơ sở dữ liệu?');
+                    var confirmBtn = isEn ? ('<i class="fa-solid fa-broom me-1"></i> Confirm delete ' + count) : ('<i class="fa-solid fa-broom me-1"></i> Xác nhận xóa ' + count + ' suất');
+                    var cancelBtn = isEn ? '<i class="fa-solid fa-xmark me-1"></i> Cancel' : '<i class="fa-solid fa-xmark me-1"></i> Hủy bỏ';
+
+                    Swal.fire({
+                        title: titleText,
+                        html: htmlText,
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#eab308',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: confirmBtn,
+                        cancelButtonText: cancelBtn,
+                        background: isDark ? '#1e1e1e' : '#ffffff',
+                        color: isDark ? '#f5f5f5' : '#0f172a',
+                        reverseButtons: true,
+                        focusCancel: true
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            window.location.href = window.CONTEXT_PATH + '/admin/showtime-cleanup';
+                        }
+                    });
+                })
+                .catch(function () {
+                    var count = parseInt(cleanupBtn.getAttribute('data-count'), 10) || 0;
+                    if (count <= 0) {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Không có suất chiếu quá hạn',
+                            text: 'Hiện tại không có suất chiếu nào đã kết thúc cần dọn dẹp!',
+                            confirmButtonColor: '#eab308'
+                        });
+                        return;
+                    }
+                    Swal.fire({
+                        title: 'Dọn dẹp ' + count + ' suất chiếu quá hạn?',
+                        html: 'Hệ thống phát hiện có <strong>' + count + '</strong> suất chiếu đã kết thúc trong quá khứ.<br>Bạn có chắc chắn muốn xóa sạch <strong>' + count + '</strong> suất chiếu này khỏi cơ sở dữ liệu?',
+                        icon: 'question',
+                        showCancelButton: true,
+                        confirmButtonColor: '#eab308',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: '<i class="fa-solid fa-broom me-1"></i> Xác nhận xóa ' + count + ' suất',
+                        cancelButtonText: '<i class="fa-solid fa-xmark me-1"></i> Hủy bỏ'
+                    }).then(function (result) {
+                        if (result.isConfirmed) {
+                            window.location.href = window.CONTEXT_PATH + '/admin/showtime-cleanup';
+                        }
+                    });
+                });
+        });
+    }
+});
+</script>
+
 <jsp:include page="common/admin-footer.jsp"/>
