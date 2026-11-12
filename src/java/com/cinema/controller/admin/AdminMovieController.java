@@ -83,10 +83,47 @@ public class AdminMovieController extends HttpServlet {
             response.setCharacterEncoding("UTF-8");
 
             String idStr = request.getParameter("movieId");
-            int duration = Integer.parseInt(request.getParameter("duration"));
-            Date releaseDate = Date.valueOf(request.getParameter("releaseDate"));
+            boolean isEdit = (idStr != null && !idStr.trim().isEmpty());
+
+            int duration;
+            try {
+                duration = Integer.parseInt(request.getParameter("duration"));
+            } catch (Exception e) {
+                duration = -1;
+            }
+            if (duration <= 0 || duration > 1440) {
+                response.sendRedirect(request.getContextPath() + (isEdit ? "/admin/movie-edit?id=" + idStr + "&" : "/admin/movie-add?") + "error=invalid_duration");
+                return;
+            }
+
+            Date releaseDate;
+            try {
+                releaseDate = Date.valueOf(request.getParameter("releaseDate"));
+                int relYear = releaseDate.toLocalDate().getYear();
+                if (relYear < 1900 || relYear > 2100) {
+                    response.sendRedirect(request.getContextPath() + (isEdit ? "/admin/movie-edit?id=" + idStr + "&" : "/admin/movie-add?") + "error=invalid_dates");
+                    return;
+                }
+            } catch (Exception e) {
+                response.sendRedirect(request.getContextPath() + (isEdit ? "/admin/movie-edit?id=" + idStr + "&" : "/admin/movie-add?") + "error=invalid_dates");
+                return;
+            }
+
             String endDateStr = request.getParameter("endDate");
-            Date endDate = (endDateStr != null && !endDateStr.trim().isEmpty()) ? Date.valueOf(endDateStr.trim()) : null;
+            Date endDate = null;
+            if (endDateStr != null && !endDateStr.trim().isEmpty()) {
+                try {
+                    endDate = Date.valueOf(endDateStr.trim());
+                    int endYear = endDate.toLocalDate().getYear();
+                    if (endYear < 1900 || endYear > 2100 || endDate.before(releaseDate)) {
+                        response.sendRedirect(request.getContextPath() + (isEdit ? "/admin/movie-edit?id=" + idStr + "&" : "/admin/movie-add?") + "error=invalid_dates");
+                        return;
+                    }
+                } catch (Exception e) {
+                    response.sendRedirect(request.getContextPath() + (isEdit ? "/admin/movie-edit?id=" + idStr + "&" : "/admin/movie-add?") + "error=invalid_dates");
+                    return;
+                }
+            }
             String posterUrl = request.getParameter("posterUrl");
             String trailerUrl = request.getParameter("trailerUrl");
             String ageRating = request.getParameter("ageRating");
@@ -142,7 +179,6 @@ public class AdminMovieController extends HttpServlet {
             movie.setStatus(status);
 
             int savedMovieId;
-            boolean isEdit = (idStr != null && !idStr.trim().isEmpty());
             if (isEdit) {
                 savedMovieId = Integer.parseInt(idStr.trim());
                 movie.setMovieId(savedMovieId);

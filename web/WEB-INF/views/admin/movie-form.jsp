@@ -16,6 +16,18 @@
                     <i class="fa-solid fa-arrow-left me-1"></i><span data-i18n="admin.movieForm.back">Quay Lại</span>
                 </a>
             </div>
+            <c:if test="${not empty param.error}">
+                <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                    <c:choose>
+                        <c:when test="${param.error == 'invalid_duration'}">Thời lượng phim không hợp lệ! Phải từ 1 đến 1440 phút (tối đa 24 giờ).</c:when>
+                        <c:when test="${param.error == 'invalid_dates'}">Ngày khởi chiếu hoặc ngày kết thúc không hợp lệ (Ngày kết thúc không được trước ngày khởi chiếu)!</c:when>
+                        <c:otherwise>Có lỗi xảy ra: ${param.error}</c:otherwise>
+                    </c:choose>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+
 
             <form id="movieAdminForm" action="${pageContext.request.contextPath}/admin/movies" method="POST">
                 <c:if test="${movie != null}">
@@ -30,15 +42,17 @@
                     <div class="row g-3">
                         <div class="col-md-3">
                             <label class="form-label text-light small fw-semibold" data-i18n="admin.movieForm.duration">Thời lượng (phút) *</label>
-                            <input type="number" class="form-control" name="duration" value="${movie.duration != null ? movie.duration : 120}" required min="1">
+                            <input type="number" class="form-control" name="duration" id="movieDuration" value="${movie.duration != null ? movie.duration : 120}" required min="1" max="1440">
+                            <div class="form-text small text-muted">1 - 1440 phút (tối đa 24 giờ)</div>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label text-light small fw-semibold" data-i18n="admin.movieForm.releaseDate">Ngày khởi chiếu *</label>
-                            <input type="date" class="form-control" name="releaseDate" value="${movie.releaseDate}" required>
+                            <input type="date" class="form-control" name="releaseDate" id="movieReleaseDate" value="${movie.releaseDate}" min="1900-01-01" max="2100-12-31" required>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label text-light small fw-semibold" data-i18n="admin.movieForm.endDate">Ngày kết thúc</label>
-                            <input type="date" class="form-control" name="endDate" value="${movie.endDate}">
+                            <input type="date" class="form-control" name="endDate" id="movieEndDate" value="${movie.endDate}" min="1900-01-01" max="2100-12-31">
+                            <div class="form-text small text-muted">Phải sau hoặc bằng ngày khởi chiếu</div>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label text-light small fw-semibold" data-i18n="admin.movieForm.ageRating">Giới hạn tuổi</label>
@@ -207,6 +221,46 @@
         if (submitBtn && form) {
             submitBtn.addEventListener('click', function (e) {
                 e.preventDefault();
+
+                // Validate movie duration
+                var durInput = document.getElementById('movieDuration');
+                var durVal = durInput ? parseInt(durInput.value, 10) : 0;
+                if (isNaN(durVal) || durVal < 1 || durVal > 1440) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Thời lượng phim không hợp lệ',
+                        text: 'Thời lượng phim phải từ 1 đến 1440 phút (không được vượt quá 24 giờ)!',
+                        confirmButtonColor: '#dc2626'
+                    });
+                    if (durInput) durInput.focus();
+                    return;
+                }
+
+                // Validate releaseDate & endDate
+                var relInput = document.getElementById('movieReleaseDate');
+                var endInput = document.getElementById('movieEndDate');
+                if (!relInput || !relInput.value) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Thiếu ngày khởi chiếu',
+                        text: 'Vui lòng chọn ngày khởi chiếu của phim!',
+                        confirmButtonColor: '#dc2626'
+                    });
+                    if (relInput) relInput.focus();
+                    return;
+                }
+                if (endInput && endInput.value && relInput.value) {
+                    if (endInput.value < relInput.value) {
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Ngày kết thúc không hợp lệ',
+                            text: 'Ngày kết thúc (' + endInput.value + ') không thể trước ngày khởi chiếu (' + relInput.value + ')!',
+                            confirmButtonColor: '#dc2626'
+                        });
+                        endInput.focus();
+                        return;
+                    }
+                }
 
                 // Check at least one language is checked
                 var checkedLangs = document.querySelectorAll('.lang-selector-chk:checked');

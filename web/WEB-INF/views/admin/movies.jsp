@@ -13,6 +13,18 @@
                     <i class="fa-solid fa-plus me-1"></i><span data-i18n="admin.movies.addNew">Thêm Phim Mới</span>
                 </a>
             </div>
+            <c:if test="${not empty param.error}">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                    <c:choose>
+                        <c:when test="${param.error == 'invalid_duration'}">Thời lượng phim không hợp lệ (Phải từ 1 đến 1440 phút / tối đa 24 giờ)!</c:when>
+                        <c:when test="${param.error == 'invalid_dates'}">Ngày khởi chiếu hoặc ngày kết thúc không hợp lệ (Ngày kết thúc không được trước ngày khởi chiếu)!</c:when>
+                        <c:otherwise>${param.error}</c:otherwise>
+                    </c:choose>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </c:if>
+
 
             <div class="card bg-dark border-secondary rounded-4 p-3 shadow">
                 <div class="table-responsive">
