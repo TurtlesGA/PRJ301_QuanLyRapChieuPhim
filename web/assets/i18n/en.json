@@ -698,5 +698,36 @@
     "NOW_SHOWING": "Now Showing",
     "COMING_SOON": "Coming Soon",
     "STOPPED": "Stopped"
+  },
+  "error": {
+    "btnHome": "Back to Home",
+    "btnMovies": "Browse Movies",
+    "btnBack": "Go Back",
+    "btnBackRetry": "Go Back & Retry",
+    "btnReload": "Reload Page",
+    "btnLogin": "Login Now",
+    "needHelp": "Need help? Call our hotline",
+    "orEmail": "or email us at",
+    "viewTechDetails": "View technical details",
+    "404": {
+      "badge": "LINK ERROR / PAGE NOT FOUND",
+      "title": "Oops! This Film Roll Doesn't Exist",
+      "desc": "The page or resource you are looking for might have been removed, had its name changed, or is temporarily unavailable."
+    },
+    "403": {
+      "badge": "RESTRICTED AREA / ACCESS DENIED",
+      "title": "You Do Not Have Access Permission",
+      "desc": "This area requires Administrator authorization or you do not have permission to access this feature."
+    },
+    "500": {
+      "badge": "TECHNICAL ISSUE / INTERNAL SERVER ERROR",
+      "title": "The Projector Encountered a Technical Glitch!",
+      "desc": "An unexpected error occurred while processing your request. The CineStar technical team is actively investigating and fixing the issue."
+    },
+    "400": {
+      "badge": "BAD REQUEST / INVALID DATA FORMAT",
+      "title": "Your Request Could Not Be Processed",
+      "desc": "The server could not understand the request due to invalid syntax or corrupted request data. Please verify your action and try again."
+    }
   }
 }

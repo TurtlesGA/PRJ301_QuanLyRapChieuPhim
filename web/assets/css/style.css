@@ -1112,6 +1112,157 @@ body {
     .movie-title {
         font-size: 0.88rem;
         margin-bottom: 4px;
+
+/* ========================================================
+   CUSTOM CINEMA ERROR PAGES (404, 403, 500, 400, GENERAL)
+   ======================================================== */
+.error-page-wrapper {
+    min-height: calc(100vh - 180px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(circle at center, rgba(229, 9, 20, 0.08) 0%, rgba(18, 18, 18, 0) 70%);
+}
+
+[data-bs-theme="light"] .error-page-wrapper {
+    background: radial-gradient(circle at center, rgba(229, 9, 20, 0.05) 0%, rgba(248, 250, 252, 0) 70%);
+}
+
+.error-card {
+    background: rgba(30, 30, 30, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1.5rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    position: relative;
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+[data-bs-theme="light"] .error-card {
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 20px 40px rgba(15, 23, 42, 0.08);
+}
+
+.error-code-glitch {
+    font-size: clamp(5rem, 15vw, 8.5rem);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -2px;
+    background: linear-gradient(135deg, #ff4d4d 0%, #e50914 50%, #990000 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 10px 30px rgba(229, 9, 20, 0.3);
+    margin-bottom: 0.5rem;
+    font-family: 'Montserrat', sans-serif;
+    user-select: none;
+}
+
+.error-code-warning {
+    background: linear-gradient(135deg, #facc15 0%, #eab308 50%, #ca8a04 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 10px 30px rgba(234, 179, 8, 0.3);
+}
+
+.error-code-orange {
+    background: linear-gradient(135deg, #fb923c 0%, #f97316 50%, #c2410c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 10px 30px rgba(249, 115, 22, 0.3);
+}
+
+.error-icon-box {
+    width: 88px;
+    height: 88px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    box-shadow: 0 0 35px rgba(229, 9, 20, 0.25);
+    animation: cinema-pulse 3s infinite ease-in-out;
+}
+
+.error-icon-box.danger {
+    background: rgba(229, 9, 20, 0.15);
+    border: 2px solid rgba(229, 9, 20, 0.5);
+    color: #e50914;
+}
+
+.error-icon-box.warning {
+    background: rgba(234, 179, 8, 0.15);
+    border: 2px solid rgba(234, 179, 8, 0.5);
+    color: #eab308;
+    box-shadow: 0 0 35px rgba(234, 179, 8, 0.25);
+}
+
+.error-icon-box.orange {
+    background: rgba(249, 115, 22, 0.15);
+    border: 2px solid rgba(249, 115, 22, 0.5);
+    color: #f97316;
+    box-shadow: 0 0 35px rgba(249, 115, 22, 0.25);
+}
+
+@keyframes cinema-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.06);
+    }
+}
+
+.error-reel-spin {
+    animation: film-reel-spin 12s linear infinite;
+    display: inline-block;
+}
+
+@keyframes film-reel-spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.error-quick-link-btn {
+    border-radius: 50rem;
+    padding: 0.65rem 1.6rem;
+    font-weight: 600;
+    font-size: 0.95rem;
+    transition: all 0.25s ease;
+}
+
+.error-quick-link-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.error-debug-box {
+    background: rgba(0, 0, 0, 0.4);
+    border: 1px dashed rgba(255, 255, 255, 0.15);
+    border-radius: 0.75rem;
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.85rem;
+    color: #a1a1aa;
+    text-align: left;
+}
+
+[data-bs-theme="light"] .error-debug-box {
+    background: #f8fafc;
+    border: 1px dashed #cbd5e1;
+    color: #475569;
+}
+
     }
     .movie-info p.small {
         font-size: 0.72rem;

@@ -676,5 +676,36 @@
     "NOW_SHOWING": "Đang chiếu",
     "COMING_SOON": "Sắp chiếu",
     "STOPPED": "Ngừng chiếu"
+  },
+  "error": {
+    "btnHome": "Về Trang Chủ",
+    "btnMovies": "Xem Lịch Phim",
+    "btnBack": "Quay Lại",
+    "btnBackRetry": "Quay Lại Thao Tác",
+    "btnReload": "Tải Lại Trang",
+    "btnLogin": "Đăng Nhập Ngay",
+    "needHelp": "Bạn cần hỗ trợ thêm? Gọi ngay tổng đài",
+    "orEmail": "hoặc gửi email về",
+    "viewTechDetails": "Xem chi tiết kỹ thuật",
+    "404": {
+      "badge": "LỖI ĐƯỜNG DẪN / TRANG KHÔNG TỒN TẠI",
+      "title": "Ối! Cuộn Phim Này Không Tồn Tại",
+      "desc": "Trang hoặc tài nguyên bạn đang tìm kiếm có thể đã bị dỡ bỏ, đổi đường dẫn hoặc tạm thời không khả dụng."
+    },
+    "403": {
+      "badge": "KHU VỰC HẠN CHẾ / TRUY CẬP BỊ TỪ CHỐI",
+      "title": "Bạn Không Có Quyền Truy Cập",
+      "desc": "Khu vực này yêu cầu tài khoản có thẩm quyền Quản trị (Admin) hoặc bạn chưa được phân quyền truy cập tính năng này."
+    },
+    "500": {
+      "badge": "SỰ CỐ KỸ THUẬT / LỖI MÁY CHỦ NỘI BỘ",
+      "title": "Máy Chiếu Đang Gặp Sự Cố Kỹ Thuật!",
+      "desc": "Hệ thống đã xảy ra lỗi bất ngờ trong quá trình xử lý yêu cầu. Đội ngũ kỹ thuật viên CineStar đang nhanh chóng kiểm tra và khắc phục."
+    },
+    "400": {
+      "badge": "YÊU CẦU KHÔNG HỢP LỆ / DỮ LIỆU SAI ĐỊNH DẠNG",
+      "title": "Yêu Cầu Của Bạn Không Thể Xử Lý",
+      "desc": "Máy chủ không thể hiểu yêu cầu do cú pháp dữ liệu gửi lên không đúng định dạng hoặc đã bị gián đoạn. Vui lòng kiểm tra lại thao tác của bạn."
+    }
   }
 }
