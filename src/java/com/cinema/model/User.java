@@ -114,4 +114,16 @@ public class User {
     public boolean isAdmin() {
         return "ADMIN".equalsIgnoreCase(role);
     }
+
+    public boolean isStaff() {
+        return "STAFF".equalsIgnoreCase(role);
+    }
+
+    public boolean isCanAccessAdmin() {
+        return isAdmin() || isStaff();
+    }
+
+    public boolean canAccessAdmin() {
+        return isAdmin() || isStaff();
+    }
 }

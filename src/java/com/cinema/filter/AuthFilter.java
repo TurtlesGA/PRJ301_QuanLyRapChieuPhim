@@ -36,9 +36,24 @@ public class AuthFilter implements Filter {
 
         // 2. Kiểm tra truy cập trang Admin
         if (uri.contains("/admin/")) {
-            if (!currentUser.isAdmin()) {
+            // Chỉ ADMIN hoặc STAFF mới được vào khu vực quản trị
+            if (!currentUser.isAdmin() && !currentUser.isStaff()) {
                 httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Bạn không có quyền truy cập trang Quản trị!");
                 return;
+            }
+
+            // Phân quyền cho role STAFF: chỉ được quản lý Suất chiếu, Phòng chiếu, Lịch sử đặt vé & xem Dashboard
+            if (currentUser.isStaff() && !currentUser.isAdmin()) {
+                boolean isAllowedForStaff = uri.contains("/admin/showtime")
+                                         || uri.contains("/admin/room")
+                                         || uri.contains("/admin/booking")
+                                         || uri.contains("/admin/dashboard")
+                                         || uri.endsWith("/admin")
+                                         || uri.endsWith("/admin/");
+                if (!isAllowedForStaff) {
+                    httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Nhân viên (STAFF) chỉ có quyền quản lý Suất chiếu, Phòng chiếu và Lịch sử đặt vé!");
+                    return;
+                }
             }
         }
 

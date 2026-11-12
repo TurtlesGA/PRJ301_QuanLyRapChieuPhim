@@ -44,7 +44,7 @@ public class LoginController extends HttpServlet {
             HttpSession session = request.getSession();
             session.setAttribute("currentUser", user);
 
-            if (user.isAdmin()) {
+            if (user.isAdmin() || user.isStaff()) {
                 response.sendRedirect(request.getContextPath() + "/admin/dashboard");
             } else {
                 response.sendRedirect(request.getContextPath() + "/home");

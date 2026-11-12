@@ -74,7 +74,7 @@
                                 <span>${sessionScope.currentUser.fullName}</span>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow">
-                                <c:if test="${sessionScope.currentUser.admin}">
+                                <c:if test="${sessionScope.currentUser.admin || sessionScope.currentUser.staff}">
                                     <li><a class="dropdown-item text-warning" data-i18n="nav.adminPanel" href="${pageContext.request.contextPath}/admin/dashboard"><i class="fa-solid fa-chart-line me-2"></i>Trang Quản Trị</a></li>
                                     <li><hr class="dropdown-divider border-secondary"></li>
                                 </c:if>

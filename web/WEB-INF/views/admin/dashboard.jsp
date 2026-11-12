@@ -10,9 +10,11 @@
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-4 border-bottom border-secondary">
                 <h2 class="h3 fw-bold text-white" data-i18n="admin.dashboard.title">BẢNG ĐIỀU KHIỂN HỆ THỐNG</h2>
                 <div class="btn-toolbar mb-2 mb-md-0">
-                    <a href="${pageContext.request.contextPath}/admin/movie-add" class="btn btn-sm btn-danger fw-bold me-2">
-                        <i class="fa-solid fa-plus me-1"></i><span data-i18n="admin.dashboard.addMovie">Thêm Phim Mới</span>
-                    </a>
+                    <c:if test="${sessionScope.currentUser.admin}">
+                        <a href="${pageContext.request.contextPath}/admin/movie-add" class="btn btn-sm btn-danger fw-bold me-2">
+                            <i class="fa-solid fa-plus me-1"></i><span data-i18n="admin.dashboard.addMovie">Thêm Phim Mới</span>
+                        </a>
+                    </c:if>
                     <a href="${pageContext.request.contextPath}/admin/showtime-add" class="btn btn-sm btn-outline-light fw-bold">
                         <i class="fa-solid fa-calendar-plus me-1"></i><span data-i18n="admin.dashboard.addShowtime">Thêm Suất Chiếu</span>
                     </a>

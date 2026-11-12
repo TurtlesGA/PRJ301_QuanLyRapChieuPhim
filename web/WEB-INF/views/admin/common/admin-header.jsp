@@ -76,7 +76,14 @@
             <a class="navbar-brand d-flex align-items-center gap-2 m-0" href="${pageContext.request.contextPath}/admin/dashboard">
                 <i class="fa-solid fa-film text-danger fs-3"></i>
                 <span class="fw-bold">CINE<span class="text-white brand-suffix">STAR</span></span>
-                <span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-50 small ms-1 d-none d-sm-inline-block">ADMIN</span>
+                <c:choose>
+                    <c:when test="${sessionScope.currentUser.staff && !sessionScope.currentUser.admin}">
+                        <span class="badge bg-warning bg-opacity-25 text-warning border border-warning border-opacity-50 small ms-1 d-none d-sm-inline-block">STAFF</span>
+                    </c:when>
+                    <c:otherwise>
+                        <span class="badge bg-danger bg-opacity-25 text-danger border border-danger border-opacity-50 small ms-1 d-none d-sm-inline-block">ADMIN</span>
+                    </c:otherwise>
+                </c:choose>
             </a>
         </div>
 
@@ -135,11 +142,20 @@
                     <li class="px-3 py-2 border-bottom border-secondary">
                         <div class="fw-bold text-white">${sessionScope.currentUser.fullName}</div>
                         <div class="small text-muted">${sessionScope.currentUser.email}</div>
-                        <span class="badge bg-danger mt-1">Administrator</span>
+                        <c:choose>
+                            <c:when test="${sessionScope.currentUser.staff && !sessionScope.currentUser.admin}">
+                                <span class="badge bg-warning text-dark mt-1">Staff / Nhân Viên</span>
+                            </c:when>
+                            <c:otherwise>
+                                <span class="badge bg-danger mt-1">Administrator</span>
+                            </c:otherwise>
+                        </c:choose>
                     </li>
                     <li><a class="dropdown-item py-2" href="${pageContext.request.contextPath}/home"><i class="fa-solid fa-house me-2"></i><span data-i18n="admin.viewWebsite">Trang Khách Hàng</span></a></li>
                     <li><a class="dropdown-item py-2" href="${pageContext.request.contextPath}/profile"><i class="fa-solid fa-user-gear me-2"></i><span data-i18n="nav.myAccount">Tài Khoản</span></a></li>
-                    <li><a class="dropdown-item py-2" href="${pageContext.request.contextPath}/admin/settings"><i class="fa-solid fa-gears me-2"></i><span data-i18n="admin.manageSettings">Cài Đặt Hệ Thống</span></a></li>
+                    <c:if test="${sessionScope.currentUser.admin}">
+                        <li><a class="dropdown-item py-2" href="${pageContext.request.contextPath}/admin/settings"><i class="fa-solid fa-gears me-2"></i><span data-i18n="admin.manageSettings">Cài Đặt Hệ Thống</span></a></li>
+                    </c:if>
                     <li><hr class="dropdown-divider border-secondary my-1"></li>
                     <li><a class="dropdown-item py-2 text-danger" href="${pageContext.request.contextPath}/logout"><i class="fa-solid fa-right-from-bracket me-2"></i><span data-i18n="admin.logout">Đăng Xuất</span></a></li>
                 </ul>
@@ -165,11 +181,13 @@
                     <i class="fa-solid fa-chart-pie me-2"></i><span data-i18n="admin.overview">Tổng Quan</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link ${param.activeMenu == 'movies' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/movies">
-                    <i class="fa-solid fa-film me-2"></i><span data-i18n="admin.manageMovies">Quản Lý Phim</span>
-                </a>
-            </li>
+            <c:if test="${sessionScope.currentUser.admin}">
+                <li class="nav-item">
+                    <a class="nav-link ${param.activeMenu == 'movies' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/movies">
+                        <i class="fa-solid fa-film me-2"></i><span data-i18n="admin.manageMovies">Quản Lý Phim</span>
+                    </a>
+                </li>
+            </c:if>
             <li class="nav-item">
                 <a class="nav-link ${param.activeMenu == 'rooms' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/rooms">
                     <i class="fa-solid fa-door-open me-2"></i><span data-i18n="admin.manageRooms">Quản Lý Phòng Chiếu</span>
@@ -185,16 +203,18 @@
                     <i class="fa-solid fa-receipt me-2"></i><span data-i18n="admin.manageBookings">Lịch Sử Đặt Vé</span>
                 </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link ${param.activeMenu == 'users' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/users">
-                    <i class="fa-solid fa-users me-2"></i><span data-i18n="admin.manageUsers">Người Dùng</span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link ${param.activeMenu == 'settings' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/settings">
-                    <i class="fa-solid fa-gears me-2"></i><span data-i18n="admin.manageSettings">Cài Đặt Hệ Thống</span>
-                </a>
-            </li>
+            <c:if test="${sessionScope.currentUser.admin}">
+                <li class="nav-item">
+                    <a class="nav-link ${param.activeMenu == 'users' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/users">
+                        <i class="fa-solid fa-users me-2"></i><span data-i18n="admin.manageUsers">Người Dùng</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link ${param.activeMenu == 'settings' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/settings">
+                        <i class="fa-solid fa-gears me-2"></i><span data-i18n="admin.manageSettings">Cài Đặt Hệ Thống</span>
+                    </a>
+                </li>
+            </c:if>
         </ul>
 
         <hr class="border-secondary my-3">
@@ -221,11 +241,13 @@
                         <i class="fa-solid fa-chart-pie me-2"></i><span data-i18n="admin.overview">Tổng Quan</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link ${param.activeMenu == 'movies' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/movies">
-                        <i class="fa-solid fa-film me-2"></i><span data-i18n="admin.manageMovies">Quản Lý Phim</span>
-                    </a>
-                </li>
+                <c:if test="${sessionScope.currentUser.admin}">
+                    <li class="nav-item">
+                        <a class="nav-link ${param.activeMenu == 'movies' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/movies">
+                            <i class="fa-solid fa-film me-2"></i><span data-i18n="admin.manageMovies">Quản Lý Phim</span>
+                        </a>
+                    </li>
+                </c:if>
                 <li class="nav-item">
                     <a class="nav-link ${param.activeMenu == 'rooms' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/rooms">
                         <i class="fa-solid fa-door-open me-2"></i><span data-i18n="admin.manageRooms">Quản Lý Phòng Chiếu</span>
@@ -241,16 +263,18 @@
                         <i class="fa-solid fa-receipt me-2"></i><span data-i18n="admin.manageBookings">Lịch Sử Đặt Vé</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link ${param.activeMenu == 'users' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/users">
-                        <i class="fa-solid fa-users me-2"></i><span data-i18n="admin.manageUsers">Người Dùng</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link ${param.activeMenu == 'settings' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/settings">
-                        <i class="fa-solid fa-gears me-2"></i><span data-i18n="admin.manageSettings">Cài Đặt Hệ Thống</span>
-                    </a>
-                </li>
+                <c:if test="${sessionScope.currentUser.admin}">
+                    <li class="nav-item">
+                        <a class="nav-link ${param.activeMenu == 'users' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/users">
+                            <i class="fa-solid fa-users me-2"></i><span data-i18n="admin.manageUsers">Người Dùng</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link ${param.activeMenu == 'settings' ? 'active' : ''}" href="${pageContext.request.contextPath}/admin/settings">
+                            <i class="fa-solid fa-gears me-2"></i><span data-i18n="admin.manageSettings">Cài Đặt Hệ Thống</span>
+                        </a>
+                    </li>
+                </c:if>
             </ul>
         </nav>
 
