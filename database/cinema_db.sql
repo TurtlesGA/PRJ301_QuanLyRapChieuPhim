@@ -2,7 +2,7 @@
 -- DATABASE: Cinema Management System (Hệ thống Quản lý Rạp chiếu phim)
 -- Course: PRJ301 - Java Web Application
 -- Database Engine: Microsoft SQL Server
--- Generated Date: 2026-11-12 14:18:46
+-- Generated Date: 2026-11-12 14:35:30
 -- ================================================================
 USE master;
 GO
@@ -479,6 +479,14 @@ INSERT INTO Showtimes (showtime_id, movie_id, room_id, show_date, start_time, en
 INSERT INTO Showtimes (showtime_id, movie_id, room_id, show_date, start_time, end_time, base_price, status) VALUES (271, 7, 3, '2026-12-01 00:00:00.000', '13:00:00', '15:45:00', 120000.00, N'OPEN');
 INSERT INTO Showtimes (showtime_id, movie_id, room_id, show_date, start_time, end_time, base_price, status) VALUES (272, 8, 3, '2026-12-01 00:00:00.000', '16:30:00', '19:15:00', 125000.00, N'OPEN');
 INSERT INTO Showtimes (showtime_id, movie_id, room_id, show_date, start_time, end_time, base_price, status) VALUES (273, 9, 3, '2026-12-01 00:00:00.000', '20:00:00', '22:45:00', 130000.00, N'OPEN');
+INSERT INTO Showtimes (showtime_id, movie_id, room_id, show_date, start_time, end_time, base_price, status) VALUES (302, 1, 1, '2026-11-10 00:00:00.000', '09:00:00', '11:15:00', 80000.00, N'OPEN');
+INSERT INTO Showtimes (showtime_id, movie_id, room_id, show_date, start_time, end_time, base_price, status) VALUES (303, 2, 2, '2026-11-10 00:00:00.000', '13:30:00', '16:15:00', 90000.00, N'OPEN');
+INSERT INTO Showtimes (showtime_id, movie_id, room_id, show_date, start_time, end_time, base_price, status) VALUES (304, 3, 3, '2026-11-10 00:00:00.000', '19:00:00', '21:15:00', 100000.00, N'OPEN');
+INSERT INTO Showtimes (showtime_id, movie_id, room_id, show_date, start_time, end_time, base_price, status) VALUES (305, 4, 1, '2026-11-11 00:00:00.000', '10:00:00', '11:45:00', 85000.00, N'OPEN');
+INSERT INTO Showtimes (showtime_id, movie_id, room_id, show_date, start_time, end_time, base_price, status) VALUES (306, 5, 2, '2026-11-11 00:00:00.000', '14:00:00', '16:30:00', 95000.00, N'OPEN');
+INSERT INTO Showtimes (showtime_id, movie_id, room_id, show_date, start_time, end_time, base_price, status) VALUES (307, 6, 3, '2026-11-11 00:00:00.000', '20:00:00', '22:15:00', 110000.00, N'OPEN');
+INSERT INTO Showtimes (showtime_id, movie_id, room_id, show_date, start_time, end_time, base_price, status) VALUES (308, 1, 1, '2026-11-12 00:00:00.000', '08:00:00', '10:15:00', 80000.00, N'OPEN');
+INSERT INTO Showtimes (showtime_id, movie_id, room_id, show_date, start_time, end_time, base_price, status) VALUES (309, 2, 2, '2026-11-12 00:00:00.000', '09:30:00', '12:15:00', 90000.00, N'OPEN');
 SET IDENTITY_INSERT Showtimes OFF;
 GO
 
