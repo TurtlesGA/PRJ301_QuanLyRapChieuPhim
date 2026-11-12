@@ -22,7 +22,9 @@ public class ShowtimeCleanupListener implements ServletContextListener {
             return t;
         });
 
-        // Delay 30 seconds after server startup, then run every 10 minutes in the background
+        // Cơ chế dọn dẹp chủ động thông qua nút 'Dọn Dẹp Quá Hạn' trên trang Admin.
+        // Có thể bật lại scheduler định kỳ nếu muốn hệ thống tự động dọn dẹp ngầm.
+        /*
         scheduler.scheduleWithFixedDelay(() -> {
             try {
                 showtimeDAO.deleteExpiredShowtimes();
@@ -30,8 +32,8 @@ public class ShowtimeCleanupListener implements ServletContextListener {
                 System.err.println("[ShowtimeCleanupListener] Lỗi khi dọn dẹp suất chiếu: " + t.getMessage());
             }
         }, 30, 600, TimeUnit.SECONDS);
-
-        System.out.println("[ShowtimeCleanupListener] Đã kích hoạt cơ chế tự động dọn dẹp suất chiếu hết hạn định kỳ.");
+        */
+        System.out.println("[ShowtimeCleanupListener] Khởi tạo hệ thống quản trị suất chiếu thành công.");
     }
 
     @Override

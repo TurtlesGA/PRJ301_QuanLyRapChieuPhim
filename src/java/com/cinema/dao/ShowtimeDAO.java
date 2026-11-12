@@ -98,7 +98,6 @@ public class ShowtimeDAO extends DBContext {
     }
 
     public List<Showtime> getShowtimesByMovieId(int movieId) {
-        autoCleanupIfDue();
         List<Showtime> list = new ArrayList<>();
         String sql = "SELECT * FROM Showtimes WHERE movie_id = ? AND show_date >= CAST(GETDATE() AS DATE) AND status = 'OPEN' ORDER BY show_date ASC, start_time ASC";
         try (Connection conn = getConnection();
